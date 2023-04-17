@@ -14,16 +14,16 @@ from .eip712_utils import (
 from .utils import ADDRS, KEYS
 
 
-def test_native_tx(cronos):
+def test_native_tx(merlin):
     """
     test eip-712 tx works:
     """
-    cli = cronos.cosmos_cli()
-    w3 = cronos.w3
+    cli = merlin.cosmos_cli()
+    w3 = merlin.w3
     chain_id = w3.eth.chain_id
     chain = {
         "chainId": chain_id,
-        "cosmosChainId": f"cronos_{chain_id}-1",
+        "cosmosChainId": f"merlin_{chain_id}-1",
     }
     src = "community"
     src_addr = cli.address(src)
@@ -34,7 +34,7 @@ def test_native_tx(cronos):
         "accountNumber": int(src_account["base_account"]["account_number"]),
         "pubkey": json.loads(cli.address(src, "acc", "pubkey"))["key"],
     }
-    denom = "basetcro"
+    denom = "basetmer"
     dst_addr = cli.address("signer1")
     gas = 200000
     gas_price = 100000000000  # default base fee
@@ -68,7 +68,7 @@ def test_native_tx(cronos):
         "tx_bytes": tx_bytes.decode("utf-8"),
         "mode": "BROADCAST_MODE_BLOCK",
     }
-    p = ports.api_port(cronos.base_port(0))
+    p = ports.api_port(merlin.base_port(0))
     url = f"http://127.0.0.1:{p}/cosmos/tx/v1beta1/txs"
     response = requests.post(url, json=body)
     if not response.ok:

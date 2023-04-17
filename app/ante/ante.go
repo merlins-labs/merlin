@@ -4,8 +4,8 @@ import (
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/crypto-org-chain/cronos/v2/x/cronos/keeper"
-	"github.com/crypto-org-chain/cronos/v2/x/cronos/types"
+	"github.com/merlins-labs/merlin/v2/x/merlin/keeper"
+	"github.com/merlins-labs/merlin/v2/x/merlin/types"
 	evmante "github.com/evmos/ethermint/app/ante"
 )
 
@@ -40,7 +40,7 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 				accountToCheck = acc
 			}
 
-			if !options.CronosKeeper.HasPermission(ctx, accountToCheck, permissionToCheck) {
+			if !options.MerlinKeeper.HasPermission(ctx, accountToCheck, permissionToCheck) {
 				return newCtx, errors.Wrap(sdkerrors.ErrInvalidAddress, "msg sender is unauthorized")
 			}
 		}

@@ -3,12 +3,12 @@
         "branch": "master",
         "description": "Crypto.org Chain⛓: Croeseid Testnet and beyond development",
         "homepage": "https://crypto.org",
-        "owner": "crypto-org-chain",
+        "owner": "merlins-labs",
         "repo": "chain-main",
         "rev": "7e7d49839283f6d77516f614c2e2ff7441771e5a",
         "sha256": "1gm70jfd9rvi8shf6n7fjfvs4krdv3vjz50f44id3dv8fgg5zni1",
         "type": "tarball",
-        "url": "https://github.com/crypto-org-chain/chain-main/archive/7e7d49839283f6d77516f614c2e2ff7441771e5a.tar.gz",
+        "url": "https://github.com/merlins-labs/chain-main/archive/7e7d49839283f6d77516f614c2e2ff7441771e5a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "cosmos-sdk": {
@@ -61,15 +61,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "gravity-bridge": {
-        "branch": "v2.0.0-cronos",
+        "branch": "v2.0.0-merlin",
         "description": "A CosmosSDK application for moving assets on and off of EVM based, POW chains",
         "homepage": "",
-        "owner": "crypto-org-chain",
+        "owner": "merlins-labs",
         "repo": "gravity-bridge",
         "rev": "d984b1562242efab5d7595d4108472ed27eba06f",
         "sha256": "0q69yysg3ynq5wz98rvg1p8lav1xcrkkn32rxbqmpmffqqi7yv88",
         "type": "tarball",
-        "url": "https://github.com/crypto-org-chain/gravity-bridge/archive/d984b1562242efab5d7595d4108472ed27eba06f.tar.gz",
+        "url": "https://github.com/merlins-labs/gravity-bridge/archive/d984b1562242efab5d7595d4108472ed27eba06f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "ibc-rs": {

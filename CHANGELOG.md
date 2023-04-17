@@ -4,29 +4,29 @@
 
 ### State Machine Breaking
 
-- [cronos#695](https://github.com/crypto-org-chain/cronos/pull/695) Implement ADR-007, generic events format with indexed params.
-- [cronos#728](https://github.com/crypto-org-chain/cronos/pull/728) Upgrade gravity bridge latest bugfix, including multi attestation processing and double spend check.
-- [cronos#742](https://github.com/crypto-org-chain/cronos/pull/742) Add upgrade handler for v0.8.0-gravity-alpha2.
-- [cronos#750](https://github.com/crypto-org-chain/cronos/pull/750) Add upgrade handler for v0.8.0-gravity-alpha3.
-- [cronos#769](https://github.com/crypto-org-chain/cronos/pull/769) Prevent cancellation function to be called outside the scope of the contract that manage it.
-- [cronos#775](https://github.com/crypto-org-chain/cronos/pull/775) Support turnbridge transaction.
-- [cronos#781](https://github.com/crypto-org-chain/cronos/pull/781) Add prune command.
-- [cronos#830](https://github.com/crypto-org-chain/cronos/pull/830) Upgrade gravity bridge for latest bugfixes, patching two important DOS vulnerabilities
-- [cronos#834](https://github.com/crypto-org-chain/cronos/pull/834) Remove unsafe experimental flag.
-- [cronos#842](https://github.com/crypto-org-chain/cronos/pull/842) Add upgrade handler for v2.0.0-testnet3.
-- [cronos#795](https://github.com/crypto-org-chain/cronos/pull/795) Support permissions in cronos.
+- [merlin#695](https://github.com/merlins-labs/merlin/pull/695) Implement ADR-007, generic events format with indexed params.
+- [merlin#728](https://github.com/merlins-labs/merlin/pull/728) Upgrade gravity bridge latest bugfix, including multi attestation processing and double spend check.
+- [merlin#742](https://github.com/merlins-labs/merlin/pull/742) Add upgrade handler for v0.8.0-gravity-alpha2.
+- [merlin#750](https://github.com/merlins-labs/merlin/pull/750) Add upgrade handler for v0.8.0-gravity-alpha3.
+- [merlin#769](https://github.com/merlins-labs/merlin/pull/769) Prevent cancellation function to be called outside the scope of the contract that manage it.
+- [merlin#775](https://github.com/merlins-labs/merlin/pull/775) Support turnbridge transaction.
+- [merlin#781](https://github.com/merlins-labs/merlin/pull/781) Add prune command.
+- [merlin#830](https://github.com/merlins-labs/merlin/pull/830) Upgrade gravity bridge for latest bugfixes, patching two important DOS vulnerabilities
+- [merlin#834](https://github.com/merlins-labs/merlin/pull/834) Remove unsafe experimental flag.
+- [merlin#842](https://github.com/merlins-labs/merlin/pull/842) Add upgrade handler for v2.0.0-testnet3.
+- [merlin#795](https://github.com/merlins-labs/merlin/pull/795) Support permissions in merlin.
 
 ### Bug Fixes
 
-- [#833](https://github.com/crypto-org-chain/cronos/pull/833) Fix rollback command.
-- [#945](https://github.com/crypto-org-chain/cronos/pull/945) Fix no handler exists for proposal type error when update-client due to wrong ibc route.
+- [#833](https://github.com/merlins-labs/merlin/pull/833) Fix rollback command.
+- [#945](https://github.com/merlins-labs/merlin/pull/945) Fix no handler exists for proposal type error when update-client due to wrong ibc route.
 
 ### Improvements
 
-- [#890](https://github.com/crypto-org-chain/cronos/pull/890) optimize memiavl snapshot format.
-- [#904](https://github.com/crypto-org-chain/cronos/pull/904) Enable "dynamic-level-bytes" on new `application.db`.
-- [#924](https://github.com/crypto-org-chain/cronos/pull/924) memiavl support `Export` API.
-- [#934](https://github.com/crypto-org-chain/cronos/pull/934) Add pebbledb backend.
+- [#890](https://github.com/merlins-labs/merlin/pull/890) optimize memiavl snapshot format.
+- [#904](https://github.com/merlins-labs/merlin/pull/904) Enable "dynamic-level-bytes" on new `application.db`.
+- [#924](https://github.com/merlins-labs/merlin/pull/924) memiavl support `Export` API.
+- [#934](https://github.com/merlins-labs/merlin/pull/934) Add pebbledb backend.
 
 *Feb 09, 2022*
 
@@ -34,13 +34,13 @@
 
 ### Bug Fixes
 
-- [#814](https://github.com/crypto-org-chain/cronos/pull/814) Fix prometheus metrics.
+- [#814](https://github.com/merlins-labs/merlin/pull/814) Fix prometheus metrics.
 
 ### Improvements
 
-- [#813](https://github.com/crypto-org-chain/cronos/pull/813) Tune up rocksdb options.
-- [#791](https://github.com/crypto-org-chain/cronos/pull/791) Implement versiondb and migration commands.
-- [#779](https://github.com/crypto-org-chain/cronos/pull/779) Add config iavl-lazy-loading to enable lazy loading of iavl store.
+- [#813](https://github.com/merlins-labs/merlin/pull/813) Tune up rocksdb options.
+- [#791](https://github.com/merlins-labs/merlin/pull/791) Implement versiondb and migration commands.
+- [#779](https://github.com/merlins-labs/merlin/pull/779) Add config iavl-lazy-loading to enable lazy loading of iavl store.
 
 *Feb 08, 2023*
 
@@ -48,7 +48,7 @@
 
 ### Bug Fixes
 
-- [#846](https://github.com/crypto-org-chain/cronos/pull/846) Disable authz message
+- [#846](https://github.com/merlins-labs/merlin/pull/846) Disable authz message
 
 *Jan 04, 2023*
 
@@ -56,7 +56,7 @@
 
 ### State Machine Breaking
 
-- [#802](https://github.com/crypto-org-chain/cronos/pull/802) Update ibc-go to `v5.2.0`.
+- [#802](https://github.com/merlins-labs/merlin/pull/802) Update ibc-go to `v5.2.0`.
 
 *December 14, 2022*
 
@@ -64,8 +64,8 @@
 
 ### Improvements
 
-- [#781](https://github.com/crypto-org-chain/cronos/pull/781) Add prune command.
-- [#790](https://github.com/crypto-org-chain/cronos/pull/790) Update cosmos-sdk to `v0.46.7`, it fix a migration issue which affects pending proposals's votes during upgrade,
+- [#781](https://github.com/merlins-labs/merlin/pull/781) Add prune command.
+- [#790](https://github.com/merlins-labs/merlin/pull/790) Update cosmos-sdk to `v0.46.7`, it fix a migration issue which affects pending proposals's votes during upgrade,
   it also adds the config entries for file streamer.
 
 *Nov 22, 2022*
@@ -74,7 +74,7 @@
 
 ### Improvements
 
-- [#772](https://github.com/crypto-org-chain/cronos/pull/772) Update cosmos-sdk to `v0.46.6`, it's non-breaking for cronos.
+- [#772](https://github.com/merlins-labs/merlin/pull/772) Update cosmos-sdk to `v0.46.6`, it's non-breaking for merlin.
 
 *Nov 17, 2022*
 
@@ -82,7 +82,7 @@
 
 ### Bug Fixes
 
-- [#771](https://github.com/crypto-org-chain/cronos/pull/771) Fix london hardfork number in testnet3 parameters.
+- [#771](https://github.com/merlins-labs/merlin/pull/771) Fix london hardfork number in testnet3 parameters.
 
 *Nov 13, 2022*
 
@@ -90,7 +90,7 @@
 
 ### State Machine Breaking
 
-- [#765](https://github.com/crypto-org-chain/cronos/pull/765) Upgrade ibc-go to [v5.1.0](https://github.com/cosmos/ibc-go/releases/tag/v5.1.0) and related dependencies.
+- [#765](https://github.com/merlins-labs/merlin/pull/765) Upgrade ibc-go to [v5.1.0](https://github.com/cosmos/ibc-go/releases/tag/v5.1.0) and related dependencies.
 
 *Nov 10, 2022*
 
@@ -98,10 +98,10 @@
 
 ### Bug Fixes
 
-- [#761](https://github.com/crypto-org-chain/cronos/pull/761) Fix non-deterministic evm execution result when there are concurrent grpc queries.
-- [#762](https://github.com/crypto-org-chain/cronos/pull/762) Add `v1.0.0` upgrade plan for dry-run and mainnet upgrade, which clears the `extra_eips` parameter.
-- [#763](https://github.com/crypto-org-chain/cronos/pull/763) Add error log for iavl set error.
-- [#764](https://github.com/crypto-org-chain/cronos/pull/764) Make `eth_getProof` result compatible with ethereum.
+- [#761](https://github.com/merlins-labs/merlin/pull/761) Fix non-deterministic evm execution result when there are concurrent grpc queries.
+- [#762](https://github.com/merlins-labs/merlin/pull/762) Add `v1.0.0` upgrade plan for dry-run and mainnet upgrade, which clears the `extra_eips` parameter.
+- [#763](https://github.com/merlins-labs/merlin/pull/763) Add error log for iavl set error.
+- [#764](https://github.com/merlins-labs/merlin/pull/764) Make `eth_getProof` result compatible with ethereum.
 
 *Nov 4, 2022*
 
@@ -109,7 +109,7 @@
 
 ### Bug Fixes
 
-- [#760](https://github.com/crypto-org-chain/cronos/pull/760) Revert breaking changes on gas used in Ethermint.
+- [#760](https://github.com/merlins-labs/merlin/pull/760) Revert breaking changes on gas used in Ethermint.
 
 *Nov 1, 2022*
 
@@ -117,8 +117,8 @@
 
 ### Bug Fixes
 
-- [#748](https://github.com/crypto-org-chain/cronos/pull/748) Fix inconsistent state if upgrade migration commit is interrupted.
-- [#752](https://github.com/crypto-org-chain/cronos/pull/752) Update iavl to `v0.19.4`.
+- [#748](https://github.com/merlins-labs/merlin/pull/748) Fix inconsistent state if upgrade migration commit is interrupted.
+- [#752](https://github.com/merlins-labs/merlin/pull/752) Update iavl to `v0.19.4`.
 
 *Oct 15, 2022*
 
@@ -126,13 +126,13 @@
 
 ### Bug Fixes
 
-- [cronos#719](https://github.com/crypto-org-chain/cronos/pull/719) Fix `eth_call` for legacy blocks (backport #713).
+- [merlin#719](https://github.com/merlins-labs/merlin/pull/719) Fix `eth_call` for legacy blocks (backport #713).
 
 ### Improvements
 
-- [cronos#720](https://github.com/crypto-org-chain/cronos/pull/720) Add option `iavl-disable-fastnode` to disable iavl fastnode indexing migration (backport #714).
-- [cronos#721](https://github.com/crypto-org-chain/cronos/pull/721) Integrate the file state streamer (backport #702).
-- [cronos#730](https://github.com/crypto-org-chain/cronos/pull/730) Update dependencies to recent versions (backport #729).
+- [merlin#720](https://github.com/merlins-labs/merlin/pull/720) Add option `iavl-disable-fastnode` to disable iavl fastnode indexing migration (backport #714).
+- [merlin#721](https://github.com/merlins-labs/merlin/pull/721) Integrate the file state streamer (backport #702).
+- [merlin#730](https://github.com/merlins-labs/merlin/pull/730) Update dependencies to recent versions (backport #729).
 
 *Sep 20, 2022*
 
@@ -140,7 +140,7 @@
 
 ### Bug Fixes
 
-- [cronos#696](https://github.com/crypto-org-chain/cronos/pull/696) Fix json-rpc apis for legacy blocks.
+- [merlin#696](https://github.com/merlins-labs/merlin/pull/696) Fix json-rpc apis for legacy blocks.
 
 *Aug 29, 2022*
 
@@ -151,27 +151,27 @@
 ## v0.9.0
 
 ### State Machine Breaking
-- [cronos#429](https://github.com/crypto-org-chain/cronos/pull/429) Update ethermint to main, ibc-go to v3.0.0, cosmos sdk to v0.45.4 and gravity to latest, remove v0.7.0 related upgradeHandler.
-- [cronos#532](https://github.com/crypto-org-chain/cronos/pull/532) Add SendtoChain and CancelSendToChain support from evm call.
-- [cronos#600](https://github.com/crypto-org-chain/cronos/pull/600) Implement bidirectional token mapping.
-- [cronos#611](https://github.com/crypto-org-chain/cronos/pull/611) Fix mistake on acknowledgement error in ibc middleware.
-- [cronos#627](https://github.com/crypto-org-chain/cronos/pull/627) Upgrade gravity bridge module with security enhancements
-- [cronos#647](https://github.com/crypto-org-chain/cronos/pull/647) Integrate ibc fee middleware.
-- [cronos#672](https://github.com/crypto-org-chain/cronos/pull/672) Revert interchain-accounts integration.
+- [merlin#429](https://github.com/merlins-labs/merlin/pull/429) Update ethermint to main, ibc-go to v3.0.0, cosmos sdk to v0.45.4 and gravity to latest, remove v0.7.0 related upgradeHandler.
+- [merlin#532](https://github.com/merlins-labs/merlin/pull/532) Add SendtoChain and CancelSendToChain support from evm call.
+- [merlin#600](https://github.com/merlins-labs/merlin/pull/600) Implement bidirectional token mapping.
+- [merlin#611](https://github.com/merlins-labs/merlin/pull/611) Fix mistake on acknowledgement error in ibc middleware.
+- [merlin#627](https://github.com/merlins-labs/merlin/pull/627) Upgrade gravity bridge module with security enhancements
+- [merlin#647](https://github.com/merlins-labs/merlin/pull/647) Integrate ibc fee middleware.
+- [merlin#672](https://github.com/merlins-labs/merlin/pull/672) Revert interchain-accounts integration.
 
 ### Bug Fixes
 
-- [cronos#502](https://github.com/crypto-org-chain/cronos/pull/502) Fix failed tx are ignored in json-rpc apis.
-- [cronos#556](https://github.com/crypto-org-chain/cronos/pull/556) Bump gravity bridge module version to include bugfixes (including grpc endpoint)
-- [cronos#639](https://github.com/crypto-org-chain/cronos/pull/639) init and validate-genesis commands don't include experimental modules by default.
+- [merlin#502](https://github.com/merlins-labs/merlin/pull/502) Fix failed tx are ignored in json-rpc apis.
+- [merlin#556](https://github.com/merlins-labs/merlin/pull/556) Bump gravity bridge module version to include bugfixes (including grpc endpoint)
+- [merlin#639](https://github.com/merlins-labs/merlin/pull/639) init and validate-genesis commands don't include experimental modules by default.
 
 ### Improvements
-- [cronos#418](https://github.com/crypto-org-chain/cronos/pull/418) Support logs in evm-hooks and return id for SendToEthereum events
-- [cronos#489](https://github.com/crypto-org-chain/cronos/pull/489) Enable jemalloc memory allocator, and update rocksdb src to `v6.29.5`.
-- [cronos#511](https://github.com/crypto-org-chain/cronos/pull/511) Replace ibc-hook with ibc middleware, use ibc-go upstream version.
-- [cronos#550](https://github.com/crypto-org-chain/cronos/pull/550) Support basic json-rpc apis on pruned nodes.
-- [cronos#549](https://github.com/crypto-org-chain/cronos/pull/549) Use custom tx indexer feature of ethermint.
-- [cronos#673](https://github.com/crypto-org-chain/cronos/pull/673) Upgrade cosmos-sdk to 0.46.1 and ibc-go to v5.0.0-rc0.
+- [merlin#418](https://github.com/merlins-labs/merlin/pull/418) Support logs in evm-hooks and return id for SendToEthereum events
+- [merlin#489](https://github.com/merlins-labs/merlin/pull/489) Enable jemalloc memory allocator, and update rocksdb src to `v6.29.5`.
+- [merlin#511](https://github.com/merlins-labs/merlin/pull/511) Replace ibc-hook with ibc middleware, use ibc-go upstream version.
+- [merlin#550](https://github.com/merlins-labs/merlin/pull/550) Support basic json-rpc apis on pruned nodes.
+- [merlin#549](https://github.com/merlins-labs/merlin/pull/549) Use custom tx indexer feature of ethermint.
+- [merlin#673](https://github.com/merlins-labs/merlin/pull/673) Upgrade cosmos-sdk to 0.46.1 and ibc-go to v5.0.0-rc0.
 
 *Aug 5, 2022*
 
@@ -179,7 +179,7 @@
 
 ### State Machine Breaking
 
-- [cronos#618](https://github.com/crypto-org-chain/cronos/pull/618) selfdestruct don't delete bytecode of smart contract.
+- [merlin#618](https://github.com/merlins-labs/merlin/pull/618) selfdestruct don't delete bytecode of smart contract.
 
 *Aug 5, 2022*
 
@@ -187,19 +187,19 @@
 
 ### Bug Fixes
 
-- [cronos#454](https://github.com/crypto-org-chain/cronos/pull/454) Add back the latest testnet upgrade handler.
-- [cronos#503](https://github.com/crypto-org-chain/cronos/pull/503) Fix failed tx are ignored in json-rpc apis (backport #502).
-- [cronos#526](https://github.com/crypto-org-chain/cronos/pull/526) Fix tendermint duplicated tx issue.
-- [cronos#584](https://github.com/crypto-org-chain/cronos/pull/584) Validate eth tx hash in ante handler and fix tx hashes returned in some JSON-RPC apis.
-- [cronos#587](https://github.com/crypto-org-chain/cronos/pull/587) Unlucky tx patch cmd recompute eth tx hash.
-- [cronos#595](https://github.com/crypto-org-chain/cronos/pull/595) Workaround the tx hash issue in event parsing.
+- [merlin#454](https://github.com/merlins-labs/merlin/pull/454) Add back the latest testnet upgrade handler.
+- [merlin#503](https://github.com/merlins-labs/merlin/pull/503) Fix failed tx are ignored in json-rpc apis (backport #502).
+- [merlin#526](https://github.com/merlins-labs/merlin/pull/526) Fix tendermint duplicated tx issue.
+- [merlin#584](https://github.com/merlins-labs/merlin/pull/584) Validate eth tx hash in ante handler and fix tx hashes returned in some JSON-RPC apis.
+- [merlin#587](https://github.com/merlins-labs/merlin/pull/587) Unlucky tx patch cmd recompute eth tx hash.
+- [merlin#595](https://github.com/merlins-labs/merlin/pull/595) Workaround the tx hash issue in event parsing.
 
 ### Improvements
 
-- [cronos#489](https://github.com/crypto-org-chain/cronos/pull/489) Enable jemalloc memory allocator, and update rocksdb src to `v6.29.5`.
-- [cronos#513](https://github.com/crypto-org-chain/cronos/pull/513) Add `fix-unlucky-tx` command to patch txs post v0.7.0 upgrade.
-- [cronos#522](https://github.com/crypto-org-chain/cronos/pull/522) Add `reindex-duplicated-tx` command to handle the tendermint tx duplicated issue.
-- [cronos#585](https://github.com/crypto-org-chain/cronos/pull/585) Reject replay unprotected tx, mainly the old transactions on ethereum.
+- [merlin#489](https://github.com/merlins-labs/merlin/pull/489) Enable jemalloc memory allocator, and update rocksdb src to `v6.29.5`.
+- [merlin#513](https://github.com/merlins-labs/merlin/pull/513) Add `fix-unlucky-tx` command to patch txs post v0.7.0 upgrade.
+- [merlin#522](https://github.com/merlins-labs/merlin/pull/522) Add `reindex-duplicated-tx` command to handle the tendermint tx duplicated issue.
+- [merlin#585](https://github.com/merlins-labs/merlin/pull/585) Reject replay unprotected tx, mainly the old transactions on ethereum.
 
 *May 3, 2022*
 
@@ -207,8 +207,8 @@
 
 ### State Machine Breaking
 
-- [cronos#241](https://github.com/crypto-org-chain/cronos/pull/241) Update ethermint to main and merged statedb refactoring in custom fork.
-- [cronos#289](https://github.com/crypto-org-chain/cronos/pull/289) Update ethermint to `v0.10.0-cronos` which uses ibc-go `v2.0.2` instead of `v3.0.0-alpha2` and include the fixes below:
+- [merlin#241](https://github.com/merlins-labs/merlin/pull/241) Update ethermint to main and merged statedb refactoring in custom fork.
+- [merlin#289](https://github.com/merlins-labs/merlin/pull/289) Update ethermint to `v0.10.0-merlin` which uses ibc-go `v2.0.2` instead of `v3.0.0-alpha2` and include the fixes below:
   - [ethermint#901](https://github.com/tharsis/ethermint/pull/901) support batch evm tx
   - [ethermint#849](https://github.com/tharsis/ethermint/pull/849) Change EVM hook interface.
   - [ethermint#809](https://github.com/tharsis/ethermint/pull/809) fix nonce increment issue when contract deployment tx get reverted.
@@ -218,24 +218,24 @@
   - [cosmos-sdk#10833](https://github.com/cosmos/cosmos-sdk/pull/10833) fix reported tx gas used when block gas limit exceeded.
   - [cosmos-sdk#10814](https://github.com/cosmos/cosmos-sdk/pull/10814) revert tx when block gas limit exceeded.
   - [cosmos-sdk#10725](https://github.com/cosmos/cosmos-sdk/pull/10725) populate `ctx.ConsensusParams` for begin/end blockers (fix baseFee calculation in ethermint).
-- [cronos#315](https://github.com/crypto-org-chain/cronos/pull/315) Update cosmos-sdk to `v0.45.0`
+- [merlin#315](https://github.com/merlins-labs/merlin/pull/315) Update cosmos-sdk to `v0.45.0`
 
 ### Improvements
-- [cronos#210](https://github.com/crypto-org-chain/cronos/pull/210) re-enabling gravity bridge conditionally
-- [cronos#322](https://github.com/crypto-org-chain/cronos/pull/322) Merge min-gas-price change in ethermint: don't check min-gas-price for EVM tx when feemarket enabled.
-- [cronos#345](https://github.com/crypto-org-chain/cronos/pull/345) disable the url query parameter in swagger-ui.
-- [cronos#328](https://github.com/crypto-org-chain/cronos/pull/328) display detail panic information in query result when `--trace` enabled.
-- [cronos#441](https://github.com/crypto-org-chain/cronos/pull/441) Update cosmos-sdk to `v0.45.4`
+- [merlin#210](https://github.com/merlins-labs/merlin/pull/210) re-enabling gravity bridge conditionally
+- [merlin#322](https://github.com/merlins-labs/merlin/pull/322) Merge min-gas-price change in ethermint: don't check min-gas-price for EVM tx when feemarket enabled.
+- [merlin#345](https://github.com/merlins-labs/merlin/pull/345) disable the url query parameter in swagger-ui.
+- [merlin#328](https://github.com/merlins-labs/merlin/pull/328) display detail panic information in query result when `--trace` enabled.
+- [merlin#441](https://github.com/merlins-labs/merlin/pull/441) Update cosmos-sdk to `v0.45.4`
 
 ### Bug Fixes
-- [cronos#287](https://github.com/crypto-org-chain/cronos/pull/287) call upgrade handler before sealing app
-- [cronos#323](https://github.com/crypto-org-chain/cronos/pull/323) Upgrade gravity bridge to v0.3.9 which contain a bugfix on `batchTxExecuted.`
-- [cronos#324](https://github.com/crypto-org-chain/cronos/pull/324) Update to cosmos-sdk `v0.45.1`, which fixes an OOM issue.
-- [cronos#329](https://github.com/crypto-org-chain/cronos/pull/329) Fix panic of eth_call on blocks prior to upgrade. 
-- [cronos#340](https://github.com/crypto-org-chain/cronos/pull/340) Update dependencies to include several bug fixes: a) fix subscription deadlock issue in ethermint, b) fix data races `traceContext`.
-- [cronos#370](https://github.com/crypto-org-chain/cronos/pull/370) Update ethermint to fix a websocket bug, add websockets integration tests.
-- [cronos#378](https://github.com/crypto-org-chain/cronos/pull/378) Backport recent ethermint bug fixes: a) fix tx inclusion issue by report correct gasWanted of eth tx, b) Add buffer to eth_gasPrice response to fix client UX, c) Quick fix for eth_feeHistory when reward is nil, d) add returnValue message on tracing.
-- [cronos#446](https://github.com/crypto-org-chain/cronos/pull/446) Fix failure of query legacy block after upgrade.
+- [merlin#287](https://github.com/merlins-labs/merlin/pull/287) call upgrade handler before sealing app
+- [merlin#323](https://github.com/merlins-labs/merlin/pull/323) Upgrade gravity bridge to v0.3.9 which contain a bugfix on `batchTxExecuted.`
+- [merlin#324](https://github.com/merlins-labs/merlin/pull/324) Update to cosmos-sdk `v0.45.1`, which fixes an OOM issue.
+- [merlin#329](https://github.com/merlins-labs/merlin/pull/329) Fix panic of eth_call on blocks prior to upgrade. 
+- [merlin#340](https://github.com/merlins-labs/merlin/pull/340) Update dependencies to include several bug fixes: a) fix subscription deadlock issue in ethermint, b) fix data races `traceContext`.
+- [merlin#370](https://github.com/merlins-labs/merlin/pull/370) Update ethermint to fix a websocket bug, add websockets integration tests.
+- [merlin#378](https://github.com/merlins-labs/merlin/pull/378) Backport recent ethermint bug fixes: a) fix tx inclusion issue by report correct gasWanted of eth tx, b) Add buffer to eth_gasPrice response to fix client UX, c) Quick fix for eth_feeHistory when reward is nil, d) add returnValue message on tracing.
+- [merlin#446](https://github.com/merlins-labs/merlin/pull/446) Fix failure of query legacy block after upgrade.
 
 *December 10, 2021*
 
@@ -243,15 +243,15 @@
 
 ### Bug Fixes
 
-- [cronos#255](https://github.com/crypto-org-chain/cronos/pull/255) fix empty topics in non-breaking way
-- [cronos#270](https://github.com/crypto-org-chain/cronos/pull/270) reject MsgEthereumTx wrapping tx without the extension option.
+- [merlin#255](https://github.com/merlins-labs/merlin/pull/255) fix empty topics in non-breaking way
+- [merlin#270](https://github.com/merlins-labs/merlin/pull/270) reject MsgEthereumTx wrapping tx without the extension option.
 
 *November 30, 2021*
 
 ## v0.6.4
 
 ### Bug Fixes
-- [crypto-org-chain/ethermint#19](https://github.com/crypto-org-chain/ethermint/pull/19) revert tharsis#786 because it contains consensus breaking changes
+- [merlins-labs/ethermint#19](https://github.com/merlins-labs/ethermint/pull/19) revert tharsis#786 because it contains consensus breaking changes
 
 *November 29, 2021*
 
@@ -260,13 +260,13 @@
 ### Bug Fixes
 
 - [tharsis#781](https://github.com/tharsis/ethermint/pull/781) fix empty transactions in getBlock
-- [crypto-org-chain/ethermint#15](https://github.com/crypto-org-chain/ethermint/pull/15) web3 rpc api returns wrong block gas limit
-- [crypto-org-chain/ethermint#16](https://github.com/crypto-org-chain/ethermint/pull/16) fix unwrap context panic in BlockMaxGasFromConsensusParams
+- [merlins-labs/ethermint#15](https://github.com/merlins-labs/ethermint/pull/15) web3 rpc api returns wrong block gas limit
+- [merlins-labs/ethermint#16](https://github.com/merlins-labs/ethermint/pull/16) fix unwrap context panic in BlockMaxGasFromConsensusParams
 
 ### Improvements
 
 - [tharsis#786](https://github.com/tharsis/ethermint/pull/786) Improve error message of `SendTransaction`/`SendRawTransaction` JSON-RPC APIs.
-- [cronos#222](https://github.com/crypto-org-chain/cronos/pull/222) change solc 0.6.11 to 0.6.8 (from dapp cachix) and update hermes to 0.8.
+- [merlin#222](https://github.com/merlins-labs/merlin/pull/222) change solc 0.6.11 to 0.6.8 (from dapp cachix) and update hermes to 0.8.
 
 
 *November 19, 2021*
@@ -278,20 +278,20 @@
 - [tharsis#743](https://github.com/tharsis/ethermint/pull/743) missing debug_tranceBlockByHash RPC method and fix debug_traceBlock*
 - [tharsis#746](https://github.com/tharsis/ethermint/pull/746) set debug based on tracer
 - [tharsis#741](https://github.com/tharsis/ethermint/pull/741) filter non eth txs in block rpc response
-- [crypto-org-chain/ethermint#12](https://github.com/crypto-org-chain/ethermint/pull/12) reject tx with too large gas limit
+- [merlins-labs/ethermint#12](https://github.com/merlins-labs/ethermint/pull/12) reject tx with too large gas limit
 
 *October 26, 2021*
 
 ## v0.6.1
 
 ### State Machine Breaking
-- [cronos#190](https://github.com/crypto-org-chain/cronos/pull/190) upgrade ethermint to v0.7.2 with (#661) and (#689)
+- [merlin#190](https://github.com/merlins-labs/merlin/pull/190) upgrade ethermint to v0.7.2 with (#661) and (#689)
 
 ### Bug Fixes
-- [cronos#187](https://github.com/crypto-org-chain/cronos/pull/187) multiple denoms can be mapped to same contract
-- [cronos#157](https://github.com/crypto-org-chain/cronos/pull/185) cronos params name has an unnecessary Key prefix
-- [cronos#179](https://github.com/crypto-org-chain/cronos/pull/179) fix denom (symbol) in CRC20Module
-- [cronos#178](https://github.com/crypto-org-chain/cronos/pull/178) version CLI command doesn't output any text
+- [merlin#187](https://github.com/merlins-labs/merlin/pull/187) multiple denoms can be mapped to same contract
+- [merlin#157](https://github.com/merlins-labs/merlin/pull/185) merlin params name has an unnecessary Key prefix
+- [merlin#179](https://github.com/merlins-labs/merlin/pull/179) fix denom (symbol) in CRC20Module
+- [merlin#178](https://github.com/merlins-labs/merlin/pull/178) version CLI command doesn't output any text
 
 
 
@@ -299,21 +299,21 @@
 
 ## v0.6.0
 
-This version removes gravity-bridge from cronos, also includes multiple bug fixes in third-party dependencies.
+This version removes gravity-bridge from merlin, also includes multiple bug fixes in third-party dependencies.
 
 ### Consensus breaking changes
 
-- [cronos#171](https://github.com/crypto-org-chain/cronos/pull/171) remove gravity-bridge for mainnet launch
+- [merlin#171](https://github.com/merlins-labs/merlin/pull/171) remove gravity-bridge for mainnet launch
 
 ### Bug Fixes
-- [cronos#144](https://github.com/crypto-org-chain/cronos/pull/144) fix events in autodeploy crc20 module contract
-- [gravity-bridge#17](https://github.com/crypto-org-chain/gravity-bridge/pull/17) processEthereumEvent does not persist hooks emitted event
-- [gravity-bridge#20](https://github.com/crypto-org-chain/gravity-bridge/pull/20) fix undeterministic in consensus
-- [cronos#167](https://github.com/crypto-org-chain/cronos/pull/167) upgrade cosmos-sdk to 0.44.2
+- [merlin#144](https://github.com/merlins-labs/merlin/pull/144) fix events in autodeploy crc20 module contract
+- [gravity-bridge#17](https://github.com/merlins-labs/gravity-bridge/pull/17) processEthereumEvent does not persist hooks emitted event
+- [gravity-bridge#20](https://github.com/merlins-labs/gravity-bridge/pull/20) fix undeterministic in consensus
+- [merlin#167](https://github.com/merlins-labs/merlin/pull/167) upgrade cosmos-sdk to 0.44.2
 
 ### Improvements
-- [cronos#162](https://github.com/crypto-org-chain/cronos/pull/162) bump ibc-go to v1.2.1 with hooks support
-- [cronos#169](https://github.com/crypto-org-chain/cronos/pull/169) bump ethermint to v0.7.1 and go-ethereum to v10.1.3-patched which include (CVE-2021-39137) hotfix
+- [merlin#162](https://github.com/merlins-labs/merlin/pull/162) bump ibc-go to v1.2.1 with hooks support
+- [merlin#169](https://github.com/merlins-labs/merlin/pull/169) bump ethermint to v0.7.1 and go-ethereum to v10.1.3-patched which include (CVE-2021-39137) hotfix
 
 *October 4, 2021*
 ## v0.5.5
@@ -323,17 +323,17 @@ We also enable swagger doc ui and add the token mapping state in genesis.
 
 ### Bug Fixes
 
-- [cronos#109](https://github.com/crypto-org-chain/cronos/issues/109) ibc transfer timeout too short
+- [merlin#109](https://github.com/merlins-labs/merlin/issues/109) ibc transfer timeout too short
 - [tharsis#590](https://github.com/tharsis/ethermint/pull/590) fix export contract state in genesis and reimport
-- [cronos#123](https://github.com/crypto-org-chain/cronos/issues/123) fix ibc refund logic
+- [merlin#123](https://github.com/merlins-labs/merlin/issues/123) fix ibc refund logic
 - [tharsis#617](https://github.com/tharsis/ethermint/pull/617) iterator on deeply nested cache contexts is extremely slow
 - [tharsis#615](https://github.com/tharsis/ethermint/pull/615) tx log attribtue value not parsable by some client
 
 ### Features
 
-- [cronos#110](https://github.com/crypto-org-chain/cronos/pull/110) embed swagger doc ui
-- [cronos#113](https://github.com/crypto-org-chain/cronos/pull/113) export token mapping state to genesis
-- [cronos#128](https://github.com/crypto-org-chain/cronos/pull/128) add native message to update token mapping
+- [merlin#110](https://github.com/merlins-labs/merlin/pull/110) embed swagger doc ui
+- [merlin#113](https://github.com/merlins-labs/merlin/pull/113) export token mapping state to genesis
+- [merlin#128](https://github.com/merlins-labs/merlin/pull/128) add native message to update token mapping
 
 *September 22, 2021*
 ## v0.5.4
@@ -342,29 +342,29 @@ This version is the same as v0.5.3 with a patched version of ethermint which inc
 
 ### Bug Fixes
 
-- [cronos#93](https://github.com/crypto-org-chain/cronos/pull/93) tx receipts don't contain events
-- [cronos#98](https://github.com/crypto-org-chain/cronos/pull/98) node crash under concurrent query
+- [merlin#93](https://github.com/merlins-labs/merlin/pull/93) tx receipts don't contain events
+- [merlin#98](https://github.com/merlins-labs/merlin/pull/98) node crash under concurrent query
 
 *September 21, 2021*
 ## v0.5.3
 
-This version contains several new features, it enables gravity bridge in Cronos and automatic token conversion for bridging tokens to crc20 tokens. It also fixes the decimal conversion issues in the CRO tokens from Crypto.org Chain.
+This version contains several new features, it enables gravity bridge in Merlin and automatic token conversion for bridging tokens to crc20 tokens. It also fixes the decimal conversion issues in the CRO tokens from Crypto.org Chain.
 In addition to that, it also upgrade ethermint to its latest version (v0.5.0.x) which bring several breaking changes (see [changelog](https://github.com/tharsis/ethermint/blob/1a01c6a992c0fb94d70bb1c7127715874cefd057/CHANGELOG.md)).
 
 ### Consensus breaking changes
-- [cronos#87](https://github.com/crypto-org-chain/cronos/pull/87) upgrade ethermint to v0.4.2-0.20210920104419-1a01c6a992c0
+- [merlin#87](https://github.com/merlins-labs/merlin/pull/87) upgrade ethermint to v0.4.2-0.20210920104419-1a01c6a992c0
 
 ### Features
 
-- [cronos#11](https://github.com/crypto-org-chain/cronos/pull/11) embed gravity bridge module
-- [cronos#35](https://github.com/crypto-org-chain/cronos/pull/35) add support for ibc hook
-- [cronos#55](https://github.com/crypto-org-chain/cronos/pull/55) add support for ibc token conversion to crc20
-- [cronos#45](https://github.com/crypto-org-chain/cronos/pull/45) allow evm contract to call bank send and gravity send
-- [cronos#65](https://github.com/crypto-org-chain/cronos/pull/65) support SendToIbc in evm_log_handlers
-- [cronos#59](https://github.com/crypto-org-chain/cronos/pull/59) gravity bridged tokens are converted to crc20
+- [merlin#11](https://github.com/merlins-labs/merlin/pull/11) embed gravity bridge module
+- [merlin#35](https://github.com/merlins-labs/merlin/pull/35) add support for ibc hook
+- [merlin#55](https://github.com/merlins-labs/merlin/pull/55) add support for ibc token conversion to crc20
+- [merlin#45](https://github.com/merlins-labs/merlin/pull/45) allow evm contract to call bank send and gravity send
+- [merlin#65](https://github.com/merlins-labs/merlin/pull/65) support SendToIbc in evm_log_handlers
+- [merlin#59](https://github.com/merlins-labs/merlin/pull/59) gravity bridged tokens are converted to crc20
   automatically
-- [cronos#68](https://github.com/crypto-org-chain/cronos/issues/68) support SendCroToIbc in evm_log_handlers
-- [cronos#86](https://github.com/crypto-org-chain/cronos/issues/86) change account prefix
+- [merlin#68](https://github.com/merlins-labs/merlin/issues/68) support SendCroToIbc in evm_log_handlers
+- [merlin#86](https://github.com/merlins-labs/merlin/issues/86) change account prefix
 
 *August 19, 2021*
 
@@ -388,7 +388,7 @@ In addition to that, it also upgrade ethermint to its latest version (v0.5.0.x) 
 
 ## v0.5.1
 
-This version is a new scaffolding of cronos project where ethermint is included as a library.
+This version is a new scaffolding of merlin project where ethermint is included as a library.
 
 ### Consensus breaking changes
 

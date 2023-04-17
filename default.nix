@@ -11,10 +11,10 @@
 }:
 let
   version = "v1.0.4";
-  pname = "cronosd";
+  pname = "merlind";
   tags = [ "ledger" "netgo" network "rocksdb" "grocksdb_no_link" ];
   ldflags = lib.concatStringsSep "\n" ([
-    "-X github.com/cosmos/cosmos-sdk/version.Name=cronos"
+    "-X github.com/cosmos/cosmos-sdk/version.Name=merlin"
     "-X github.com/cosmos/cosmos-sdk/version.AppName=${pname}"
     "-X github.com/cosmos/cosmos-sdk/version.Version=${version}"
     "-X github.com/cosmos/cosmos-sdk/version.BuildTags=${lib.concatStringsSep "," tags}"
@@ -40,7 +40,7 @@ buildGoApplication rec {
   ] ./.);
   modules = ./gomod2nix.toml;
   pwd = src; # needed to support replace
-  subPackages = [ "cmd/cronosd" ];
+  subPackages = [ "cmd/merlind" ];
   buildFlags = lib.optionalString coverage "-cover";
   CGO_ENABLED = "1";
   CGO_LDFLAGS =
@@ -49,15 +49,15 @@ buildGoApplication rec {
     else "-lrocksdb -pthread -lstdc++ -ldl";
 
   postFixup = lib.optionalString stdenv.isDarwin ''
-    ${stdenv.cc.targetPrefix}install_name_tool -change "@rpath/librocksdb.7.dylib" "${rocksdb}/lib/librocksdb.dylib" $out/bin/cronosd
+    ${stdenv.cc.targetPrefix}install_name_tool -change "@rpath/librocksdb.7.dylib" "${rocksdb}/lib/librocksdb.dylib" $out/bin/merlind
   '';
 
   doCheck = false;
   meta = with lib; {
-    description = "Official implementation of the Cronos blockchain protocol";
-    homepage = "https://cronos.org/";
+    description = "Official implementation of the Merlin blockchain protocol";
+    homepage = "https://merlin.org/";
     license = licenses.asl20;
-    mainProgram = "cronosd" + stdenv.hostPlatform.extensions.executable;
+    mainProgram = "merlind" + stdenv.hostPlatform.extensions.executable;
     platforms = platforms.all;
   };
 }

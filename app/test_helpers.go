@@ -36,12 +36,12 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	cronostypes "github.com/crypto-org-chain/cronos/v2/x/cronos/types"
+	merlintypes "github.com/merlins-labs/merlin/v2/x/merlin/types"
 )
 
 const (
 	SimAppChainID  = "simulation_777-1"
-	TestAppChainID = "cronos_777-1"
+	TestAppChainID = "merlin_777-1"
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used in
@@ -75,7 +75,7 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 }
 
 // Setup initializes a new App. A Nop logger is set in App.
-func Setup(t *testing.T, cronosAdmin string) *App {
+func Setup(t *testing.T, merlinAdmin string) *App {
 	t.Helper()
 
 	privVal := mock.NewPV()
@@ -93,24 +93,24 @@ func Setup(t *testing.T, cronosAdmin string) *App {
 		Address: acc.GetAddress().String(),
 		Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(100000000000000))),
 	}
-	return SetupWithGenesisValSet(t, cronosAdmin, valSet, []authtypes.GenesisAccount{acc}, balance)
+	return SetupWithGenesisValSet(t, merlinAdmin, valSet, []authtypes.GenesisAccount{acc}, balance)
 }
 
 // SetupWithGenesisValSet initializes a new App with a validator set and genesis accounts
 // that also act as delegators. For simplicity, each validator is bonded with a delegation
 // of one consensus engine unit (10^6) in the default token of the simapp from first genesis
 // account. A Nop logger is set in App.
-func SetupWithGenesisValSet(t *testing.T, cronosAdmin string, valSet *tmtypes.ValidatorSet, genAccs []authtypes.GenesisAccount, balances ...banktypes.Balance) *App {
+func SetupWithGenesisValSet(t *testing.T, merlinAdmin string, valSet *tmtypes.ValidatorSet, genAccs []authtypes.GenesisAccount, balances ...banktypes.Balance) *App {
 	t.Helper()
 
 	app, genesisState := setup(true, 5)
 	genesisState = genesisStateWithValSet(t, app, genesisState, valSet, genAccs, balances...)
 
-	cronosGen := cronostypes.DefaultGenesis()
-	cronosGen.Params.CronosAdmin = cronosAdmin
+	merlinGen := merlintypes.DefaultGenesis()
+	merlinGen.Params.MerlinAdmin = merlinAdmin
 	// enable auto deployment in test genesis
-	cronosGen.Params.EnableAutoDeployment = true
-	genesisState["cronos"] = app.cdc.MustMarshalJSON(cronosGen)
+	merlinGen.Params.EnableAutoDeployment = true
+	genesisState["merlin"] = app.cdc.MustMarshalJSON(merlinGen)
 
 	// set genesis accounts
 	authGenesis := authtypes.NewGenesisState(authtypes.DefaultParams(), genAccs)

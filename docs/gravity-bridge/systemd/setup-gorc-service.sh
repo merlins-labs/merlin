@@ -54,7 +54,7 @@ check_gorc_setup() {
 }
 
 download_service() {
-    curl -s https://raw.githubusercontent.com/crypto-org-chain/cronos/main/docs/gravity-bridge/systemd/gorc.service.template -o $BASEDIR/gorc.service.template
+    curl -s https://raw.githubusercontent.com/merlins-labs/merlin/main/docs/gravity-bridge/systemd/gorc.service.template -o $BASEDIR/gorc.service.template
 }
 
 gather_relayer_info() {
@@ -65,9 +65,9 @@ gather_relayer_info() {
 
 gather_orchestrator_info() {
     read -p 'Please input orchestrator ethereum key name: ' ethKey
-    read -p 'Please input orchestrator cronos key name: ' croKey
-    echo "cronos key: $croKey eth key: $ethKey"
-    GORC_START_COMMAND="orchestrator start --mode Api --cosmos-key=\"$croKey\" --ethereum-key=\"$ethKey\""
+    read -p 'Please input orchestrator merlin key name: ' merKey
+    echo "merlin key: $merKey eth key: $ethKey"
+    GORC_START_COMMAND="orchestrator start --mode Api --cosmos-key=\"$merKey\" --ethereum-key=\"$ethKey\""
 }
 
 setup_service() {

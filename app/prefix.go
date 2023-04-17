@@ -2,7 +2,7 @@ package app
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	cmdcfg "github.com/crypto-org-chain/cronos/v2/cmd/cronosd/config"
+	cmdcfg "github.com/merlins-labs/merlin/v2/cmd/merlind/config"
 	ethcfg "github.com/evmos/ethermint/cmd/config"
 )
 

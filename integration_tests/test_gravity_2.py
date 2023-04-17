@@ -6,7 +6,7 @@ from hexbytes import HexBytes
 from pystarport import ports
 
 from .gorc import GoRc
-from .network import GravityBridge, setup_cronos, setup_geth
+from .network import GravityBridge, setup_merlin, setup_geth
 from .test_gravity import gorc_config, update_gravity_contract
 from .utils import (
     ADDRS,
@@ -37,32 +37,32 @@ def geth(tmp_path_factory):
 
 
 @pytest.fixture(scope="module", params=[True, False])
-def cronos(request, tmp_path_factory):
-    """start-cronos
+def merlin(request, tmp_path_factory):
+    """start-merlin
     params: enable_auto_deployment
     """
-    yield from setup_cronos(tmp_path_factory.mktemp("cronos"), 26600, request.param)
+    yield from setup_merlin(tmp_path_factory.mktemp("merlin"), 26600, request.param)
 
 
 @pytest.fixture(scope="module")
-def gravity(cronos, geth):
+def gravity(merlin, geth):
     """
     - set-delegator-keys
     - deploy gravity contract
     - start orchestrator
     """
-    chain_id = "cronos_777-1"
+    chain_id = "merlin_777-1"
 
     # set-delegate-keys
-    for i, val in enumerate(cronos.config["validators"]):
+    for i, val in enumerate(merlin.config["validators"]):
         # generate gorc config file
-        gorc_config_path = cronos.base_dir / f"node{i}/gorc.toml"
+        gorc_config_path = merlin.base_dir / f"node{i}/gorc.toml"
         grpc_port = ports.grpc_port(val["base_port"])
         metrics_port = 3000 + i
         gorc_config_path.write_text(
             dump_toml(
                 gorc_config(
-                    cronos.base_dir / f"node{i}/orchestrator_keystore",
+                    merlin.base_dir / f"node{i}/orchestrator_keystore",
                     "",  # to be filled later after the gravity contract deployed
                     geth.provider.endpoint_uri,
                     f"http://localhost:{grpc_port}",
@@ -75,20 +75,20 @@ def gravity(cronos, geth):
 
         # generate new accounts on both chain
         gorc.add_eth_key("eth")
-        gorc.add_eth_key("cronos")  # cronos and eth key derivation are the same
+        gorc.add_eth_key("merlin")  # merlin and eth key derivation are the same
 
         # fund the orchestrator accounts
         eth_addr = to_checksum_address(gorc.show_eth_addr("eth"))
         print("fund 0.1 eth to address", eth_addr)
         send_transaction(geth, {"to": eth_addr, "value": 10**17}, KEYS["validator"])
-        acc_addr = gorc.show_cosmos_addr("cronos")
-        print("fund 100cro to address", acc_addr)
-        rsp = cronos.cosmos_cli().transfer(
-            "community", acc_addr, "%dbasetcro" % (100 * (10**18))
+        acc_addr = gorc.show_cosmos_addr("merlin")
+        print("fund 100mer to address", acc_addr)
+        rsp = merlin.cosmos_cli().transfer(
+            "community", acc_addr, "%dbasetmer" % (100 * (10**18))
         )
         assert rsp["code"] == 0, rsp["raw_log"]
 
-        cli = cronos.cosmos_cli(i)
+        cli = merlin.cosmos_cli(i)
         val_addr = cli.address("validator", bech="val")
         val_acct_addr = cli.address("validator")
         nonce = int(cli.account(val_acct_addr)["base_account"]["sequence"])
@@ -134,15 +134,15 @@ def gravity(cronos, geth):
     # a) add process into the supervisord config file
     # b) reload supervisord
     programs = {}
-    for i, val in enumerate(cronos.config["validators"]):
+    for i, val in enumerate(merlin.config["validators"]):
         # update gravity contract in gorc config
-        gorc_config_path = cronos.base_dir / f"node{i}/gorc.toml"
+        gorc_config_path = merlin.base_dir / f"node{i}/gorc.toml"
         update_gravity_contract(gorc_config_path, contract.address)
 
         programs[f"program:{chain_id}-orchestrator{i}"] = {
             "command": (
                 f'gorc -c "{gorc_config_path}" orchestrator start '
-                "--cosmos-key cronos --ethereum-key eth --mode AlwaysRelay"
+                "--cosmos-key merlin --ethereum-key eth --mode AlwaysRelay"
             ),
             "environment": "RUST_BACKTRACE=full",
             "autostart": "true",
@@ -152,14 +152,14 @@ def gravity(cronos, geth):
             "stdout_logfile": f"%(here)s/orchestrator{i}.log",
         }
 
-    add_ini_sections(cronos.base_dir / "tasks.ini", programs)
-    supervisorctl(cronos.base_dir / "../tasks.ini", "update")
+    add_ini_sections(merlin.base_dir / "tasks.ini", programs)
+    supervisorctl(merlin.base_dir / "../tasks.ini", "update")
 
-    yield GravityBridge(cronos, geth, contract)
+    yield GravityBridge(merlin, geth, contract)
 
 
 def test_gravity_proxy_contract(gravity):
-    if not gravity.cronos.enable_auto_deployment:
+    if not gravity.merlin.enable_auto_deployment:
         geth = gravity.geth
 
         # deploy test erc20 contract
@@ -173,30 +173,30 @@ def test_gravity_proxy_contract(gravity):
         denom = f"gravity{erc20.address}"
 
         # deploy crc20 contract
-        w3 = gravity.cronos.w3
+        w3 = gravity.merlin.w3
         crc20 = deploy_contract(w3, CONTRACTS["TestCRC20"])
 
         print("crc20 contract deployed at address: ", crc20.address)
 
         # setup the contract mapping
-        cronos_cli = gravity.cronos.cosmos_cli()
+        merlin_cli = gravity.merlin.cosmos_cli()
 
         print("check the contract mapping not exists yet")
         with pytest.raises(AssertionError):
-            cronos_cli.query_contract_by_denom(denom)
+            merlin_cli.query_contract_by_denom(denom)
 
-        rsp = cronos_cli.update_token_mapping(
+        rsp = merlin_cli.update_token_mapping(
             denom, crc20.address, "TEST", 18, from_="validator"
         )
         assert rsp["code"] == 0, rsp["raw_log"]
-        wait_for_new_blocks(cronos_cli, 1)
+        wait_for_new_blocks(merlin_cli, 1)
 
         print("check the contract mapping exists now")
-        rsp = cronos_cli.query_denom_by_contract(crc20.address)
+        rsp = merlin_cli.query_denom_by_contract(crc20.address)
         assert rsp["denom"] == denom
 
         # Send some tokens
-        print("send to cronos crc20")
+        print("send to merlin crc20")
         amount = 1000
         recipient = HexBytes(ADDRS["community"])
         txreceipt = send_to_cosmos(
@@ -223,14 +223,14 @@ def test_gravity_proxy_contract(gravity):
         assert proxycrc20.caller.crc20() == crc20.address
 
         # change token mapping
-        rsp = cronos_cli.update_token_mapping(
+        rsp = merlin_cli.update_token_mapping(
             denom, proxycrc20.address, "DOG", 18, from_="validator"
         )
         assert rsp["code"] == 0, rsp["raw_log"]
-        wait_for_new_blocks(cronos_cli, 1)
+        wait_for_new_blocks(merlin_cli, 1)
 
         print("check the contract mapping exists now")
-        rsp = cronos_cli.query_denom_by_contract(proxycrc20.address)
+        rsp = merlin_cli.query_denom_by_contract(proxycrc20.address)
         assert rsp["denom"] == denom
 
         # Fund the proxy contract cosmos account with original supply
@@ -305,9 +305,9 @@ def test_gravity_proxy_contract(gravity):
 
 
 def test_gravity_detect_malicious_supply(gravity):
-    if not gravity.cronos.enable_auto_deployment:
+    if not gravity.merlin.enable_auto_deployment:
         geth = gravity.geth
-        cli = gravity.cronos.cosmos_cli()
+        cli = gravity.merlin.cosmos_cli()
 
         # deploy fake contract to trigger the malicious supply
         # any transfer made with this contract will send an amount of token
@@ -369,16 +369,16 @@ def test_gravity_detect_malicious_supply(gravity):
 
 
 def test_gravity_non_cosmos_denom(gravity):
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         return
 
-    cronos_cli = gravity.cronos.cosmos_cli()
+    merlin_cli = gravity.merlin.cosmos_cli()
     # deploy test erc20 contract
     erc20 = deploy_contract(
         gravity.geth,
         CONTRACTS["TestERC20A"],
     )
-    print("send to cronos crc20")
+    print("send to merlin crc20")
     recipient = HexBytes(ADDRS["community"])
     balance = erc20.caller.balanceOf(ADDRS["validator"])
     assert balance == 100000000000000000000000000
@@ -393,7 +393,7 @@ def test_gravity_non_cosmos_denom(gravity):
 
     def check_gravity_native_tokens():
         "check the balance of gravity native token"
-        return cronos_cli.balance(eth_to_bech32(recipient), denom=denom) == amount
+        return merlin_cli.balance(eth_to_bech32(recipient), denom=denom) == amount
 
     wait_for_fn("send-to-gravity-native", check_gravity_native_tokens)
 
@@ -408,10 +408,10 @@ def test_gravity_non_cosmos_denom(gravity):
     assert tx_receipt.status == 1, "should success"
 
     # Wait enough for orchestrator to relay the event
-    wait_for_new_blocks(cronos_cli, 30)
+    wait_for_new_blocks(merlin_cli, 30)
 
-    # Send again token to cronos and verify that the network is not stopped
-    print("send to cronos crc20")
+    # Send again token to merlin and verify that the network is not stopped
+    print("send to merlin crc20")
     recipient = HexBytes(ADDRS["community"])
     balance = erc20.caller.balanceOf(ADDRS["validator"])
     txreceipt = send_to_cosmos(
@@ -424,6 +424,6 @@ def test_gravity_non_cosmos_denom(gravity):
 
     def check_gravity_native_tokens():
         "check the balance of gravity native token"
-        return cronos_cli.balance(eth_to_bech32(recipient), denom=denom) == 2 * amount
+        return merlin_cli.balance(eth_to_bech32(recipient), denom=denom) == 2 * amount
 
     wait_for_fn("send-to-gravity-native", check_gravity_native_tokens)

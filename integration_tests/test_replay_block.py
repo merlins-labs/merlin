@@ -5,20 +5,20 @@ import web3
 from web3._utils.method_formatters import receipt_formatter
 from web3.datastructures import AttributeDict
 
-from .network import setup_custom_cronos
+from .network import setup_custom_merlin
 from .utils import ADDRS, CONTRACTS, KEYS, deploy_contract, sign_transaction
 
 
 @pytest.fixture(scope="module")
-def custom_cronos(tmp_path_factory):
-    path = tmp_path_factory.mktemp("cronos")
-    yield from setup_custom_cronos(
+def custom_merlin(tmp_path_factory):
+    path = tmp_path_factory.mktemp("merlin")
+    yield from setup_custom_merlin(
         path, 26000, Path(__file__).parent / "configs/low_block_gas_limit.jsonnet"
     )
 
 
-def test_replay_block(custom_cronos):
-    w3: web3.Web3 = custom_cronos.w3
+def test_replay_block(custom_merlin):
+    w3: web3.Web3 = custom_merlin.w3
     contract = deploy_contract(
         w3,
         CONTRACTS["TestMessageCall"],
@@ -91,7 +91,7 @@ def test_replay_block(custom_cronos):
     )
 
     rsp = w3.provider.make_request(
-        "cronos_replayBlock", [hex(receipt1.blockNumber), False]
+        "merlin_replayBlock", [hex(receipt1.blockNumber), False]
     )
     assert "error" not in rsp, rsp["error"]
     assert 2 == len(rsp["result"])
@@ -110,7 +110,7 @@ def test_replay_block(custom_cronos):
 
     # check the postUpgrade mode
     rsp = w3.provider.make_request(
-        "cronos_replayBlock", [hex(receipt1.blockNumber), True]
+        "merlin_replayBlock", [hex(receipt1.blockNumber), True]
     )
     assert "error" not in rsp, rsp["error"]
     assert 2 == len(rsp["result"])

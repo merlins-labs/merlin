@@ -2,13 +2,13 @@
 
 # Pioneer11 Orchestrator Deployment Guide
 
-This guide is intended to assist the community validators with setting up Gravity Orchestrator and Relayer (jointly, in one process) between `Cronos Pioneer11` and `Ethereum Goerli` testnet. The default orchestrator start command includes running a relayer. However, they are two different processes. You can read more about Gravity Bridge [here](https://blog.althea.net/how-gravity-works/).
+This guide is intended to assist the community validators with setting up Gravity Orchestrator and Relayer (jointly, in one process) between `Merlin Pioneer11` and `Ethereum Goerli` testnet. The default orchestrator start command includes running a relayer. However, they are two different processes. You can read more about Gravity Bridge [here](https://blog.althea.net/how-gravity-works/).
 
 ## Prerequisites
 
 ### Validator
 
-You should have a validator running in `Cronos Pioneer11` network.
+You should have a validator running in `Merlin Pioneer11` network.
 
 ### Ethereum node
 
@@ -19,15 +19,15 @@ You can use a nodes as a service provider as discussed [here](https://ethereum.o
 
 ### Binaries
 
--  `cronosd` version: `0.8.0` , the cronos node binary found at https://github.com/crypto-org-chain/cronos/releases/tag/v0.8.0-gravity-alpha0. You will need to use one of the testnet binaries according to your OS/ Arch.
+-  `merlind` version: `0.8.0` , the merlin node binary found at https://github.com/merlins-labs/merlin/releases/tag/v0.8.0-gravity-alpha0. You will need to use one of the testnet binaries according to your OS/ Arch.
 
-- `gorc`, the gravity bridge orchestrator cli, build instructions can be found [here](gorc-build.md). Alternatively, you can download Linux x86_64 binary from [here](https://github.com/crypto-org-chain/gravity-bridge/releases/tag/v2.0.0-cronos-alpha0)
+- `gorc`, the gravity bridge orchestrator cli, build instructions can be found [here](gorc-build.md). Alternatively, you can download Linux x86_64 binary from [here](https://github.com/merlins-labs/gravity-bridge/releases/tag/v2.0.0-merlin-alpha0)
 
 - Above binaries setup in `PATH`.
 
 ## Generate Orchestrator Keys and Config
 
-You need to prepare two accounts for the orchestrator, one for ethereum and one for cronos. You should transfer some funds to these accounts, so the orchestrator can cover the gas fees of message relaying later on.
+You need to prepare two accounts for the orchestrator, one for ethereum and one for merlin. You should transfer some funds to these accounts, so the orchestrator can cover the gas fees of message relaying later on.
 
 Please follow the [gorc-keystores](gorc-keystores.md) guide for this step.
 
@@ -35,7 +35,7 @@ Note: For the deployed contracts, please checkout the [reference](#reference) se
 
 ## Transfer funds to orchestrator accounts
 
-You should transfer funds to the Ethereum and Cronos accounts generated earlier. Gravity Bridge is deployed between the `Cronos Pioneer11` and the `Ethereum Goerli` testnet.
+You should transfer funds to the Ethereum and Merlin accounts generated earlier. Gravity Bridge is deployed between the `Merlin Pioneer11` and the `Ethereum Goerli` testnet.
 
 
 ## Sign Validator Address
@@ -48,7 +48,7 @@ You should transfer funds to the Ethereum and Cronos accounts generated earlier.
 	If you have your validator key set up locally, you can run:
 
 	```bash
-	cronosd keys show $val_key_name --bech val --output json | jq .address
+	merlind keys show $val_key_name --bech val --output json | jq .address
 	```
 
 	Sample out:
@@ -59,16 +59,16 @@ You should transfer funds to the Ethereum and Cronos accounts generated earlier.
 	If you have your validator key set up locally, you can run:
 
 	```bash
-	cronosd keys show $val_key_name --output json | jq .address
+	merlind keys show $val_key_name --output json | jq .address
 	```
 
 	Sample out:
-		`"tcrc18d5ne2f2xdge9s4yw0wr6h8gpvg5p7lep8zx6p"`
+		`"tdid:fury:iaa18d5ne2f2xdge9s4yw0wr6h8gpvg5p7lep8zx6p"`
 
 3. Get validator current `nonce`:
 
 	```bash
-	cronosd query auth account $val_account_add_from_2 --output json | jq .base_account.sequence
+	merlind query auth account $val_account_add_from_2 --output json | jq .base_account.sequence
 	```
 
   Sample out:
@@ -78,7 +78,7 @@ You should transfer funds to the Ethereum and Cronos accounts generated earlier.
 
 ### Generating the signature:
 
-To register the orchestrator with the validator, you need to sign a protobuf encoded message using the orchestrator's Ethereum key, and send it to a Cronos validator to register it.
+To register the orchestrator with the validator, you need to sign a protobuf encoded message using the orchestrator's Ethereum key, and send it to a Merlin validator to register it.
 
 To get the signature, we will use `gorc` as follows:
 
@@ -95,15 +95,15 @@ Note that:
 2. `$val_address` and `$nonce` were obtained from the Prerequisites section.
 
 
-## Register Orchestrator With Cronos Validator
+## Register Orchestrator With Merlin Validator
 
 
-At last, send the orchestrator's Ethereum address, Cronos address, and the signature we just signed above to a Cronos validator, the validator should send a `set-delegate-keys` transaction to cronos network to register the binding:
+At last, send the orchestrator's Ethereum address, Merlin address, and the signature we just signed above to a Merlin validator, the validator should send a `set-delegate-keys` transaction to merlin network to register the binding:
 
 
 ```bash
 
-cronosd tx gravity set-delegate-keys $val_address  $orchestrator_cronos_address  $orchestrator_eth_address  $signature --from $val_account_address --gas auto --chain-id pioneereleventestnet_340-1 -b block
+merlind tx gravity set-delegate-keys $val_address  $orchestrator_merlin_address  $orchestrator_eth_address  $signature --from $val_account_address --gas auto --chain-id pioneereleventestnet_340-1 -b block
 
 ```
 
@@ -112,10 +112,10 @@ You might also need to pass `--fees` flag.
 
 ## Trial Run Orchestrator
 
-In order to run the orchestrator, you will need to set RELAYER_API_URL environment variable to point to Cronos public relayer API:
+In order to run the orchestrator, you will need to set RELAYER_API_URL environment variable to point to Merlin public relayer API:
 
 ```bash
-export RELAYER_API_URL=https://cronos.org/pioneer11/relayer/relayer
+export RELAYER_API_URL=https://merlin.org/pioneer11/relayer/relayer
 ```
 
 To read more about the relayer modes, you can check out [gravity-bridge-relayer-modes.md](gravity-bridge-relayer-modes.md).
@@ -124,7 +124,7 @@ To run the orchestrator:
 
 ```bash
 gorc -c gorc.toml orchestrator start \
-		--cosmos-key="orch_cro" \
+		--cosmos-key="orch_mer" \
 		--ethereum-key="orch_eth" \
 		--mode Api
 ```
@@ -138,7 +138,7 @@ The orchestrator is running now.
 To set up the Orchestrator (and relayer) as a service, you can run:
 
 ```bash
-bash <(curl -s -L https://raw.githubusercontent.com/crypto-org-chain/cronos/main/docs/gravity-bridge/systemd/setup-gorc-service.sh) -t orchestrator
+bash <(curl -s -L https://raw.githubusercontent.com/merlins-labs/merlin/main/docs/gravity-bridge/systemd/setup-gorc-service.sh) -t orchestrator
 ```
 
 You will be prompted for your key names set up earlier. After the service is created, you can run:
@@ -158,7 +158,7 @@ journalctl -u gorc -f
 ### Contracts
 
 ```
-CronosGravity: 0x56C7354887f8d00b5f9945Edb1430D7168F348F5 (on Goerli) - To be used in `gorc.toml`
+MerlinGravity: 0x56C7354887f8d00b5f9945Edb1430D7168F348F5 (on Goerli) - To be used in `gorc.toml`
 Eth Gravity Wrapper: 0x2C962ecb54D53B54144b7f297158FA23e3abb871 (on Goerli)
 CroBridge: 0x38F05eb0c209c4c9Fe2D6E237f03ec503f65F088 (on Pioneer11)
 ```
@@ -175,12 +175,12 @@ Here are the deployed token mappings:
 
 ### Code
 
-1. CronosGravity :
-   - https://github.com/crypto-org-chain/gravity-bridge/blob/v2.0.0-cronos-alpha0/solidity/contracts/CronosGravity.sol
+1. MerlinGravity :
+   - https://github.com/merlins-labs/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/MerlinGravity.sol
 
 2. Eth Gravity Wrapper :
-   -  https://github.com/crypto-org-chain/gravity-bridge/blob/v2.0.0-cronos-alpha0/solidity/contracts/EthGravityWrapper.sol
+   -  https://github.com/merlins-labs/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/EthGravityWrapper.sol
 
 3. CroBridge :
-   - https://github.com/crypto-org-chain/cronos/blob/v0.8.0-gravity-alpha0/integration_tests/contracts/contracts/CroBridge.sol
+   - https://github.com/merlins-labs/merlin/blob/v0.8.0-gravity-alpha0/integration_tests/contracts/contracts/CroBridge.sol
 

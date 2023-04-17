@@ -5,12 +5,12 @@
 ### Binaries
 
 - `geth`, the go-ethereum binary.
-- `cronosd`, the cronos node binary.
-- `gorc`, the gravity bridge orchestrator cli, built from the [crypto-org fork](https://github.com/crypto-org-chain/gravity-bridge/tree/v2.0.0-cronos/orchestrator/gorc).
+- `merlind`, the merlin node binary.
+- `gorc`, the gravity bridge orchestrator cli, built from the [crypto-org fork](https://github.com/merlins-labs/gravity-bridge/tree/v2.0.0-merlin/orchestrator/gorc).
 - `pystarport`, a tool to run local cosmos devnet.
-- `start-geth`/`start-cronos`, convenient scripts to start the local devnets.
+- `start-geth`/`start-merlin`, convenient scripts to start the local devnets.
 
-Clone cronos repo locally and run `nix-shell integration_tests/shell.nix` in it, you'll get a virtual shell with the
+Clone merlin repo locally and run `nix-shell integration_tests/shell.nix` in it, you'll get a virtual shell with the
 above essential binaries setup in `PATH`.
 
 ### Ethereum Testnet
@@ -21,10 +21,10 @@ You should own some funds in this testnet, for the local testnet, you can get th
 `visit craft resemble online window solution west chuckle music diesel vital settle comic tribe project blame bulb armed
 flower region sausage mercy arrive release`.
 
-### Cronos Testnet
+### Merlin Testnet
 
-You can either use a public cronos testnet (that have embed the gravity-bridge module), or run `start-cronos
-/tmp/test-cronos` to get a local Cronos testnet.
+You can either use a public merlin testnet (that have embed the gravity-bridge module), or run `start-merlin
+/tmp/test-merlin` to get a local Merlin testnet.
 
 You should own some funds in this testnet, for the local testnet, you'll get the funds with the same private key as
 above.
@@ -32,7 +32,7 @@ above.
 ## Generate Orchestrator Keys
 
 
-You need to prepare two accounts for the orchestrator, one for ethereum and one for cronos. You should transfer some funds to these accounts, so the orchestrator can cover the gas fees of message relaying later.
+You need to prepare two accounts for the orchestrator, one for ethereum and one for merlin. You should transfer some funds to these accounts, so the orchestrator can cover the gas fees of message relaying later.
 
 ### Creating the config:
 
@@ -44,15 +44,15 @@ keystore = "/tmp/keystore"
 
 [gravity]
 contract = "0x0000000000000000000000000000000000000000" # TO BE UPDATED - gravity contract address on Ethereum network
-fees_denom = "basetcro"
+fees_denom = "basetmer"
 
 [ethereum]
 key_derivation_path = "m/44'/60'/0'/0/0"
 rpc = "http://localhost:8545" # TO BE UPDATED - EVM RPC of Ethereum node
 
 [cosmos]
-gas_price = { amount = 5000000000000, denom = "basetcro" }
-grpc = "http://localhost:9090" # TO BE UPDATED - GRPC of Cronos node
+gas_price = { amount = 5000000000000, denom = "basetmer" }
+grpc = "http://localhost:9090" # TO BE UPDATED - GRPC of Merlin node
 key_derivation_path = "m/44'/60'/0'/0/0"
 prefix = "tcrc"
 
@@ -63,17 +63,17 @@ listen_addr = "127.0.0.1:3000"
 The keys below will be created in `/tmp/keystore` directory.
 
 
-### Creating a Cronos account:
+### Creating a Merlin account:
 
 ```shell
-gorc -c gorc.toml keys cosmos add orch_cro
+gorc -c gorc.toml keys cosmos add orch_mer
 ```
 
 Sample output:
 ```
 **Important** record this bip39-mnemonic in a safe place:
 lava ankle enlist blame vast blush proud split position just want cinnamon virtual velvet rubber essence picture print arrest away size tip exotic crouch
-orch_cro        tcrc1ypvpyjcny3m0wl5hjwld2vw8gus2emtzmur4he
+orch_mer        tdid:fury:iaa1ypvpyjcny3m0wl5hjwld2vw8gus2emtzmur4he
 ```
 
 ### Creating an Ethereum account:
@@ -105,13 +105,13 @@ Note that `eth_account` python package needs to be installed.
 ## Sign Validator Address
 
 To register the orchestrator with the validator, you need to sign a protobuf encoded message using the orchestrator's
-ethereum key, and send it to a cronos validator to register it.
+ethereum key, and send it to a merlin validator to register it.
 
 The protobuf message is like this:
 
 ```protobuf
 message DelegateKeysSignMsg {
-  // The valoper prefixed cronos validator address
+  // The valoper prefixed merlin validator address
   string validator_address = 1;
   // Current nonce of the validator account
   uint64 nonce = 2;
@@ -130,13 +130,13 @@ signed = acct.sign_message(eth_account.messages.encode_defunct(sign_bytes))
 return eth_utils.to_hex(signed.signature)
 ```
 
-## Register Orchestrator With Cronos Validator
+## Register Orchestrator With Merlin Validator
 
-At last, send the orchestrator's ethereum address, cronos address, and the signature we just signed above to a Cronos
-validator, the validator should send a `set-delegate-keys` transaction to cronos network to register the binding:
+At last, send the orchestrator's ethereum address, merlin address, and the signature we just signed above to a Merlin
+validator, the validator should send a `set-delegate-keys` transaction to merlin network to register the binding:
 
 ```shell
-$ cronosd tx gravity set-delegate-keys $val_address $orchestrator_cronos_address $orchestrator_eth_address $signature
+$ merlind tx gravity set-delegate-keys $val_address $orchestrator_merlin_address $orchestrator_eth_address $signature
 ```
 
 ## Deploy Gravity Contract On Ethereum
@@ -146,10 +146,10 @@ orchestrator. And before deploy gravity contract, we need to prepare the [parame
 constructor](https://github.com/PeggyJV/gravity-bridge/blob/cfd55296dfb981dd7a18cefa2da9e21410fa0403/solidity/contracts/Gravity.sol#L561)
 first:
 
-- `gravity_id`. Run command `cronosd q gravity params | jq ".params.gravity_id"`
+- `gravity_id`. Run command `merlind q gravity params | jq ".params.gravity_id"`
 - `threshold`, constant `2834678415`, which is just `int(2 ** 32 * 0.66)`.
 - `eth_addresses` and `powers`:
-  - Query signer set by running command: `cronosd q gravity latest-signer-set-tx | jq ".signer_set.signers"`
+  - Query signer set by running command: `merlind q gravity latest-signer-set-tx | jq ".signer_set.signers"`
   - Sum up the `power` field to get `powers`
   - Collect the `ethereum_address` field into a list to get `eth_addresses`
 
@@ -161,8 +161,8 @@ releases](https://github.com/PeggyJV/gravity-bridge/releases).
 
 ```shell
 ./gorc -c ./gorc.toml orchestrator start \
-		--cosmos-key="orch_cro" \
+		--cosmos-key="orch_mer" \
 		--ethereum-key="orch_eth"
 ```
 
-After all the orchestrator processes run, the gravity bridge between ethereum and cronos is setup succesfully.
+After all the orchestrator processes run, the gravity bridge between ethereum and merlin is setup succesfully.

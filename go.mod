@@ -1,4 +1,4 @@
-module github.com/crypto-org-chain/cronos/v2
+module github.com/merlins-labs/merlin/v2
 
 go 1.20
 
@@ -9,7 +9,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.46.11
 	github.com/cosmos/gogoproto v1.4.7
 	github.com/cosmos/ibc-go/v5 v5.2.0
-	github.com/crypto-org-chain/cronos/versiondb v0.0.0
+	github.com/merlins-labs/merlin/versiondb v0.0.0
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/evmos/ethermint v0.6.1-0.20221101220534-a8ea4eceb6d9
 	github.com/gogo/protobuf v1.3.3
@@ -78,7 +78,7 @@ require (
 	github.com/cosmos/iavl v0.19.6-0.20230410112350-e1e212a3a3aa // indirect
 	github.com/cosmos/ledger-cosmos-go v0.12.2 // indirect
 	github.com/creachadair/taskgroup v0.3.2 // indirect
-	github.com/crypto-org-chain/cronos/memiavl v0.0.1 // indirect
+	github.com/merlins-labs/merlin/memiavl v0.0.1 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
@@ -240,7 +240,7 @@ replace (
 	github.com/peggyjv/gravity-bridge/module/v2 => github.com/crypto-org-chain/gravity-bridge/module/v2 v2.0.1-0.20230126051749-d984b1562242
 	// use cometbft
 	github.com/tendermint/tendermint => github.com/cometbft/cometbft v0.34.27
-	// https://github.com/crypto-org-chain/tm-db/tree/release/v0.6.x
+	// https://github.com/merlins-labs/tm-db/tree/release/v0.6.x
 	github.com/tendermint/tm-db => github.com/crypto-org-chain/tm-db v0.6.8-0.20230412133356-5e16d347f5b9
 
 	// TODO: remove after fixed https://github.com/cosmos/cosmos-sdk/issues/11364

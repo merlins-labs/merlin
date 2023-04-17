@@ -7,11 +7,11 @@
 , snappy
 , zstd
 , zlib
-, cronosd
+, merlind
 }:
-runCommand "tarball-${cronosd.name}"
+runCommand "tarball-${merlind.name}"
 {
-  # manually enumerate the runtime dependencies of cronosd on mingwW64
+  # manually enumerate the runtime dependencies of merlind on mingwW64
   deps = [
     "${rocksdb}/bin/librocksdb-shared.dll"
     "${snappy}/bin/libsnappy.dll"
@@ -31,5 +31,5 @@ runCommand "tarball-${cronosd.name}"
     cp $so $out/
   done
 
-  cp ${cronosd}/bin/${cronosd.meta.mainProgram} $out/
+  cp ${merlind}/bin/${merlind.meta.mainProgram} $out/
 ''

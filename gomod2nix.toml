@@ -125,7 +125,7 @@ schema = 3
   [mod."github.com/cometbft/cometbft-db"]
     version = "v0.0.0-20230412133340-ac70df4b45f6"
     hash = "sha256-WOubYACTuk6OeHMSbcKIYbQWarWIljQUEvyX3hiXmq8="
-    replaced = "github.com/crypto-org-chain/cometbft-db"
+    replaced = "github.com/merlins-labs/cometbft-db"
   [mod."github.com/confio/ics23/go"]
     version = "v0.9.0"
     hash = "sha256-guD8w7YygfUp7lpTAUyXQuCPx8F3lXkcg+yR5+JOCbk="
@@ -200,11 +200,11 @@ schema = 3
   [mod."github.com/ethereum/go-ethereum"]
     version = "v1.10.19-deepcopy-jumptable"
     hash = "sha256-QKuYnEXXrnHPPHk/Xc9ocez2Jheo/0IOOa1IQaMH61c="
-    replaced = "github.com/crypto-org-chain/go-ethereum"
+    replaced = "github.com/merlins-labs/go-ethereum"
   [mod."github.com/evmos/ethermint"]
-    version = "v0.20.8-cronos.0.20230315032257-cb741e1d8196"
+    version = "v0.20.8-merlin.0.20230315032257-cb741e1d8196"
     hash = "sha256-X9c/qdOtaleOzzVxQZaGow0Evoo5nkK7TNgxIXZBKv0="
-    replaced = "github.com/crypto-org-chain/ethermint"
+    replaced = "github.com/merlins-labs/ethermint"
   [mod."github.com/felixge/httpsnoop"]
     version = "v1.0.2"
     hash = "sha256-hj6FZQ1fDAV+1wGIViAt8XaAkWZ1I5vJzgjIJa7XRBA="
@@ -420,7 +420,7 @@ schema = 3
   [mod."github.com/peggyjv/gravity-bridge/module/v2"]
     version = "v2.0.1-0.20230126051749-d984b1562242"
     hash = "sha256-3zEJ6PWt4eucOPPnY3OYNqJtgjUXU/AmRlstCfJLyCk="
-    replaced = "github.com/crypto-org-chain/gravity-bridge/module/v2"
+    replaced = "github.com/merlins-labs/gravity-bridge/module/v2"
   [mod."github.com/pelletier/go-toml"]
     version = "v1.9.5"
     hash = "sha256-RJ9K1BTId0Mled7S66iGgxHkZ5JKEIsrrNaEfM8aImc="
@@ -521,7 +521,7 @@ schema = 3
   [mod."github.com/tendermint/tm-db"]
     version = "v0.6.8-0.20230412133356-5e16d347f5b9"
     hash = "sha256-qWM+P4sAgvsl3m7fHAIQfav4DF4wZ6WfTP6mx3j1JrQ="
-    replaced = "github.com/crypto-org-chain/tm-db"
+    replaced = "github.com/merlins-labs/tm-db"
   [mod."github.com/tidwall/btree"]
     version = "v1.5.0"
     hash = "sha256-iWll4/+ADLVse3VAHxXYLprILugX/+3u0ZIk0YlLv/Q="

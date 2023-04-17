@@ -40,26 +40,26 @@ def test_ibc_transfer_with_hermes(ibc):
     """
     src_amount = hermes_transfer(ibc)
     dst_amount = src_amount * RATIO  # the decimal places difference
-    dst_denom = "basetcro"
+    dst_denom = "basetmer"
     dst_addr = eth_to_bech32(ADDRS["signer2"])
-    old_dst_balance = get_balance(ibc.cronos, dst_addr, dst_denom)
+    old_dst_balance = get_balance(ibc.merlin, dst_addr, dst_denom)
 
     new_dst_balance = 0
 
     def check_balance_change():
         nonlocal new_dst_balance
-        new_dst_balance = get_balance(ibc.cronos, dst_addr, dst_denom)
+        new_dst_balance = get_balance(ibc.merlin, dst_addr, dst_denom)
         return new_dst_balance != old_dst_balance
 
     wait_for_fn("balance change", check_balance_change)
     assert old_dst_balance + dst_amount == new_dst_balance
 
     # assert that the relayer transactions do enables the dynamic fee extension option.
-    cli = ibc.cronos.cosmos_cli()
+    cli = ibc.merlin.cosmos_cli()
     criteria = "message.action=/ibc.core.channel.v1.MsgChannelOpenInit"
     tx = cli.tx_search(criteria)["txs"][0]
     events = parse_events_rpc(tx["events"])
-    fee = int(events["tx"]["fee"].removesuffix("basetcro"))
+    fee = int(events["tx"]["fee"].removesuffix("basetmer"))
     gas = int(tx["gas_wanted"])
     # the effective fee is decided by the max_priority_fee (base fee is zero)
     # rather than the normal gas price
@@ -70,7 +70,7 @@ def test_ibc_incentivized_transfer(ibc):
     if not ibc.incentivized:
         # this test case only works for incentivized channel.
         return
-    src_chain = ibc.cronos.cosmos_cli()
+    src_chain = ibc.merlin.cosmos_cli()
     dst_chain = ibc.chainmain.cosmos_cli()
     receiver = dst_chain.address("signer2")
     sender = src_chain.address("signer2")
@@ -81,10 +81,10 @@ def test_ibc_incentivized_transfer(ibc):
     rsp = src_chain.ibc_transfer(
         sender,
         receiver,
-        "1000basetcro",
+        "1000basetmer",
         "channel-0",
         1,
-        "100000000basecro",
+        "100000000basemer",
     )
     assert rsp["code"] == 0, rsp["raw_log"]
 
@@ -121,22 +121,22 @@ def test_ibc_incentivized_transfer(ibc):
     assert src_chain.balance(sender, denom="ibcfee") == original_amount_sender - 20
 
 
-def test_cronos_transfer_tokens(ibc):
+def test_merlin_transfer_tokens(ibc):
     """
-    test sending basetcro from cronos to crypto-org-chain using cli transfer_tokens.
+    test sending basetmer from merlin to merlins-labs using cli transfer_tokens.
     depends on `test_ibc` to send the original coins.
     """
     assert_ready(ibc)
     dst_addr = ibc.chainmain.cosmos_cli().address("signer2")
     dst_amount = 2
-    dst_denom = "basecro"
-    cli = ibc.cronos.cosmos_cli()
+    dst_denom = "basemer"
+    cli = ibc.merlin.cosmos_cli()
     src_amount = dst_amount * RATIO  # the decimal places difference
     src_addr = cli.address("signer2")
-    src_denom = "basetcro"
+    src_denom = "basetmer"
 
-    # case 1: use cronos cli
-    old_src_balance = get_balance(ibc.cronos, src_addr, src_denom)
+    # case 1: use merlin cli
+    old_src_balance = get_balance(ibc.merlin, src_addr, src_denom)
     old_dst_balance = get_balance(ibc.chainmain, dst_addr, dst_denom)
     rsp = cli.transfer_tokens(
         src_addr,
@@ -154,25 +154,25 @@ def test_cronos_transfer_tokens(ibc):
 
     wait_for_fn("balance change", check_balance_change)
     assert old_dst_balance + dst_amount == new_dst_balance
-    new_src_balance = get_balance(ibc.cronos, src_addr, src_denom)
+    new_src_balance = get_balance(ibc.merlin, src_addr, src_denom)
     assert old_src_balance - src_amount == new_src_balance
 
 
-def test_cronos_transfer_tokens_acknowledgement_error(ibc):
+def test_merlin_transfer_tokens_acknowledgement_error(ibc):
     """
-    test sending basetcro from cronos to crypto-org-chain using cli transfer_tokens
+    test sending basetmer from merlin to merlins-labs using cli transfer_tokens
     with invalid receiver for acknowledgement error.
     depends on `test_ibc` to send the original coins.
     """
     assert_ready(ibc)
     dst_addr = "invalid_address"
     dst_amount = 2
-    cli = ibc.cronos.cosmos_cli()
+    cli = ibc.merlin.cosmos_cli()
     src_amount = dst_amount * RATIO  # the decimal places difference
     src_addr = cli.address("signer2")
-    src_denom = "basetcro"
+    src_denom = "basetmer"
 
-    old_src_balance = get_balance(ibc.cronos, src_addr, src_denom)
+    old_src_balance = get_balance(ibc.merlin, src_addr, src_denom)
     rsp = cli.transfer_tokens(
         src_addr,
         dst_addr,
@@ -184,28 +184,28 @@ def test_cronos_transfer_tokens_acknowledgement_error(ibc):
 
     def check_balance_change():
         nonlocal new_src_balance
-        new_src_balance = get_balance(ibc.cronos, src_addr, src_denom)
+        new_src_balance = get_balance(ibc.merlin, src_addr, src_denom)
         return old_src_balance == new_src_balance
 
     wait_for_fn("balance no change", check_balance_change)
-    new_src_balance = get_balance(ibc.cronos, src_addr, src_denom)
+    new_src_balance = get_balance(ibc.merlin, src_addr, src_denom)
 
 
-def test_cro_bridge_contract(ibc):
+def test_mer_bridge_contract(ibc):
     """
-    test sending basetcro from cronos to crypto-org-chain using CroBridge contract.
+    test sending basetmer from merlin to merlins-labs using CroBridge contract.
     depends on `test_ibc` to send the original coins.
     """
     dst_addr = ibc.chainmain.cosmos_cli().address("signer2")
     dst_amount = 2
-    dst_denom = "basecro"
+    dst_denom = "basemer"
     src_amount = dst_amount * RATIO  # the decimal places difference
     old_dst_balance = get_balance(ibc.chainmain, dst_addr, dst_denom)
 
     # case 2: use CroBridge contract
-    w3 = ibc.cronos.w3
+    w3 = ibc.merlin.w3
     contract = deploy_contract(w3, CONTRACTS["CroBridge"])
-    tx = contract.functions.send_cro_to_crypto_org(dst_addr).build_transaction(
+    tx = contract.functions.send_mer_to_crypto_org(dst_addr).build_transaction(
         {"from": ADDRS["signer2"], "value": src_amount}
     )
     receipt = send_transaction(w3, tx)
@@ -222,39 +222,39 @@ def test_cro_bridge_contract(ibc):
     assert old_dst_balance + dst_amount == new_dst_balance
 
 
-def test_cronos_transfer_source_tokens(ibc):
+def test_merlin_transfer_source_tokens(ibc):
     """
-    test sending crc20 tokens originated from cronos to crypto-org-chain
+    test sending crc20 tokens originated from merlin to merlins-labs
     """
     assert_ready(ibc)
     # deploy crc21 contract
-    w3 = ibc.cronos.w3
+    w3 = ibc.merlin.w3
     contract = deploy_contract(w3, CONTRACTS["TestERC21Source"])
 
     # setup the contract mapping
-    cronos_cli = ibc.cronos.cosmos_cli()
+    merlin_cli = ibc.merlin.cosmos_cli()
 
     print("crc21 contract", contract.address)
-    denom = f"cronos{contract.address}"
+    denom = f"merlin{contract.address}"
 
     print("check the contract mapping not exists yet")
     with pytest.raises(AssertionError):
-        cronos_cli.query_contract_by_denom(denom)
+        merlin_cli.query_contract_by_denom(denom)
 
     print("try token mapping with wrong denom, should fail")
-    rsp = cronos_cli.update_token_mapping(
+    rsp = merlin_cli.update_token_mapping(
         denom, "0x000000000000000000000000000000000000dead", "DOG", 6, from_="validator"
     )
     assert rsp["code"] == 18, rsp["raw_log"]
 
-    rsp = cronos_cli.update_token_mapping(
+    rsp = merlin_cli.update_token_mapping(
         denom, contract.address, "DOG", 6, from_="validator"
     )
     assert rsp["code"] == 0, rsp["raw_log"]
-    wait_for_new_blocks(cronos_cli, 1)
+    wait_for_new_blocks(merlin_cli, 1)
 
     print("check the contract mapping exists now")
-    rsp = cronos_cli.query_denom_by_contract(contract.address)
+    rsp = merlin_cli.query_denom_by_contract(contract.address)
     assert rsp["denom"] == denom
 
     # send token to crypto.org
@@ -301,29 +301,29 @@ def test_cronos_transfer_source_tokens(ibc):
     wait_for_fn("check balance change", check_chainmain_balance_change)
     assert chainmain_receiver_new_balance == amount + 1
 
-    # send back the token to cronos
+    # send back the token to merlin
     # check receiver balance
-    cronos_balance_before_send = contract.caller.balanceOf(ADDRS["signer2"])
-    assert cronos_balance_before_send == 0
+    merlin_balance_before_send = contract.caller.balanceOf(ADDRS["signer2"])
+    assert merlin_balance_before_send == 0
 
     # send back token through ibc
     print("Send back token through ibc")
     chainmain_cli = ibc.chainmain.cosmos_cli()
-    cronos_receiver = eth_to_bech32(ADDRS["signer2"])
+    merlin_receiver = eth_to_bech32(ADDRS["signer2"])
 
     coin = "1000" + dest_denom
     rsp = chainmain_cli.ibc_transfer(
-        chainmain_receiver, cronos_receiver, coin, "channel-0", 1, "100000000basecro"
+        chainmain_receiver, merlin_receiver, coin, "channel-0", 1, "100000000basemer"
     )
     assert rsp["code"] == 0, rsp["raw_log"]
 
     # check contract balance
-    cronos_balance_after_send = 0
+    merlin_balance_after_send = 0
 
     def check_contract_balance_change():
-        nonlocal cronos_balance_after_send
-        cronos_balance_after_send = contract.caller.balanceOf(ADDRS["signer2"])
-        return cronos_balance_after_send != cronos_balance_before_send
+        nonlocal merlin_balance_after_send
+        merlin_balance_after_send = contract.caller.balanceOf(ADDRS["signer2"])
+        return merlin_balance_after_send != merlin_balance_before_send
 
     wait_for_fn("check contract balance change", check_contract_balance_change)
-    assert cronos_balance_after_send == amount
+    assert merlin_balance_after_send == amount

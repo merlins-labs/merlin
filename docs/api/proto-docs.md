@@ -4,78 +4,78 @@
 
 ## Table of Contents
 
-- [cronos/cronos.proto](#cronos/cronos.proto)
-    - [Params](#cronos.Params)
-    - [TokenMapping](#cronos.TokenMapping)
-    - [TokenMappingChangeProposal](#cronos.TokenMappingChangeProposal)
+- [merlin/merlin.proto](#merlin/merlin.proto)
+    - [Params](#merlin.Params)
+    - [TokenMapping](#merlin.TokenMapping)
+    - [TokenMappingChangeProposal](#merlin.TokenMappingChangeProposal)
   
-- [cronos/genesis.proto](#cronos/genesis.proto)
-    - [GenesisState](#cronos.GenesisState)
+- [merlin/genesis.proto](#merlin/genesis.proto)
+    - [GenesisState](#merlin.GenesisState)
   
-- [cronos/query.proto](#cronos/query.proto)
-    - [ContractByDenomRequest](#cronos.ContractByDenomRequest)
-    - [ContractByDenomResponse](#cronos.ContractByDenomResponse)
-    - [DenomByContractRequest](#cronos.DenomByContractRequest)
-    - [DenomByContractResponse](#cronos.DenomByContractResponse)
-    - [ReplayBlockRequest](#cronos.ReplayBlockRequest)
-    - [ReplayBlockResponse](#cronos.ReplayBlockResponse)
+- [merlin/query.proto](#merlin/query.proto)
+    - [ContractByDenomRequest](#merlin.ContractByDenomRequest)
+    - [ContractByDenomResponse](#merlin.ContractByDenomResponse)
+    - [DenomByContractRequest](#merlin.DenomByContractRequest)
+    - [DenomByContractResponse](#merlin.DenomByContractResponse)
+    - [ReplayBlockRequest](#merlin.ReplayBlockRequest)
+    - [ReplayBlockResponse](#merlin.ReplayBlockResponse)
   
-    - [Query](#cronos.Query)
+    - [Query](#merlin.Query)
   
-- [cronos/tx.proto](#cronos/tx.proto)
-    - [MsgConvertVouchers](#cronos.MsgConvertVouchers)
-    - [MsgConvertVouchersResponse](#cronos.MsgConvertVouchersResponse)
-    - [MsgTransferTokens](#cronos.MsgTransferTokens)
-    - [MsgTransferTokensResponse](#cronos.MsgTransferTokensResponse)
-    - [MsgUpdateTokenMapping](#cronos.MsgUpdateTokenMapping)
-    - [MsgUpdateTokenMappingResponse](#cronos.MsgUpdateTokenMappingResponse)
+- [merlin/tx.proto](#merlin/tx.proto)
+    - [MsgConvertVouchers](#merlin.MsgConvertVouchers)
+    - [MsgConvertVouchersResponse](#merlin.MsgConvertVouchersResponse)
+    - [MsgTransferTokens](#merlin.MsgTransferTokens)
+    - [MsgTransferTokensResponse](#merlin.MsgTransferTokensResponse)
+    - [MsgUpdateTokenMapping](#merlin.MsgUpdateTokenMapping)
+    - [MsgUpdateTokenMappingResponse](#merlin.MsgUpdateTokenMappingResponse)
   
-    - [Msg](#cronos.Msg)
+    - [Msg](#merlin.Msg)
   
 - [icactl/v1/params.proto](#icactl/v1/params.proto)
-    - [Params](#cronos.icactl.v1.Params)
+    - [Params](#merlin.icactl.v1.Params)
   
 - [icactl/v1/genesis.proto](#icactl/v1/genesis.proto)
-    - [GenesisState](#cronos.icactl.v1.GenesisState)
+    - [GenesisState](#merlin.icactl.v1.GenesisState)
   
 - [icactl/v1/query.proto](#icactl/v1/query.proto)
-    - [QueryInterchainAccountAddressRequest](#cronos.icactl.v1.QueryInterchainAccountAddressRequest)
-    - [QueryInterchainAccountAddressResponse](#cronos.icactl.v1.QueryInterchainAccountAddressResponse)
-    - [QueryParamsRequest](#cronos.icactl.v1.QueryParamsRequest)
-    - [QueryParamsResponse](#cronos.icactl.v1.QueryParamsResponse)
+    - [QueryInterchainAccountAddressRequest](#merlin.icactl.v1.QueryInterchainAccountAddressRequest)
+    - [QueryInterchainAccountAddressResponse](#merlin.icactl.v1.QueryInterchainAccountAddressResponse)
+    - [QueryParamsRequest](#merlin.icactl.v1.QueryParamsRequest)
+    - [QueryParamsResponse](#merlin.icactl.v1.QueryParamsResponse)
   
-    - [Query](#cronos.icactl.v1.Query)
+    - [Query](#merlin.icactl.v1.Query)
   
 - [icactl/v1/tx.proto](#icactl/v1/tx.proto)
-    - [MsgRegisterAccount](#cronos.icactl.v1.MsgRegisterAccount)
-    - [MsgRegisterAccountResponse](#cronos.icactl.v1.MsgRegisterAccountResponse)
-    - [MsgSubmitTx](#cronos.icactl.v1.MsgSubmitTx)
-    - [MsgSubmitTxResponse](#cronos.icactl.v1.MsgSubmitTxResponse)
+    - [MsgRegisterAccount](#merlin.icactl.v1.MsgRegisterAccount)
+    - [MsgRegisterAccountResponse](#merlin.icactl.v1.MsgRegisterAccountResponse)
+    - [MsgSubmitTx](#merlin.icactl.v1.MsgSubmitTx)
+    - [MsgSubmitTxResponse](#merlin.icactl.v1.MsgSubmitTxResponse)
   
-    - [Msg](#cronos.icactl.v1.Msg)
+    - [Msg](#merlin.icactl.v1.Msg)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="cronos/cronos.proto"></a>
+<a name="merlin/merlin.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## cronos/cronos.proto
+## merlin/merlin.proto
 
 
 
-<a name="cronos.Params"></a>
+<a name="merlin.Params"></a>
 
 ### Params
-Params defines the parameters for the cronos module.
+Params defines the parameters for the merlin module.
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `ibc_cro_denom` | [string](#string) |  |  |
+| `ibc_mer_denom` | [string](#string) |  |  |
 | `ibc_timeout` | [uint64](#uint64) |  |  |
-| `cronos_admin` | [string](#string) |  | the admin address who can update token mapping |
+| `merlin_admin` | [string](#string) |  | the admin address who can update token mapping |
 | `enable_auto_deployment` | [bool](#bool) |  |  |
 
 
@@ -83,7 +83,7 @@ Params defines the parameters for the cronos module.
 
 
 
-<a name="cronos.TokenMapping"></a>
+<a name="merlin.TokenMapping"></a>
 
 ### TokenMapping
 TokenMapping defines a mapping between native denom and contract
@@ -99,7 +99,7 @@ TokenMapping defines a mapping between native denom and contract
 
 
 
-<a name="cronos.TokenMappingChangeProposal"></a>
+<a name="merlin.TokenMappingChangeProposal"></a>
 
 ### TokenMappingChangeProposal
 TokenMappingChangeProposal defines a proposal to change one token mapping.
@@ -111,7 +111,7 @@ TokenMappingChangeProposal defines a proposal to change one token mapping.
 | `description` | [string](#string) |  |  |
 | `denom` | [string](#string) |  |  |
 | `contract` | [string](#string) |  |  |
-| `symbol` | [string](#string) |  | only when updating cronos (source) tokens |
+| `symbol` | [string](#string) |  | only when updating merlin (source) tokens |
 | `decimal` | [uint32](#uint32) |  |  |
 
 
@@ -128,24 +128,24 @@ TokenMappingChangeProposal defines a proposal to change one token mapping.
 
 
 
-<a name="cronos/genesis.proto"></a>
+<a name="merlin/genesis.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## cronos/genesis.proto
+## merlin/genesis.proto
 
 
 
-<a name="cronos.GenesisState"></a>
+<a name="merlin.GenesisState"></a>
 
 ### GenesisState
-GenesisState defines the cronos module's genesis state.
+GenesisState defines the merlin module's genesis state.
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `params` | [Params](#cronos.Params) |  | params defines all the paramaters of the module. |
-| `external_contracts` | [TokenMapping](#cronos.TokenMapping) | repeated |  |
-| `auto_contracts` | [TokenMapping](#cronos.TokenMapping) | repeated | this line is used by starport scaffolding # genesis/proto/state this line is used by starport scaffolding # ibc/genesis/proto |
+| `params` | [Params](#merlin.Params) |  | params defines all the paramaters of the module. |
+| `external_contracts` | [TokenMapping](#merlin.TokenMapping) | repeated |  |
+| `auto_contracts` | [TokenMapping](#merlin.TokenMapping) | repeated | this line is used by starport scaffolding # genesis/proto/state this line is used by starport scaffolding # ibc/genesis/proto |
 
 
 
@@ -161,14 +161,14 @@ GenesisState defines the cronos module's genesis state.
 
 
 
-<a name="cronos/query.proto"></a>
+<a name="merlin/query.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## cronos/query.proto
+## merlin/query.proto
 
 
 
-<a name="cronos.ContractByDenomRequest"></a>
+<a name="merlin.ContractByDenomRequest"></a>
 
 ### ContractByDenomRequest
 ContractByDenomRequest is the request type of ContractByDenom call
@@ -183,7 +183,7 @@ ContractByDenomRequest is the request type of ContractByDenom call
 
 
 
-<a name="cronos.ContractByDenomResponse"></a>
+<a name="merlin.ContractByDenomResponse"></a>
 
 ### ContractByDenomResponse
 ContractByDenomRequest is the response type of ContractByDenom call
@@ -199,7 +199,7 @@ ContractByDenomRequest is the response type of ContractByDenom call
 
 
 
-<a name="cronos.DenomByContractRequest"></a>
+<a name="merlin.DenomByContractRequest"></a>
 
 ### DenomByContractRequest
 DenomByContractRequest is the request type of DenomByContract call
@@ -214,7 +214,7 @@ DenomByContractRequest is the request type of DenomByContract call
 
 
 
-<a name="cronos.DenomByContractResponse"></a>
+<a name="merlin.DenomByContractResponse"></a>
 
 ### DenomByContractResponse
 DenomByContractResponse is the response type of DenomByContract call
@@ -229,7 +229,7 @@ DenomByContractResponse is the response type of DenomByContract call
 
 
 
-<a name="cronos.ReplayBlockRequest"></a>
+<a name="merlin.ReplayBlockRequest"></a>
 
 ### ReplayBlockRequest
 ReplayBlockRequest
@@ -247,7 +247,7 @@ ReplayBlockRequest
 
 
 
-<a name="cronos.ReplayBlockResponse"></a>
+<a name="merlin.ReplayBlockResponse"></a>
 
 ### ReplayBlockResponse
 ReplayBlockResponse
@@ -268,32 +268,32 @@ ReplayBlockResponse
  <!-- end HasExtensions -->
 
 
-<a name="cronos.Query"></a>
+<a name="merlin.Query"></a>
 
 ### Query
 Query defines the gRPC querier service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `ContractByDenom` | [ContractByDenomRequest](#cronos.ContractByDenomRequest) | [ContractByDenomResponse](#cronos.ContractByDenomResponse) | ContractByDenom queries contract addresses by native denom | GET|/cronos/v1/contract_by_denom/{denom}|
-| `DenomByContract` | [DenomByContractRequest](#cronos.DenomByContractRequest) | [DenomByContractResponse](#cronos.DenomByContractResponse) | DenomByContract queries native denom by contract address | GET|/cronos/v1/denom_by_contract/{contract}|
-| `ReplayBlock` | [ReplayBlockRequest](#cronos.ReplayBlockRequest) | [ReplayBlockResponse](#cronos.ReplayBlockResponse) | ReplayBlock replay the eth messages in the block to recover the results of false-failed txs. | |
+| `ContractByDenom` | [ContractByDenomRequest](#merlin.ContractByDenomRequest) | [ContractByDenomResponse](#merlin.ContractByDenomResponse) | ContractByDenom queries contract addresses by native denom | GET|/merlin/v1/contract_by_denom/{denom}|
+| `DenomByContract` | [DenomByContractRequest](#merlin.DenomByContractRequest) | [DenomByContractResponse](#merlin.DenomByContractResponse) | DenomByContract queries native denom by contract address | GET|/merlin/v1/denom_by_contract/{contract}|
+| `ReplayBlock` | [ReplayBlockRequest](#merlin.ReplayBlockRequest) | [ReplayBlockResponse](#merlin.ReplayBlockResponse) | ReplayBlock replay the eth messages in the block to recover the results of false-failed txs. | |
 
  <!-- end services -->
 
 
 
-<a name="cronos/tx.proto"></a>
+<a name="merlin/tx.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## cronos/tx.proto
+## merlin/tx.proto
 
 
 
-<a name="cronos.MsgConvertVouchers"></a>
+<a name="merlin.MsgConvertVouchers"></a>
 
 ### MsgConvertVouchers
-MsgConvertVouchers represents a message to convert ibc voucher coins to cronos evm coins.
+MsgConvertVouchers represents a message to convert ibc voucher coins to merlin evm coins.
 
 
 | Field | Type | Label | Description |
@@ -306,7 +306,7 @@ MsgConvertVouchers represents a message to convert ibc voucher coins to cronos e
 
 
 
-<a name="cronos.MsgConvertVouchersResponse"></a>
+<a name="merlin.MsgConvertVouchersResponse"></a>
 
 ### MsgConvertVouchersResponse
 MsgConvertVouchersResponse defines the ConvertVouchers response type.
@@ -316,10 +316,10 @@ MsgConvertVouchersResponse defines the ConvertVouchers response type.
 
 
 
-<a name="cronos.MsgTransferTokens"></a>
+<a name="merlin.MsgTransferTokens"></a>
 
 ### MsgTransferTokens
-MsgTransferTokens represents a message to transfer cronos evm coins through ibc.
+MsgTransferTokens represents a message to transfer merlin evm coins through ibc.
 
 
 | Field | Type | Label | Description |
@@ -333,7 +333,7 @@ MsgTransferTokens represents a message to transfer cronos evm coins through ibc.
 
 
 
-<a name="cronos.MsgTransferTokensResponse"></a>
+<a name="merlin.MsgTransferTokensResponse"></a>
 
 ### MsgTransferTokensResponse
 MsgTransferTokensResponse defines the TransferTokens response type.
@@ -343,7 +343,7 @@ MsgTransferTokensResponse defines the TransferTokens response type.
 
 
 
-<a name="cronos.MsgUpdateTokenMapping"></a>
+<a name="merlin.MsgUpdateTokenMapping"></a>
 
 ### MsgUpdateTokenMapping
 MsgUpdateTokenMapping defines the request type
@@ -354,7 +354,7 @@ MsgUpdateTokenMapping defines the request type
 | `sender` | [string](#string) |  |  |
 | `denom` | [string](#string) |  |  |
 | `contract` | [string](#string) |  |  |
-| `symbol` | [string](#string) |  | only when updating cronos (source) tokens |
+| `symbol` | [string](#string) |  | only when updating merlin (source) tokens |
 | `decimal` | [uint32](#uint32) |  |  |
 
 
@@ -362,7 +362,7 @@ MsgUpdateTokenMapping defines the request type
 
 
 
-<a name="cronos.MsgUpdateTokenMappingResponse"></a>
+<a name="merlin.MsgUpdateTokenMappingResponse"></a>
 
 ### MsgUpdateTokenMappingResponse
 MsgUpdateTokenMappingResponse defines the response type
@@ -378,16 +378,16 @@ MsgUpdateTokenMappingResponse defines the response type
  <!-- end HasExtensions -->
 
 
-<a name="cronos.Msg"></a>
+<a name="merlin.Msg"></a>
 
 ### Msg
-Msg defines the Cronos Msg service
+Msg defines the Merlin Msg service
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `ConvertVouchers` | [MsgConvertVouchers](#cronos.MsgConvertVouchers) | [MsgConvertVouchersResponse](#cronos.MsgConvertVouchersResponse) | ConvertVouchers defines a method for converting ibc voucher to cronos evm coins. | |
-| `TransferTokens` | [MsgTransferTokens](#cronos.MsgTransferTokens) | [MsgTransferTokensResponse](#cronos.MsgTransferTokensResponse) | TransferTokens defines a method to transfer cronos evm coins to another chain through IBC | |
-| `UpdateTokenMapping` | [MsgUpdateTokenMapping](#cronos.MsgUpdateTokenMapping) | [MsgUpdateTokenMappingResponse](#cronos.MsgUpdateTokenMappingResponse) | UpdateTokenMapping defines a method to update token mapping | |
+| `ConvertVouchers` | [MsgConvertVouchers](#merlin.MsgConvertVouchers) | [MsgConvertVouchersResponse](#merlin.MsgConvertVouchersResponse) | ConvertVouchers defines a method for converting ibc voucher to merlin evm coins. | |
+| `TransferTokens` | [MsgTransferTokens](#merlin.MsgTransferTokens) | [MsgTransferTokensResponse](#merlin.MsgTransferTokensResponse) | TransferTokens defines a method to transfer merlin evm coins to another chain through IBC | |
+| `UpdateTokenMapping` | [MsgUpdateTokenMapping](#merlin.MsgUpdateTokenMapping) | [MsgUpdateTokenMappingResponse](#merlin.MsgUpdateTokenMappingResponse) | UpdateTokenMapping defines a method to update token mapping | |
 
  <!-- end services -->
 
@@ -400,7 +400,7 @@ Msg defines the Cronos Msg service
 
 
 
-<a name="cronos.icactl.v1.Params"></a>
+<a name="merlin.icactl.v1.Params"></a>
 
 ### Params
 Params defines the parameters for the module.
@@ -431,7 +431,7 @@ Params defines the parameters for the module.
 
 
 
-<a name="cronos.icactl.v1.GenesisState"></a>
+<a name="merlin.icactl.v1.GenesisState"></a>
 
 ### GenesisState
 GenesisState defines the icactl module's genesis state.
@@ -439,7 +439,7 @@ GenesisState defines the icactl module's genesis state.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `params` | [Params](#cronos.icactl.v1.Params) |  | params defines the genesis parameters |
+| `params` | [Params](#merlin.icactl.v1.Params) |  | params defines the genesis parameters |
 
 
 
@@ -462,7 +462,7 @@ GenesisState defines the icactl module's genesis state.
 
 
 
-<a name="cronos.icactl.v1.QueryInterchainAccountAddressRequest"></a>
+<a name="merlin.icactl.v1.QueryInterchainAccountAddressRequest"></a>
 
 ### QueryInterchainAccountAddressRequest
 QueryInterchainAccountAddressRequest defines the request for the InterchainAccountAddress query.
@@ -478,7 +478,7 @@ QueryInterchainAccountAddressRequest defines the request for the InterchainAccou
 
 
 
-<a name="cronos.icactl.v1.QueryInterchainAccountAddressResponse"></a>
+<a name="merlin.icactl.v1.QueryInterchainAccountAddressResponse"></a>
 
 ### QueryInterchainAccountAddressResponse
 QueryInterchainAccountAddressResponse defines the response for the InterchainAccountAddress query.
@@ -493,7 +493,7 @@ QueryInterchainAccountAddressResponse defines the response for the InterchainAcc
 
 
 
-<a name="cronos.icactl.v1.QueryParamsRequest"></a>
+<a name="merlin.icactl.v1.QueryParamsRequest"></a>
 
 ### QueryParamsRequest
 QueryParamsRequest is request type for the Query/Params RPC method.
@@ -503,7 +503,7 @@ QueryParamsRequest is request type for the Query/Params RPC method.
 
 
 
-<a name="cronos.icactl.v1.QueryParamsResponse"></a>
+<a name="merlin.icactl.v1.QueryParamsResponse"></a>
 
 ### QueryParamsResponse
 QueryParamsResponse is response type for the Query/Params RPC method.
@@ -511,7 +511,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `params` | [Params](#cronos.icactl.v1.Params) |  | params holds all the parameters of this module. |
+| `params` | [Params](#merlin.icactl.v1.Params) |  | params holds all the parameters of this module. |
 
 
 
@@ -524,15 +524,15 @@ QueryParamsResponse is response type for the Query/Params RPC method.
  <!-- end HasExtensions -->
 
 
-<a name="cronos.icactl.v1.Query"></a>
+<a name="merlin.icactl.v1.Query"></a>
 
 ### Query
 Query defines the gRPC querier service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `Params` | [QueryParamsRequest](#cronos.icactl.v1.QueryParamsRequest) | [QueryParamsResponse](#cronos.icactl.v1.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/cronos/icactl/v1/params|
-| `InterchainAccountAddress` | [QueryInterchainAccountAddressRequest](#cronos.icactl.v1.QueryInterchainAccountAddressRequest) | [QueryInterchainAccountAddressResponse](#cronos.icactl.v1.QueryInterchainAccountAddressResponse) | InterchainAccountAddress queries the interchain account address for given `connectionId` and `owner` | GET|/cronos/icactl/v1/interchain_account_address/{connectionId}/{owner}|
+| `Params` | [QueryParamsRequest](#merlin.icactl.v1.QueryParamsRequest) | [QueryParamsResponse](#merlin.icactl.v1.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/merlin/icactl/v1/params|
+| `InterchainAccountAddress` | [QueryInterchainAccountAddressRequest](#merlin.icactl.v1.QueryInterchainAccountAddressRequest) | [QueryInterchainAccountAddressResponse](#merlin.icactl.v1.QueryInterchainAccountAddressResponse) | InterchainAccountAddress queries the interchain account address for given `connectionId` and `owner` | GET|/merlin/icactl/v1/interchain_account_address/{connectionId}/{owner}|
 
  <!-- end services -->
 
@@ -545,7 +545,7 @@ Query defines the gRPC querier service.
 
 
 
-<a name="cronos.icactl.v1.MsgRegisterAccount"></a>
+<a name="merlin.icactl.v1.MsgRegisterAccount"></a>
 
 ### MsgRegisterAccount
 MsgRegisterAccount defines the request message for MsgRegisterAccount
@@ -561,7 +561,7 @@ MsgRegisterAccount defines the request message for MsgRegisterAccount
 
 
 
-<a name="cronos.icactl.v1.MsgRegisterAccountResponse"></a>
+<a name="merlin.icactl.v1.MsgRegisterAccountResponse"></a>
 
 ### MsgRegisterAccountResponse
 MsgRegisterAccountResponse defines the response message for MsgRegisterAccount
@@ -571,7 +571,7 @@ MsgRegisterAccountResponse defines the response message for MsgRegisterAccount
 
 
 
-<a name="cronos.icactl.v1.MsgSubmitTx"></a>
+<a name="merlin.icactl.v1.MsgSubmitTx"></a>
 
 ### MsgSubmitTx
 MsgSubmitTx defines the request message for MsgSubmitTx
@@ -589,7 +589,7 @@ MsgSubmitTx defines the request message for MsgSubmitTx
 
 
 
-<a name="cronos.icactl.v1.MsgSubmitTxResponse"></a>
+<a name="merlin.icactl.v1.MsgSubmitTxResponse"></a>
 
 ### MsgSubmitTxResponse
 MsgSubmitTxResponse defines the response message for MsgSubmitTx
@@ -605,15 +605,15 @@ MsgSubmitTxResponse defines the response message for MsgSubmitTx
  <!-- end HasExtensions -->
 
 
-<a name="cronos.icactl.v1.Msg"></a>
+<a name="merlin.icactl.v1.Msg"></a>
 
 ### Msg
 Msg defines the Msg service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `RegisterAccount` | [MsgRegisterAccount](#cronos.icactl.v1.MsgRegisterAccount) | [MsgRegisterAccountResponse](#cronos.icactl.v1.MsgRegisterAccountResponse) | RegisterAccount registers an interchain account on host chain with given `connectionId` | |
-| `SubmitTx` | [MsgSubmitTx](#cronos.icactl.v1.MsgSubmitTx) | [MsgSubmitTxResponse](#cronos.icactl.v1.MsgSubmitTxResponse) | SubmitTx submits a transaction to the host chain on behalf of interchain account | |
+| `RegisterAccount` | [MsgRegisterAccount](#merlin.icactl.v1.MsgRegisterAccount) | [MsgRegisterAccountResponse](#merlin.icactl.v1.MsgRegisterAccountResponse) | RegisterAccount registers an interchain account on host chain with given `connectionId` | |
+| `SubmitTx` | [MsgSubmitTx](#merlin.icactl.v1.MsgSubmitTx) | [MsgSubmitTxResponse](#merlin.icactl.v1.MsgSubmitTxResponse) | SubmitTx submits a transaction to the host chain on behalf of interchain account | |
 
  <!-- end services -->
 

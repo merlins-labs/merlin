@@ -31,14 +31,14 @@ def decode_stream_file(data, entry_cls=StoreKVPairs):
     return items
 
 
-def test_streamers(cronos):
+def test_streamers(merlin):
     """
     - check the streaming files are created
     - try to parse the state change sets
     """
     # inspect the first state change of the first tx in genesis
     # the InitChainer is committed together with the first block.
-    path = cronos.node_home(0) / "data/file_streamer/block-1-data"
+    path = merlin.node_home(0) / "data/file_streamer/block-1-data"
     items = decode_stream_file(open(path, "rb").read())
     # creation of the validator account
     assert items[0].store_key == "acc"

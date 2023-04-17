@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from .network import setup_cronos, setup_custom_cronos, setup_geth
+from .network import setup_merlin, setup_custom_merlin, setup_geth
 
 dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dir + "/protobuf")
@@ -43,16 +43,16 @@ def suspend_capture(pytestconfig):
 
 
 @pytest.fixture(scope="session", params=[True])
-def cronos(request, tmp_path_factory):
+def merlin(request, tmp_path_factory):
     enable_indexer = request.param
     if enable_indexer:
         path = tmp_path_factory.mktemp("indexer")
-        yield from setup_custom_cronos(
+        yield from setup_custom_merlin(
             path, 27000, Path(__file__).parent / "configs/enable-indexer.jsonnet"
         )
     else:
-        path = tmp_path_factory.mktemp("cronos")
-        yield from setup_cronos(path, 26650)
+        path = tmp_path_factory.mktemp("merlin")
+        yield from setup_merlin(path, 26650)
 
 
 @pytest.fixture(scope="session")
@@ -61,19 +61,19 @@ def geth(tmp_path_factory):
     yield from setup_geth(path, 8545)
 
 
-@pytest.fixture(scope="session", params=["cronos", "geth", "cronos-ws"])
-def cluster(request, cronos, geth):
+@pytest.fixture(scope="session", params=["merlin", "geth", "merlin-ws"])
+def cluster(request, merlin, geth):
     """
-    run on both cronos and geth
+    run on both merlin and geth
     """
     provider = request.param
-    if provider == "cronos":
-        yield cronos
+    if provider == "merlin":
+        yield merlin
     elif provider == "geth":
         yield geth
-    elif provider == "cronos-ws":
-        cronos_ws = cronos.copy()
-        cronos_ws.use_websocket()
-        yield cronos_ws
+    elif provider == "merlin-ws":
+        merlin_ws = merlin.copy()
+        merlin_ws.use_websocket()
+        yield merlin_ws
     else:
         raise NotImplementedError

@@ -2,15 +2,15 @@ pragma solidity 0.8.10;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract TestERC21Source is ERC20 {
-	// sha256('cronos-evm')[:20]
+	// sha256('merlin-evm')[:20]
 	address constant module_address = 0x89A7EF2F08B1c018D5Cc88836249b84Dd5392905;
 	string denom;
 	bool isSource;
 
-	event __CronosSendToIbc(address sender, string recipient, uint256 amount);
-	event __CronosSendToIbc(address indexed sender, uint256 indexed channel_id, string recipient, uint256 amount, bytes extraData);
-	event __CronosSendToEvmChain(address indexed sender, address indexed recipient, uint256 indexed chain_id, uint256 amount, uint256 bridge_fee, bytes extraData);
-	event __CronosCancelSendToEvmChain(address indexed sender, uint256 id);
+	event __MerlinSendToIbc(address sender, string recipient, uint256 amount);
+	event __MerlinSendToIbc(address indexed sender, uint256 indexed channel_id, string recipient, uint256 amount, bytes extraData);
+	event __MerlinSendToEvmChain(address indexed sender, address indexed recipient, uint256 indexed chain_id, uint256 amount, uint256 bridge_fee, bytes extraData);
+	event __MerlinCancelSendToEvmChain(address indexed sender, uint256 id);
 
 	constructor() ERC20("Doggo", "DOG") public {
 		denom = "Doggo";
@@ -31,24 +31,24 @@ contract TestERC21Source is ERC20 {
 
 
 	/**
-        Internal functions to be called by cronos module
+        Internal functions to be called by merlin module
     **/
-	function mint_by_cronos_module(address addr, uint amount) public {
+	function mint_by_merlin_module(address addr, uint amount) public {
 		require(msg.sender == module_address);
 		_mint(addr, amount);
 	}
 
-	function burn_by_cronos_module(address addr, uint amount) public {
+	function burn_by_merlin_module(address addr, uint amount) public {
 		require(msg.sender == module_address);
 		unsafe_burn(addr, amount);
 	}
 
-	function transfer_by_cronos_module(address addr, uint amount) public {
+	function transfer_by_merlin_module(address addr, uint amount) public {
 		require(msg.sender == module_address);
 		unsafe_transfer(addr, module_address, amount);
 	}
 
-	function transfer_from_cronos_module(address addr, uint amount) public {
+	function transfer_from_merlin_module(address addr, uint amount) public {
 		require(msg.sender == module_address);
 		transfer(addr, amount);
 	}
@@ -64,7 +64,7 @@ contract TestERC21Source is ERC20 {
 		} else {
 			unsafe_burn(msg.sender, amount);
 		}
-		emit __CronosSendToIbc(msg.sender, recipient, amount);
+		emit __MerlinSendToIbc(msg.sender, recipient, amount);
 	}
 
 	function send_to_ibc_v2(string memory recipient, uint amount, uint channel_id, bytes memory extraData) public {
@@ -73,7 +73,7 @@ contract TestERC21Source is ERC20 {
 		} else {
 			unsafe_burn(msg.sender, amount);
 		}
-		emit __CronosSendToIbc(msg.sender, channel_id, recipient, amount, extraData);
+		emit __MerlinSendToIbc(msg.sender, channel_id, recipient, amount, extraData);
 	}
 
 	// send to another chain through gravity bridge
@@ -83,12 +83,12 @@ contract TestERC21Source is ERC20 {
 		} else {
 			unsafe_burn(msg.sender, amount + bridge_fee);
 		}
-		emit __CronosSendToEvmChain(msg.sender, recipient, chain_id, amount, bridge_fee, extraData);
+		emit __MerlinSendToEvmChain(msg.sender, recipient, chain_id, amount, bridge_fee, extraData);
 	}
 
 	// cancel a send to chain transaction considering if it hasnt been batched yet.
 	function cancel_send_to_evm_chain(uint256 id) external {
-		emit __CronosCancelSendToEvmChain(msg.sender, id);
+		emit __MerlinCancelSendToEvmChain(msg.sender, id);
 	}
 
 	/**

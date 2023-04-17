@@ -5,14 +5,14 @@ from typing import NamedTuple
 
 from pystarport import ports
 
-from .network import Chainmain, Cronos, Hermes, setup_custom_cronos
+from .network import Chainmain, Merlin, Hermes, setup_custom_merlin
 from .utils import ADDRS, eth_to_bech32, wait_for_port
 
 RATIO = 10**10
 
 
 class IBCNetwork(NamedTuple):
-    cronos: Cronos
+    merlin: Merlin
     chainmain: Chainmain
     hermes: Hermes
     incentivized: bool
@@ -20,13 +20,13 @@ class IBCNetwork(NamedTuple):
 
 def prepare_network(tmp_path, file, incentivized=True, start_relay=True):
     file = f"configs/{file}.jsonnet"
-    gen = setup_custom_cronos(tmp_path, 26700, Path(__file__).parent / file)
-    cronos = next(gen)
-    chainmain = Chainmain(cronos.base_dir.parent / "chainmain-1")
-    hermes = Hermes(cronos.base_dir.parent / "relayer.toml")
+    gen = setup_custom_merlin(tmp_path, 26700, Path(__file__).parent / file)
+    merlin = next(gen)
+    chainmain = Chainmain(merlin.base_dir.parent / "chainmain-1")
+    hermes = Hermes(merlin.base_dir.parent / "relayer.toml")
     # wait for grpc ready
     wait_for_port(ports.grpc_port(chainmain.base_port(0)))  # chainmain grpc
-    wait_for_port(ports.grpc_port(cronos.base_port(0)))  # cronos grpc
+    wait_for_port(ports.grpc_port(merlin.base_port(0)))  # merlin grpc
 
     version = {"fee_version": "ics29-1", "app_version": "ics20-1"}
     incentivized_args = (
@@ -50,7 +50,7 @@ def prepare_network(tmp_path, file, incentivized=True, start_relay=True):
             "--b-port",
             "transfer",
             "--a-chain",
-            "cronos_777-1",
+            "merlin_777-1",
             "--b-chain",
             "chainmain-1",
             "--new-client-connection",
@@ -61,7 +61,7 @@ def prepare_network(tmp_path, file, incentivized=True, start_relay=True):
 
     if incentivized:
         # register fee payee
-        src_chain = cronos.cosmos_cli()
+        src_chain = merlin.cosmos_cli()
         dst_chain = chainmain.cosmos_cli()
         rsp = dst_chain.register_counterparty_payee(
             "transfer",
@@ -69,13 +69,13 @@ def prepare_network(tmp_path, file, incentivized=True, start_relay=True):
             dst_chain.address("relayer"),
             src_chain.address("signer1"),
             from_="relayer",
-            fees="100000000basecro",
+            fees="100000000basemer",
         )
         assert rsp["code"] == 0, rsp["raw_log"]
     if start_relay:
-        cronos.supervisorctl("start", "relayer-demo")
+        merlin.supervisorctl("start", "relayer-demo")
         wait_for_port(hermes.port)
-    yield IBCNetwork(cronos, chainmain, hermes, incentivized)
+    yield IBCNetwork(merlin, chainmain, hermes, incentivized)
 
 
 def assert_ready(ibc):
@@ -88,13 +88,13 @@ def assert_ready(ibc):
 
 def hermes_transfer(ibc):
     assert_ready(ibc)
-    # chainmain-1 -> cronos_777-1
+    # chainmain-1 -> merlin_777-1
     my_ibc0 = "chainmain-1"
-    my_ibc1 = "cronos_777-1"
+    my_ibc1 = "merlin_777-1"
     my_channel = "channel-0"
     dst_addr = eth_to_bech32(ADDRS["signer2"])
     src_amount = 10
-    src_denom = "basecro"
+    src_denom = "basemer"
     # dstchainid srcchainid srcportid srchannelid
     cmd = (
         f"hermes --config {ibc.hermes.configpath} tx ft-transfer "

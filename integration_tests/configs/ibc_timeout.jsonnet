@@ -1,10 +1,10 @@
 local ibc = import 'ibc.jsonnet';
 
 ibc {
-  'cronos_777-1'+: {
+  'merlin_777-1'+: {
     genesis+: {
       app_state+: {
-        cronos+: {
+        merlin+: {
           params+: {
             ibc_timeout: 0,
           },

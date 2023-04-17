@@ -5,7 +5,7 @@ import (
 	evmenc "github.com/evmos/ethermint/encoding"
 )
 
-// MakeEncodingConfig creates the EncodingConfig for cronos chain
+// MakeEncodingConfig creates the EncodingConfig for merlin chain
 func MakeEncodingConfig() params.EncodingConfig {
 	return evmenc.MakeConfig(ModuleBasics)
 }

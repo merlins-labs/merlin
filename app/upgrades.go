@@ -18,7 +18,7 @@ func (app *App) RegisterUpgradeHandlers() {
 		}
 
 		gravParams := app.GravityKeeper.GetParams(ctx)
-		gravParams.GravityId = "cronos_gravity_testnet"
+		gravParams.GravityId = "merlin_gravity_testnet"
 		// can be activated later on
 		gravParams.BridgeActive = false
 		app.GravityKeeper.SetParams(ctx, gravParams)

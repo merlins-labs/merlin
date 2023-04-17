@@ -34,17 +34,17 @@
           };
         in
         rec {
-          packages = pkgs.cronos-matrix // {
+          packages = pkgs.merlin-matrix // {
             inherit (pkgs) rocksdb;
           };
           apps = {
-            cronosd = mkApp packages.cronosd;
-            cronosd-testnet = mkApp packages.cronosd-testnet;
+            merlind = mkApp packages.merlind;
+            merlind-testnet = mkApp packages.merlind-testnet;
           };
-          defaultPackage = packages.cronosd;
-          defaultApp = apps.cronosd;
+          defaultPackage = packages.merlind;
+          defaultApp = apps.merlind;
           devShells = {
-            cronosd = pkgs.mkShell {
+            merlind = pkgs.mkShell {
               buildInputs = with pkgs; [
                 go_1_20
                 rocksdb
@@ -52,7 +52,7 @@
               ];
             };
           };
-          devShell = devShells.cronosd;
+          devShell = devShells.merlind;
           legacyPackages = pkgs;
         }
       )
@@ -69,7 +69,7 @@
             --owner=0 --group=0 --mode=u+rw,uga+r --hard-dereference . \
             | gzip -9 > $out
         '';
-        bundle-win-exe = drv: final.callPackage ./nix/bundle-win-exe.nix { cronosd = drv; };
+        bundle-win-exe = drv: final.callPackage ./nix/bundle-win-exe.nix { merlind = drv; };
         rocksdb = final.callPackage ./nix/rocksdb.nix { };
       } // (with final;
         let
@@ -84,33 +84,33 @@
           binaries = builtins.listToAttrs (builtins.map
             ({ network, pkgtype }: {
               name = builtins.concatStringsSep "-" (
-                [ "cronosd" ] ++
+                [ "merlind" ] ++
                 lib.optional (network != "mainnet") network ++
                 lib.optional (pkgtype != "nix") pkgtype
               );
               value =
                 let
-                  cronosd = callPackage ./. {
+                  merlind = callPackage ./. {
                     inherit rev network;
                   };
                   bundle =
                     if stdenv.hostPlatform.isWindows then
-                      bundle-win-exe cronosd
+                      bundle-win-exe merlind
                     else
-                      bundle-exe cronosd;
+                      bundle-exe merlind;
                 in
                 if pkgtype == "bundle" then
                   bundle
                 else if pkgtype == "tarball" then
                   make-tarball bundle
                 else
-                  cronosd;
+                  merlind;
             })
             matrix
           );
         in
         {
-          cronos-matrix = binaries;
+          merlin-matrix = binaries;
         }
       );
     };

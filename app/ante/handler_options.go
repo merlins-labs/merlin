@@ -8,5 +8,5 @@ import (
 // custom ante handler logics
 type HandlerOptions struct {
 	EvmOptions   evmante.HandlerOptions
-	CronosKeeper CronosKeeper
+	MerlinKeeper MerlinKeeper
 }

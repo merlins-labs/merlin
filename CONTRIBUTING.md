@@ -1,8 +1,8 @@
 # Contributing
 
-Thank you for your interest in contributing to Cronos! The goal of this repository is to develop the implementation of Cronos. 
-Cronos is the first Ethereum-compatible blockchain network built on Cosmos SDK technology. An open-source and permission-less 
-Layer 1 chain, Cronos aims to massively scale the DeFi, GameFi, and overall Web3 user community by providing builders with the 
+Thank you for your interest in contributing to Merlin! The goal of this repository is to develop the implementation of Merlin. 
+Merlin is the first Ethereum-compatible blockchain network built on Cosmos SDK technology. An open-source and permission-less 
+Layer 1 chain, Merlin aims to massively scale the DeFi, GameFi, and overall Web3 user community by providing builders with the 
 ability to instantly port apps and crypto assets from other chains while benefiting from low transaction fees, high throughput, 
 and fast finality. If you have any questions, feel free to ask on [Discord](https://discord.gg/pahqHz26q4).
 
@@ -14,11 +14,11 @@ All contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md
 
 ## Requests involving no code changes (e.g. conventions, processes or network parameters)
 
-Requests involving no code changes (e.g. conventions, processes or network parameters) should be posted as [GitHub Discussions](https://github.com/crypto-org-chain/cronos/discussions) threads to allow for early feedback before e.g. being submitted for formal network governance decisions.
+Requests involving no code changes (e.g. conventions, processes or network parameters) should be posted as [GitHub Discussions](https://github.com/merlins-labs/merlin/discussions) threads to allow for early feedback before e.g. being submitted for formal network governance decisions.
 
 ## Feature requests and bug reports
 
-Feature requests and bug reports should be posted as [GitHub issues](https://github.com/crypto-org-chain/cronos/issues/new/choose).
+Feature requests and bug reports should be posted as [GitHub issues](https://github.com/merlins-labs/merlin/issues/new/choose).
 In an issue, please describe what you did, what you expected, and what happened instead.
 
 If you think that you have identified an issue with Chain that might compromise
@@ -28,10 +28,10 @@ we ask you to refer to [security policy](SECURITY.md).
 ## Consensus-breaking and large structural code changes
 
 When the issue is well understood but the solution leads to a consensus-breaking change (i.e. a need for the network-wide upgrade coordination) or large structural changes to the code base, these changes should be proposed in the form of an Architectural Decision Record
-([ADR](https://github.com/crypto-org-chain/cronos/blob/master/docs/architecture/README.md)). The ADR will help build consensus on an overall strategy to ensure the code base maintains coherence in the larger context. If you are not comfortable with writing an ADR, you can open a less-formal issue and the maintainers will help you turn it into an ADR.
+([ADR](https://github.com/merlins-labs/merlin/blob/master/docs/architecture/README.md)). The ADR will help build consensus on an overall strategy to ensure the code base maintains coherence in the larger context. If you are not comfortable with writing an ADR, you can open a less-formal issue and the maintainers will help you turn it into an ADR.
 
 ## Working on issues
-There are several ways to identify an area where you can contribute to Cronos:
+There are several ways to identify an area where you can contribute to Merlin:
 
 * You can reach out by sending a message in the developer community communication channel, either with a specific contribution in mind or in general by saying "I want to help!".
 * Occasionally, some issues on GitHub may be labelled with `help wanted` or `good first issue` tags.
@@ -59,7 +59,7 @@ Once you identified an issue to work on, this is the summary of your basic steps
 
 * If your changes are of interest to other developers, please make corresponding changes in the official documentation and the changelog.
 
-* Push your changes to your fork's branch and open the pull request to Cronos's repository main branch.
+* Push your changes to your fork's branch and open the pull request to Merlin's repository main branch.
 
 * In the pull request, complete its checklist, add a clear description of the problem your changes solve, and add the following statement to confirm that your contribution is your own original work: "I hereby certify that my contribution is in accordance with the Developer Certificate of Origin (https://developercertificate.org/)."
 

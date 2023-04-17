@@ -4,7 +4,7 @@ order: 4
 
 # JSON-RPC Methods
 
-Check the JSON-RPC methods supported on Cronos. {synopsis}
+Check the JSON-RPC methods supported on Merlin. {synopsis}
 
 ## Pre-requisite Readings
 
@@ -174,7 +174,7 @@ Get the web3 client version.
 curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' -H "Content-Type: application/json" http://localhost:8545
 
 // Result
- {"jsonrpc":"2.0","id":1,"result":"Cronos/0.0.0+/linux/go1.14"}
+ {"jsonrpc":"2.0","id":1,"result":"Merlin/0.0.0+/linux/go1.14"}
 ```
 
 ### `web3_sha3`
@@ -1080,7 +1080,7 @@ Sets the minimal gas price used to accept transactions. Any transaction below th
 
 This method requires a `node` restart after being called because it changes the configuration file.
 
-Make sure your `cronosd start` call is not using the flag `minimum-gas-prices` because this value will be used instead of the one set on the configuration file.
+Make sure your `merlind start` call is not using the flag `minimum-gas-prices` because this value will be used instead of the one set on the configuration file.
 
 #### Parameters
 

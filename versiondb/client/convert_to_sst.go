@@ -14,8 +14,8 @@ import (
 	"github.com/linxGnu/grocksdb"
 	"github.com/spf13/cobra"
 
-	"github.com/crypto-org-chain/cronos/versiondb/extsort"
-	"github.com/crypto-org-chain/cronos/versiondb/tsrocksdb"
+	"github.com/merlins-labs/merlin/versiondb/extsort"
+	"github.com/merlins-labs/merlin/versiondb/tsrocksdb"
 )
 
 const (

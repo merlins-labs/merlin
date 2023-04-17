@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crypto-org-chain/cronos/v2/app/ante"
-	"github.com/crypto-org-chain/cronos/v2/x/cronos/middleware"
+	"github.com/merlins-labs/merlin/v2/app/ante"
+	"github.com/merlins-labs/merlin/v2/x/merlin/middleware"
 	"golang.org/x/exp/slices"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -125,25 +125,25 @@ import (
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	"github.com/crypto-org-chain/cronos/v2/x/cronos"
-	cronosclient "github.com/crypto-org-chain/cronos/v2/x/cronos/client"
-	cronoskeeper "github.com/crypto-org-chain/cronos/v2/x/cronos/keeper"
-	evmhandlers "github.com/crypto-org-chain/cronos/v2/x/cronos/keeper/evmhandlers"
-	cronostypes "github.com/crypto-org-chain/cronos/v2/x/cronos/types"
+	"github.com/merlins-labs/merlin/v2/x/merlin"
+	merlinclient "github.com/merlins-labs/merlin/v2/x/merlin/client"
+	merlinkeeper "github.com/merlins-labs/merlin/v2/x/merlin/keeper"
+	evmhandlers "github.com/merlins-labs/merlin/v2/x/merlin/keeper/evmhandlers"
+	merlintypes "github.com/merlins-labs/merlin/v2/x/merlin/types"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/crypto-org-chain/cronos/v2/client/docs/statik"
+	_ "github.com/merlins-labs/merlin/v2/client/docs/statik"
 
 	// Force-load the tracer engines to trigger registration
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
 	// force register the extension json-rpc.
-	_ "github.com/crypto-org-chain/cronos/v2/x/cronos/rpc"
+	_ "github.com/merlins-labs/merlin/v2/x/merlin/rpc"
 )
 
 const (
-	Name = "cronos"
+	Name = "merlin"
 
 	// AddrLen is the allowed length (in bytes) for an address.
 	//
@@ -165,7 +165,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.LegacyProposalHandler,
 		upgradeclient.LegacyCancelProposalHandler,
 		ibcclientclient.UpdateClientProposalHandler, ibcclientclient.UpgradeProposalHandler,
-		cronosclient.ProposalHandler,
+		merlinclient.ProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
@@ -193,7 +193,7 @@ var (
 		ibcfeetypes.ModuleName:         nil,
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner}, // used for secure addition and subtraction of balance using module account
 		gravitytypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
-		cronostypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
+		merlintypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
 	}
 	// Module configurator
 
@@ -236,7 +236,7 @@ func GenModuleBasics() module.BasicManager {
 		feemarket.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 		gravity.AppModuleBasic{},
-		cronos.AppModuleBasic{},
+		merlin.AppModuleBasic{},
 	}
 	return module.NewBasicManager(basicModules...)
 }
@@ -258,7 +258,7 @@ func StoreKeys() (
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		cronostypes.StoreKey,
+		merlintypes.StoreKey,
 		gravitytypes.StoreKey,
 	}
 	keys := sdk.NewKVStoreKeys(storeKeys...)
@@ -319,7 +319,7 @@ type App struct {
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	CronosKeeper cronoskeeper.Keeper
+	MerlinKeeper merlinkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -490,10 +490,10 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.CronosKeeper = *cronoskeeper.NewKeeper(
+	app.MerlinKeeper = *merlinkeeper.NewKeeper(
 		appCodec,
-		keys[cronostypes.StoreKey],
-		keys[cronostypes.MemStoreKey],
+		keys[merlintypes.StoreKey],
+		keys[merlintypes.MemStoreKey],
 		app.BankKeeper,
 		app.TransferKeeper,
 		gravityKeeper,
@@ -501,7 +501,7 @@ func New(
 		app.AccountKeeper,
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
-	cronosModule := cronos.NewAppModule(app.CronosKeeper, app.AccountKeeper, app.BankKeeper, app.GetSubspace(cronostypes.ModuleName))
+	merlinModule := merlin.NewAppModule(app.MerlinKeeper, app.AccountKeeper, app.BankKeeper, app.GetSubspace(merlintypes.ModuleName))
 
 	// register the proposal types
 	govRouter := govv1beta1.NewRouter()
@@ -510,7 +510,7 @@ func New(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(cronostypes.RouterKey, cronos.NewTokenMappingChangeProposalHandler(app.CronosKeeper))
+		AddRoute(merlintypes.RouterKey, merlin.NewTokenMappingChangeProposalHandler(app.MerlinKeeper))
 
 	govConfig := govtypes.DefaultConfig()
 	/*
@@ -524,7 +524,7 @@ func New(
 
 	var transferStack porttypes.IBCModule
 	transferStack = transfer.NewIBCModule(app.TransferKeeper)
-	transferStack = middleware.NewIBCConversionModule(transferStack, app.CronosKeeper)
+	transferStack = middleware.NewIBCConversionModule(transferStack, app.MerlinKeeper)
 	transferStack = ibcfee.NewIBCMiddleware(transferStack, app.IBCFeeKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
@@ -532,16 +532,16 @@ func New(
 		&stakingKeeper, govRouter, app.MsgServiceRouter(), govConfig,
 	)
 
-	app.GravityKeeper = *gravityKeeper.SetHooks(app.CronosKeeper)
+	app.GravityKeeper = *gravityKeeper.SetHooks(app.MerlinKeeper)
 	gravitySrv := gravitykeeper.NewMsgServerImpl(app.GravityKeeper)
 
-	app.EvmKeeper.SetHooks(cronoskeeper.NewLogProcessEvmHook(
-		evmhandlers.NewSendToAccountHandler(app.BankKeeper, app.CronosKeeper),
-		evmhandlers.NewSendToEvmChainHandler(gravitySrv, app.BankKeeper, app.CronosKeeper),
-		evmhandlers.NewCancelSendToEvmChainHandler(gravitySrv, app.CronosKeeper, app.GravityKeeper),
-		evmhandlers.NewSendToIbcHandler(app.BankKeeper, app.CronosKeeper),
-		evmhandlers.NewSendCroToIbcHandler(app.BankKeeper, app.CronosKeeper),
-		evmhandlers.NewSendToIbcV2Handler(app.BankKeeper, app.CronosKeeper),
+	app.EvmKeeper.SetHooks(merlinkeeper.NewLogProcessEvmHook(
+		evmhandlers.NewSendToAccountHandler(app.BankKeeper, app.MerlinKeeper),
+		evmhandlers.NewSendToEvmChainHandler(gravitySrv, app.BankKeeper, app.MerlinKeeper),
+		evmhandlers.NewCancelSendToEvmChainHandler(gravitySrv, app.MerlinKeeper, app.GravityKeeper),
+		evmhandlers.NewSendToIbcHandler(app.BankKeeper, app.MerlinKeeper),
+		evmhandlers.NewSendCroToIbcHandler(app.BankKeeper, app.MerlinKeeper),
+		evmhandlers.NewSendToIbcV2Handler(app.BankKeeper, app.MerlinKeeper),
 	))
 
 	// register the staking hooks
@@ -595,7 +595,7 @@ func New(
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
 		gravity.NewAppModule(appCodec, app.GravityKeeper, app.AccountKeeper, app.BankKeeper),
-		cronosModule,
+		merlinModule,
 	}
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -621,7 +621,7 @@ func New(
 		vestingtypes.ModuleName,
 		feemarkettypes.ModuleName,
 		gravitytypes.ModuleName,
-		cronostypes.ModuleName,
+		merlintypes.ModuleName,
 	}
 	endBlockersOrder := []string{
 		crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName,
@@ -643,7 +643,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		gravitytypes.ModuleName,
-		cronostypes.ModuleName,
+		merlintypes.ModuleName,
 	}
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -676,7 +676,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		gravitytypes.ModuleName,
-		cronostypes.ModuleName,
+		merlintypes.ModuleName,
 	}
 	app.mm = module.NewManager(modules...)
 	app.mm.SetOrderBeginBlockers(beginBlockersOrder...)
@@ -773,7 +773,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, maxGasWanted uint64) {
 	}
 	options := ante.HandlerOptions{
 		EvmOptions:   evmOptions,
-		CronosKeeper: app.CronosKeeper,
+		MerlinKeeper: app.MerlinKeeper,
 	}
 
 	anteHandler, err := ante.NewAnteHandler(options)
@@ -922,7 +922,7 @@ func (app *App) RegisterTendermintService(clientCtx client.Context) {
 
 // RegisterSwaggerAPI registers swagger route with API Server
 func RegisterSwaggerAPI(ctx client.Context, rtr *mux.Router) {
-	statikFS, err := fs.NewWithNamespace("cronos")
+	statikFS, err := fs.NewWithNamespace("merlin")
 	if err != nil {
 		panic(err)
 	}
@@ -958,7 +958,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	paramsKeeper.Subspace(gravitytypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(cronostypes.ModuleName).WithKeyTable(cronostypes.ParamKeyTable())
+	paramsKeeper.Subspace(merlintypes.ModuleName).WithKeyTable(merlintypes.ParamKeyTable())
 
 	return paramsKeeper
 }

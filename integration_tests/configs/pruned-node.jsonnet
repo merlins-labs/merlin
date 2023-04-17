@@ -1,7 +1,7 @@
 local config = import 'default.jsonnet';
 
 config {
-  'cronos_777-1'+: {
+  'merlin_777-1'+: {
     'app-config'+: {
       pruning: 'everything',
       'state-sync'+: {

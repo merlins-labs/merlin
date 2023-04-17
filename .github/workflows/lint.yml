@@ -1,5 +1,5 @@
 name: Run Lint
-# Lint runs golangci-lint over the entire cronos repository This workflow is
+# Lint runs golangci-lint over the entire merlin repository This workflow is
 # run on every pull request and push to main The `golangci` will pass without
 # running if no *.{go, mod, sum} files have been changed.
 on:
@@ -47,7 +47,7 @@ jobs:
           golangci-lint version
 
           BUILD_TAGS=rocksdb,grocksdb_clean_link
-          go build -tags $BUILD_TAGS ./cmd/cronosd
+          go build -tags $BUILD_TAGS ./cmd/merlind
           golangci-lint run --out-format=github-actions --path-prefix=./ --timeout 10m --build-tags $BUILD_TAGS
           cd versiondb
           golangci-lint run --out-format=github-actions --path-prefix=./versiondb --timeout 10m --build-tags $BUILD_TAGS
@@ -82,7 +82,7 @@ jobs:
       - uses: cachix/cachix-action@v12
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          name: cronos
+          name: merlin
       - run: nix-shell -I nixpkgs=./nix -p test-env --run "make lint-py"
         if: steps.changed-files.outputs.any_changed == 'true'
 

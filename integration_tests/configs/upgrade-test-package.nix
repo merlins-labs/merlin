@@ -7,7 +7,7 @@ let
       shortRev = builtins.substring 0 7 rev;
     };
   }).defaultNix;
-  released = (fetchFlake "crypto-org-chain/cronos" "b3da22dcff6176ec5120c84e446a79fb54e3d9de").default;
+  released = (fetchFlake "merlins-labs/merlin" "b3da22dcff6176ec5120c84e446a79fb54e3d9de").default;
   current = pkgs.callPackage ../../. { };
 in
 pkgs.linkFarm "upgrade-test-package" [

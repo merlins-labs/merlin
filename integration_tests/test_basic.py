@@ -87,8 +87,8 @@ def test_events(cluster, suspend_capture):
         assert topic in bloom
 
 
-def test_minimal_gas_price(cronos):
-    w3 = cronos.w3
+def test_minimal_gas_price(merlin):
+    w3 = merlin.w3
     gas_price = w3.eth.gas_price
     tx = {
         "to": "0x0000000000000000000000000000000000000000",
@@ -108,15 +108,15 @@ def test_minimal_gas_price(cronos):
     assert receipt.status == 1
 
 
-def test_native_call(cronos):
+def test_native_call(merlin):
     """
-    test contract native call on cronos network
+    test contract native call on merlin network
     - deploy test contract
     - run native call, expect failure, becuase no native fund in contract
     - send native tokens to contract account
     - run again, expect success and check balance
     """
-    w3 = cronos.w3
+    w3 = merlin.w3
     contract = deploy_contract(
         w3,
         CONTRACTS["TestERC20A"],
@@ -134,21 +134,21 @@ def test_native_call(cronos):
     assert receipt.status == 0
 
 
-def test_statesync(cronos):
-    # cronos fixture
-    # Load cronos-devnet.yaml
+def test_statesync(merlin):
+    # merlin fixture
+    # Load merlin-devnet.yaml
     # Spawn pystarport with the yaml, port 26650
     # (multiple nodes will be created based on `validators`)
-    # Return a Cronos object (Defined in network.py)
-    w3 = cronos.w3
+    # Return a Merlin object (Defined in network.py)
+    w3 = merlin.w3
 
     # do some transactions
     # DEPRECATED: Do a tx bank transaction
-    # from_addr = "crc1q04jewhxw4xxu3vlg3rc85240h9q7ns6hglz0g"
-    # to_addr = "crc16z0herz998946wr659lr84c8c556da55dc34hh"
-    # coins = "10basetcro"
-    # node = cronos.node_rpc(0)
-    # txhash_0 = cronos.cosmos_cli(0).transfer(from_addr, to_addr, coins)["txhash"]
+    # from_addr = "did:fury:iaa1q04jewhxw4xxu3vlg3rc85240h9q7ns6hglz0g"
+    # to_addr = "did:fury:iaa16z0herz998946wr659lr84c8c556da55dc34hh"
+    # coins = "10basetmer"
+    # node = merlin.node_rpc(0)
+    # txhash_0 = merlin.cosmos_cli(0).transfer(from_addr, to_addr, coins)["txhash"]
 
     # Do an ethereum transfer
     tx_value = 10000
@@ -168,8 +168,8 @@ def test_statesync(cronos):
 
     # Wait 5 more block (sometimes not enough blocks can not work)
     wait_for_block(
-        cronos.cosmos_cli(0),
-        int(cronos.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 5,
+        merlin.cosmos_cli(0),
+        int(merlin.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 5,
     )
 
     # Check the transactions are added
@@ -177,11 +177,11 @@ def test_statesync(cronos):
     assert w3.eth.get_transaction(txhash_1) is not None
 
     # add a new state sync node, sync
-    # We can not use the cronos fixture to do statesync, since they are full nodes.
+    # We can not use the merlin fixture to do statesync, since they are full nodes.
     # We can only create a new node with statesync config
-    data = Path(cronos.base_dir).parent  # Same data dir as cronos fixture
-    chain_id = cronos.config["chain_id"]  # Same chain_id as cronos fixture
-    cmd = "cronosd"
+    data = Path(merlin.base_dir).parent  # Same data dir as merlin fixture
+    chain_id = merlin.config["chain_id"]  # Same chain_id as merlin fixture
+    cmd = "merlind"
     # create a clustercli object from ClusterCLI class
     clustercli = cluster.ClusterCLI(data, cmd=cmd, chain_id=chain_id)
     # create a new node with statesync enabled
@@ -201,7 +201,7 @@ def test_statesync(cronos):
     # Wait 1 more block
     wait_for_block(
         clustercli.cosmos_cli(i),
-        int(cronos.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 1,
+        int(merlin.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 1,
     )
 
     # check query chain state works
@@ -227,7 +227,7 @@ def test_statesync(cronos):
     # Wait 1 more block
     wait_for_block(
         clustercli.cosmos_cli(i),
-        int(cronos.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 1,
+        int(merlin.cosmos_cli(0).status()["SyncInfo"]["latest_block_height"]) + 1,
     )
 
     # check query chain state works
@@ -244,8 +244,8 @@ def test_statesync(cronos):
     print("succesfully syncing")
 
 
-def test_transaction(cronos):
-    w3 = cronos.w3
+def test_transaction(merlin):
+    w3 = merlin.w3
     gas_price = w3.eth.gas_price
 
     # send transaction
@@ -457,9 +457,9 @@ def test_refund_unused_gas_when_contract_tx_reverted(cluster):
     )
 
 
-def test_message_call(cronos):
+def test_message_call(merlin):
     "stress test the evm by doing message calls as much as possible"
-    w3 = cronos.w3
+    w3 = merlin.w3
     contract = deploy_contract(
         w3,
         CONTRACTS["TestMessageCall"],
@@ -505,10 +505,10 @@ def test_suicide(cluster):
     assert len(w3.eth.get_code(destroyee.address)) == 0
 
 
-def test_batch_tx(cronos):
+def test_batch_tx(merlin):
     "send multiple eth txs in single cosmos tx"
-    w3 = cronos.w3
-    cli = cronos.cosmos_cli()
+    w3 = merlin.w3
+    cli = merlin.cosmos_cli()
     sender = ADDRS["validator"]
     recipient = ADDRS["community"]
     nonce = w3.eth.get_transaction_count(sender)
@@ -576,12 +576,12 @@ def test_batch_tx(cronos):
         assert txs[i].transactionIndex == i
 
 
-def test_failed_transfer_tx(cronos):
+def test_failed_transfer_tx(merlin):
     """
     It's possible to include a failed transfer transaction in batch tx
     """
-    w3 = cronos.w3
-    cli = cronos.cosmos_cli()
+    w3 = merlin.w3
+    cli = merlin.cosmos_cli()
     sender = ADDRS["community"]
     recipient = ADDRS["validator"]
     nonce = w3.eth.get_transaction_count(sender)
@@ -612,7 +612,7 @@ def test_failed_transfer_tx(cronos):
     assert receipts[0].status == receipts[1].status == 1
     assert receipts[2].status == 0
 
-    # test the cronos_getTransactionReceiptsByBlock api
+    # test the merlin_getTransactionReceiptsByBlock api
     rsp = get_receipts_by_block(w3, receipts[0].blockNumber)
     assert "error" not in rsp, rsp["error"]
     assert len(receipts) == len(rsp["result"])
@@ -650,9 +650,9 @@ def test_log0(cluster):
     assert log.data == HexBytes(data)
 
 
-def test_contract(cronos):
+def test_contract(merlin):
     "test Greeter contract"
-    w3 = cronos.w3
+    w3 = merlin.w3
     contract = deploy_contract(w3, CONTRACTS["Greeter"])
     assert "Hello" == contract.caller.greet()
 
@@ -670,7 +670,7 @@ origin_cmd = None
 
 
 @pytest.mark.parametrize("max_gas_wanted", [80000000, 40000000, 25000000, 500000])
-def test_tx_inclusion(cronos, max_gas_wanted):
+def test_tx_inclusion(merlin, max_gas_wanted):
     """
     - send multiple heavy transactions at the same time.
     - check they are included in consecutively blocks without failure.
@@ -685,14 +685,14 @@ def test_tx_inclusion(cronos, max_gas_wanted):
         return f"{origin_cmd} --evm.max-tx-gas-wanted {max_gas_wanted}"
 
     modify_command_in_supervisor_config(
-        cronos.base_dir / "tasks.ini",
+        merlin.base_dir / "tasks.ini",
         lambda cmd: fn(cmd),
     )
-    cronos.supervisorctl("update")
-    wait_for_port(ports.evmrpc_port(cronos.base_port(0)))
+    merlin.supervisorctl("update")
+    wait_for_port(ports.evmrpc_port(merlin.base_port(0)))
 
-    w3 = cronos.w3
-    cli = cronos.cosmos_cli()
+    w3 = merlin.w3
+    cli = merlin.cosmos_cli()
     block_gas_limit = 81500000
     tx_gas_limit = 80000000
     max_tx_in_block = block_gas_limit // min(max_gas_wanted, tx_gas_limit)
@@ -716,8 +716,8 @@ def test_tx_inclusion(cronos, max_gas_wanted):
             assert num == block_nums[0] + 1
 
 
-def test_replay_protection(cronos):
-    w3 = cronos.w3
+def test_replay_protection(merlin):
+    w3 = merlin.w3
     # https://etherscan.io/tx/0x06d2fa464546e99d2147e1fc997ddb624cec9c8c5e25a050cc381ee8a384eed3
     raw = (
         (
@@ -735,10 +735,10 @@ def test_replay_protection(cronos):
         w3.eth.send_raw_transaction(HexBytes(raw))
 
 
-def test_submit_any_proposal(cronos, tmp_path):
+def test_submit_any_proposal(merlin, tmp_path):
     # governance module account as granter
-    cli = cronos.cosmos_cli()
-    granter_addr = "crc10d07y265gmmuvt4z0w9aw880jnsr700jdufnyd"
+    cli = merlin.cosmos_cli()
+    granter_addr = "did:fury:iaa10d07y265gmmuvt4z0w9aw880jnsr700jdufnyd"
     grantee_addr = cli.address("signer1")
 
     # this json can be obtained with `--generate-only` flag for respective cli calls
@@ -755,14 +755,14 @@ def test_submit_any_proposal(cronos, tmp_path):
                 },
             }
         ],
-        "deposit": "1basetcro",
+        "deposit": "1basetmer",
     }
     proposal_file = tmp_path / "proposal.json"
     proposal_file.write_text(json.dumps(proposal_json))
     rsp = cli.submit_gov_proposal(proposal_file, from_="community")
     assert rsp["code"] == 0, rsp["raw_log"]
 
-    approve_proposal(cronos, rsp)
+    approve_proposal(merlin, rsp)
 
     grant_detail = cli.query_grant(granter_addr, grantee_addr)
     assert grant_detail["granter"] == granter_addr

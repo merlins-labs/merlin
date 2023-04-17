@@ -1,7 +1,7 @@
 {
   dotenv: '../../scripts/.env',
-  'cronos_777-1': {
-    cmd: 'cronosd',
+  'merlin_777-1': {
+    cmd: 'merlind',
     'start-flags': '--trace',
     config: {
       mempool: {
@@ -10,13 +10,13 @@
     },
     'app-config': {
       'app-db-backend': 'pebbledb',
-      'minimum-gas-prices': '0basetcro',
+      'minimum-gas-prices': '0basetmer',
       'index-events': ['ethereum_tx.ethereumTxHash'],
       'iavl-lazy-loading': true,
       'json-rpc': {
         address: '0.0.0.0:{EVMRPC_PORT}',
         'ws-address': '0.0.0.0:{EVMRPC_PORT_WS}',
-        api: 'eth,net,web3,debug,cronos',
+        api: 'eth,net,web3,debug,merlin',
         'feehistory-cap': 100,
         'block-range-cap': 10000,
         'logs-cap': 10000,
@@ -31,7 +31,7 @@
       },
     },
     validators: [{
-      coins: '1000000000000000000stake,10000000000000000000000basetcro',
+      coins: '1000000000000000000stake,10000000000000000000000basetmer',
       staked: '1000000000000000000stake',
       mnemonic: '${VALIDATOR1_MNEMONIC}',
       'app-config': {
@@ -40,21 +40,21 @@
         },
       },
     }, {
-      coins: '1000000000000000000stake,10000000000000000000000basetcro',
+      coins: '1000000000000000000stake,10000000000000000000000basetmer',
       staked: '1000000000000000000stake',
       mnemonic: '${VALIDATOR2_MNEMONIC}',
     }],
     accounts: [{
       name: 'community',
-      coins: '10000000000000000000000basetcro',
+      coins: '10000000000000000000000basetmer',
       mnemonic: '${COMMUNITY_MNEMONIC}',
     }, {
       name: 'signer1',
-      coins: '20000000000000000000000basetcro',
+      coins: '20000000000000000000000basetmer',
       mnemonic: '${SIGNER1_MNEMONIC}',
     }, {
       name: 'signer2',
-      coins: '30000000000000000000000basetcro',
+      coins: '30000000000000000000000basetmer',
       mnemonic: '${SIGNER2_MNEMONIC}',
     }],
     genesis: {
@@ -67,14 +67,14 @@
       app_state: {
         evm: {
           params: {
-            evm_denom: 'basetcro',
+            evm_denom: 'basetmer',
           },
         },
-        cronos: {
+        merlin: {
           params: {
-            cronos_admin: '${CRONOS_ADMIN}',
+            merlin_admin: '${MERLIN_ADMIN}',
             enable_auto_deployment: true,
-            ibc_cro_denom: '${IBC_CRO_DENOM}',
+            ibc_mer_denom: '${IBC_CRO_DENOM}',
           },
         },
         gov: {
@@ -85,7 +85,7 @@
             max_deposit_period: '10s',
             min_deposit: [
               {
-                denom: 'basetcro',
+                denom: 'basetmer',
                 amount: '1',
               },
             ],

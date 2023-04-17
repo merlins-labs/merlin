@@ -3,13 +3,13 @@ pragma solidity ^0.8.8;
 import "./TestCRC20.sol";
 
 contract TestCRC20Proxy {
-    // sha256('cronos-evm')[:20]
+    // sha256('merlin-evm')[:20]
     address constant module_address = 0x89A7EF2F08B1c018D5Cc88836249b84Dd5392905;
     TestCRC20 crc20Contract;
     bool isSource;
 
-    event __CronosSendToEvmChain(address indexed sender, address indexed recipient, uint256 indexed chain_id, uint256 amount, uint256 bridge_fee, bytes extraData);
-    event __CronosCancelSendToEvmChain(address indexed sender, uint256 id);
+    event __MerlinSendToEvmChain(address indexed sender, address indexed recipient, uint256 indexed chain_id, uint256 amount, uint256 bridge_fee, bytes extraData);
+    event __MerlinCancelSendToEvmChain(address indexed sender, uint256 id);
 
     /**
         Can be instantiated only by crc20 contract owner
@@ -32,24 +32,24 @@ contract TestCRC20Proxy {
 
 
     /**
-        Internal functions to be called by cronos module.
+        Internal functions to be called by merlin module.
     **/
-    function mint_by_cronos_module(address addr, uint amount) public {
+    function mint_by_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         crc20Contract.mint(addr, amount);
     }
 
-    function burn_by_cronos_module(address addr, uint amount) public {
+    function burn_by_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         crc20_burn(addr, amount);
     }
 
-    function transfer_by_cronos_module(address addr, uint amount) public {
+    function transfer_by_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         crc20Contract.transferFrom(addr, module_address, amount);
     }
 
-    function transfer_from_cronos_module(address addr, uint amount) public {
+    function transfer_from_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         crc20Contract.transferFrom(module_address, addr, amount);
     }
@@ -67,12 +67,12 @@ contract TestCRC20Proxy {
         } else {
             crc20_burn(msg.sender, amount);
         }
-        emit __CronosSendToEvmChain(msg.sender, recipient, chain_id, amount, bridge_fee, extraData);
+        emit __MerlinSendToEvmChain(msg.sender, recipient, chain_id, amount, bridge_fee, extraData);
     }
 
     // cancel a send to chain transaction considering if it hasnt been batched yet.
     function cancel_send_to_evm_chain(uint256 id) external {
-        emit __CronosCancelSendToEvmChain(msg.sender, id);
+        emit __MerlinCancelSendToEvmChain(msg.sender, id);
     }
 
     /**

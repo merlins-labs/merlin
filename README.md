@@ -5,14 +5,14 @@ parent:
 
 
 <div align="center">
-  <h1> <img src="./assets/cronos.svg" alt="Cronos Logo" width="300px" /> </h1>
+  <h1> <img src="./assets/merlin.svg" alt="Merlin Logo" width="300px" /> </h1>
 </div>
 <br />
 
 <p align="center">
-  <a href="https://github.com/crypto-org-chain/cronos/actions/workflows/build.yml"><img label="Build Status" src="https://github.com/crypto-org-chain/cronos/actions/workflows/build.yml/badge.svg" /></a>
-  <a href="https://codecov.io/gh/crypto-org-chain/cronos"><img label="Code Coverage" src="https://codecov.io/gh/crypto-org-chain/cronos/branch/main/graph/badge.svg" /></a>
-  <a href="https://discord.gg/pahqHz26q4"><img label="Discord" src="https://img.shields.io/discord/783264383978569728.svg?color=7289da&label=Cronos&logo=discord&style=flat-square" /></a>
+  <a href="https://github.com/merlins-labs/merlin/actions/workflows/build.yml"><img label="Build Status" src="https://github.com/merlins-labs/merlin/actions/workflows/build.yml/badge.svg" /></a>
+  <a href="https://codecov.io/gh/merlins-labs/merlin"><img label="Code Coverage" src="https://codecov.io/gh/merlins-labs/merlin/branch/main/graph/badge.svg" /></a>
+  <a href="https://discord.gg/pahqHz26q4"><img label="Discord" src="https://img.shields.io/discord/783264383978569728.svg?color=7289da&label=Merlin&logo=discord&style=flat-square" /></a>
 </p>
 
 ## Table of Contents
@@ -39,7 +39,7 @@ parent:
 
 ## 1. Description
 
-**Cronos** is the Crypto.org EVM chain that aims to massively scale the DeFi ecosystem.
+**Merlin** is the Crypto.org EVM chain that aims to massively scale the DeFi ecosystem.
 
 <a id="contributing" />
 
@@ -58,7 +58,7 @@ and the [contributing guidelines](CONTRIBUTING.md) when submitting code.
 
 ## 4. Documentation
 
-[Technical documentation](http://cronos.org/docs).
+[Technical documentation](http://merlin.org/docs).
 
 <a id="build" />
 
@@ -73,13 +73,13 @@ make build
 
 ## 6. Start a local Development Network and Node
 
-Please follow this [documentation](https://cronos.org/docs/getting-started/local-devnet.html#devnet-running-latest-development-node) to run a local devnet.
+Please follow this [documentation](https://merlin.org/docs/getting-started/local-devnet.html#devnet-running-latest-development-node) to run a local devnet.
 
 <a id="send-first-transaction" />
 
 ## 7. Send Your First Transaction
 
-After setting the local devnet, you may interact with the your local blockchain by following this [documentation](https://cronos.org/docs/getting-started/local-devnet.html#interact-with-the-chain).
+After setting the local devnet, you may interact with the your local blockchain by following this [documentation](https://merlin.org/docs/getting-started/local-devnet.html#interact-with-the-chain).
 
 <a id="testing" />
 
@@ -142,7 +142,7 @@ python3 -m pip install pystarport
 run two nodes devnet
 
 ```
-pystarport serve --config ./scripts/cronos-devnet.yaml
+pystarport serve --config ./scripts/merlin-devnet.yaml
 ```
 
 ### get status
@@ -163,10 +163,10 @@ pystarport supervisorctl stop all
 
 ## 10. Useful links
 
-- [Project Website](http://cronos.org/)
-- [Technical Documentation](http://cronos.org/docs)
+- [Project Website](http://merlin.org/)
+- [Technical Documentation](http://merlin.org/docs)
 - Community chatrooms (non-technical): [Discord](https://discord.gg/nsp9JTC) [Telegram](https://t.me/CryptoComOfficial)
-- Developer community channel (technical): [![Support Server](https://img.shields.io/discord/783264383978569728.svg?color=7289da&label=Cronos&logo=discord&style=flat-square)](https://discord.gg/pahqHz26q4)
+- Developer community channel (technical): [![Support Server](https://img.shields.io/discord/783264383978569728.svg?color=7289da&label=Merlin&logo=discord&style=flat-square)](https://discord.gg/pahqHz26q4)
 - [Ethermint](https://github.com/evmos/ethermint) by Tharsis
 - [Cosmos SDK documentation](https://docs.cosmos.network)
 - [Cosmos Discord](https://discord.gg/W8trcGV)

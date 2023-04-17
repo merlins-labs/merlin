@@ -38,7 +38,7 @@ jobs:
       - uses: cachix/cachix-action@v12
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          name: cronos
+          name: merlin
           # github don't pass secrets for pull request from fork repos,
           # in that case the push is disabled naturally.
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
@@ -47,7 +47,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
       - uses: actions/upload-artifact@v3
         with:
-          name: "cronosd-tarball-${{ matrix.os }}"
+          name: "merlind-tarball-${{ matrix.os }}"
           path: "*.tar.gz"
           if-no-files-found: ignore
 
@@ -90,7 +90,7 @@ jobs:
         run: |
           excludelist+=" $(find ./ -type f -name '*.pb.go')"
           for filename in ${excludelist}; do
-            filename=$(echo $filename | sed 's/^./github.com\/crypto-org-chain\/cronos/g')
+            filename=$(echo $filename | sed 's/^./github.com\/merlins-labs\/merlin/g')
             echo "Excluding ${filename} from coverage report..."
             sed -i.bak "/$(echo $filename | sed 's/\//\\\//g')/d" coverage.txt
           done
@@ -163,15 +163,15 @@ jobs:
       - uses: cachix/cachix-action@v12
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          name: cronos
+          name: merlin
           extraPullNames: dapp
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - name: test contracts
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: make test-cronos-contracts
+        run: make test-merlin-contracts
       - name: build contracts
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: make gen-cronos-contracts
+        run: make gen-merlin-contracts
       - name: check working directory is clean
         id: changes
         run: |

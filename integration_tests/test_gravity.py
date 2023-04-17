@@ -10,7 +10,7 @@ from pystarport import ports
 from web3.exceptions import BadFunctionCallOutput
 
 from .gorc import GoRc
-from .network import GravityBridge, setup_cronos, setup_geth
+from .network import GravityBridge, setup_merlin, setup_geth
 from .utils import (
     ACCOUNTS,
     ADDRS,
@@ -36,7 +36,7 @@ pytestmark = pytest.mark.gravity
 Account.enable_unaudited_hdwallet_features()
 
 
-def cronos_crc21_abi():
+def merlin_crc21_abi():
     path = CONTRACTS["ModuleCRC21"]
     return json.load(path.open())["abi"]
 
@@ -46,7 +46,7 @@ def gorc_config(keystore, gravity_contract, eth_rpc, cosmos_grpc, metrics_listen
         "keystore": str(keystore),
         "gravity": {
             "contract": gravity_contract,
-            "fees_denom": "basetcro",
+            "fees_denom": "basetmer",
         },
         "ethereum": {
             "key_derivation_path": "m/44'/60'/0'/0/0",
@@ -55,7 +55,7 @@ def gorc_config(keystore, gravity_contract, eth_rpc, cosmos_grpc, metrics_listen
         "cosmos": {
             "gas_price": {
                 "amount": 5000000000000,
-                "denom": "basetcro",
+                "denom": "basetmer",
             },
             "gas_limit": 500000,
             "grpc": cosmos_grpc,
@@ -76,7 +76,7 @@ def update_gravity_contract(tomlfile, contract):
     tomlfile.write_text(dump_toml(obj))
 
 
-def check_auto_deployment(cli, denom, cronos_w3, recipient, amount):
+def check_auto_deployment(cli, denom, merlin_w3, recipient, amount):
     "check crc21 contract auto deployed, and the crc21 balance"
     try:
         rsp = cli.query_contract_by_denom(denom)
@@ -84,8 +84,8 @@ def check_auto_deployment(cli, denom, cronos_w3, recipient, amount):
         # not deployed yet
         return None
     assert len(rsp["auto_contract"]) > 0
-    crc21_contract = cronos_w3.eth.contract(
-        address=rsp["auto_contract"], abi=cronos_crc21_abi()
+    crc21_contract = merlin_w3.eth.contract(
+        address=rsp["auto_contract"], abi=merlin_crc21_abi()
     )
     try:
         if crc21_contract.caller.balanceOf(recipient) == amount:
@@ -100,7 +100,7 @@ def check_auto_deployment(cli, denom, cronos_w3, recipient, amount):
 def get_id_from_receipt(receipt):
     "check the id after sendToEvmChain call"
     target = HexBytes(
-        abi.event_signature_to_log_topic("__CronosSendToEvmChainResponse(uint256)")
+        abi.event_signature_to_log_topic("__MerlinSendToEvmChainResponse(uint256)")
     )
     for _, log in enumerate(receipt.logs):
         if log.topics[0] == target:
@@ -117,32 +117,32 @@ def geth(tmp_path_factory):
 
 
 @pytest.fixture(scope="module", params=[True, False])
-def cronos(request, tmp_path_factory):
-    """start-cronos
+def merlin(request, tmp_path_factory):
+    """start-merlin
     params: enable_auto_deployment
     """
-    yield from setup_cronos(tmp_path_factory.mktemp("cronos"), 26600, request.param)
+    yield from setup_merlin(tmp_path_factory.mktemp("merlin"), 26600, request.param)
 
 
 @pytest.fixture(scope="module")
-def gravity(cronos, geth):
+def gravity(merlin, geth):
     """
     - set-delegator-keys
     - deploy gravity contract
     - start orchestrator
     """
-    chain_id = "cronos_777-1"
+    chain_id = "merlin_777-1"
 
     # set-delegate-keys
-    for i, val in enumerate(cronos.config["validators"]):
+    for i, val in enumerate(merlin.config["validators"]):
         # generate gorc config file
-        gorc_config_path = cronos.base_dir / f"node{i}/gorc.toml"
+        gorc_config_path = merlin.base_dir / f"node{i}/gorc.toml"
         grpc_port = ports.grpc_port(val["base_port"])
         metrics_port = 3000 + i
         gorc_config_path.write_text(
             dump_toml(
                 gorc_config(
-                    cronos.base_dir / f"node{i}/orchestrator_keystore",
+                    merlin.base_dir / f"node{i}/orchestrator_keystore",
                     "",  # to be filled later after the gravity contract deployed
                     geth.provider.endpoint_uri,
                     f"http://localhost:{grpc_port}",
@@ -155,20 +155,20 @@ def gravity(cronos, geth):
 
         # generate new accounts on both chain
         gorc.add_eth_key("eth")
-        gorc.add_eth_key("cronos")  # cronos and eth key derivation are the same
+        gorc.add_eth_key("merlin")  # merlin and eth key derivation are the same
 
         # fund the orchestrator accounts
         eth_addr = to_checksum_address(gorc.show_eth_addr("eth"))
         print("fund 0.1 eth to address", eth_addr)
         send_transaction(geth, {"to": eth_addr, "value": 10**17}, KEYS["validator"])
-        acc_addr = gorc.show_cosmos_addr("cronos")
-        print("fund 100cro to address", acc_addr)
-        rsp = cronos.cosmos_cli().transfer(
-            "community", acc_addr, "%dbasetcro" % (100 * (10**18))
+        acc_addr = gorc.show_cosmos_addr("merlin")
+        print("fund 100mer to address", acc_addr)
+        rsp = merlin.cosmos_cli().transfer(
+            "community", acc_addr, "%dbasetmer" % (100 * (10**18))
         )
         assert rsp["code"] == 0, rsp["raw_log"]
 
-        cli = cronos.cosmos_cli(i)
+        cli = merlin.cosmos_cli(i)
         val_addr = cli.address("validator", bech="val")
         val_acct_addr = cli.address("validator")
         nonce = int(cli.account(val_acct_addr)["base_account"]["sequence"])
@@ -214,15 +214,15 @@ def gravity(cronos, geth):
     # a) add process into the supervisord config file
     # b) reload supervisord
     programs = {}
-    for i, val in enumerate(cronos.config["validators"]):
+    for i, val in enumerate(merlin.config["validators"]):
         # update gravity contract in gorc config
-        gorc_config_path = cronos.base_dir / f"node{i}/gorc.toml"
+        gorc_config_path = merlin.base_dir / f"node{i}/gorc.toml"
         update_gravity_contract(gorc_config_path, contract.address)
 
         programs[f"program:{chain_id}-orchestrator{i}"] = {
             "command": (
                 f'gorc -c "{gorc_config_path}" orchestrator start '
-                "--cosmos-key cronos --ethereum-key eth --mode AlwaysRelay"
+                "--cosmos-key merlin --ethereum-key eth --mode AlwaysRelay"
             ),
             "environment": "RUST_BACKTRACE=full",
             "autostart": "true",
@@ -232,16 +232,16 @@ def gravity(cronos, geth):
             "stdout_logfile": f"%(here)s/orchestrator{i}.log",
         }
 
-    add_ini_sections(cronos.base_dir / "tasks.ini", programs)
-    cronos.supervisorctl("update")
+    add_ini_sections(merlin.base_dir / "tasks.ini", programs)
+    merlin.supervisorctl("update")
 
-    yield GravityBridge(cronos, geth, contract)
+    yield GravityBridge(merlin, geth, contract)
 
 
 def test_gravity_transfer(gravity):
     geth = gravity.geth
-    cli = gravity.cronos.cosmos_cli()
-    cronos_w3 = gravity.cronos.w3
+    cli = gravity.merlin.cosmos_cli()
+    merlin_w3 = gravity.merlin.w3
 
     # deploy test erc20 contract
     erc20 = deploy_contract(
@@ -253,7 +253,7 @@ def test_gravity_transfer(gravity):
     assert balance == 100000000000000000000000000
     amount = 1000
 
-    print("send to cronos crc20")
+    print("send to merlin crc20")
     recipient = HexBytes(ADDRS["community"])
     txreceipt = send_to_cosmos(
         gravity.contract, erc20, geth, recipient, amount, KEYS["validator"]
@@ -267,13 +267,13 @@ def test_gravity_transfer(gravity):
         "check the balance of gravity native token"
         return cli.balance(eth_to_bech32(recipient), denom=denom) == amount
 
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         crc21_contract = None
 
         def local_check_auto_deployment():
             nonlocal crc21_contract
             crc21_contract = check_auto_deployment(
-                cli, denom, cronos_w3, recipient, amount
+                cli, denom, merlin_w3, recipient, amount
             )
             return crc21_contract
 
@@ -283,11 +283,11 @@ def test_gravity_transfer(gravity):
         tx = crc21_contract.functions.send_to_evm_chain(
             ADDRS["validator"], amount, 1, 0, b""
         ).build_transaction({"from": ADDRS["community"]})
-        txreceipt = send_transaction(cronos_w3, tx, KEYS["community"])
+        txreceipt = send_transaction(merlin_w3, tx, KEYS["community"])
         # CRC20 emit 3 logs for send_to_evm_chain:
         # burn
-        # __CronosSendToEvmChain
-        # __CronosSendToEvmChainResponse
+        # __MerlinSendToEvmChain
+        # __MerlinSendToEvmChainResponse
         assert len(txreceipt.logs) == 3
         data = "0x0000000000000000000000000000000000000000000000000000000000000001"
         match = get_id_from_receipt(txreceipt) == HexBytes(data)
@@ -309,9 +309,9 @@ def test_gravity_transfer(gravity):
 
 
 def test_multiple_attestation_processing(gravity):
-    if not gravity.cronos.enable_auto_deployment:
+    if not gravity.merlin.enable_auto_deployment:
         geth = gravity.geth
-        cli = gravity.cronos.cosmos_cli()
+        cli = gravity.merlin.cosmos_cli()
 
         # deploy test erc20 contract
         erc20 = deploy_contract(
@@ -372,17 +372,17 @@ def test_multiple_attestation_processing(gravity):
 def submit_proposal(cli, tmp_path, is_legacy, denom, conctract):
     if is_legacy:
         return cli.gov_propose_token_mapping_change_legacy(
-            denom, conctract, "", 0, from_="community", deposit="1basetcro"
+            denom, conctract, "", 0, from_="community", deposit="1basetmer"
         )
     proposal = tmp_path / "proposal.json"
     # governance module account as signer
-    signer = "crc10d07y265gmmuvt4z0w9aw880jnsr700jdufnyd"
+    signer = "did:fury:iaa10d07y265gmmuvt4z0w9aw880jnsr700jdufnyd"
     proposal_src = {
         "messages": [
             {
                 "@type": "/cosmos.gov.v1.MsgExecLegacyContent",
                 "content": {
-                    "@type": "/cronos.TokenMappingChangeProposal",
+                    "@type": "/merlin.TokenMappingChangeProposal",
                     "denom": denom,
                     "contract": conctract,
                     "symbol": "",
@@ -391,7 +391,7 @@ def submit_proposal(cli, tmp_path, is_legacy, denom, conctract):
                 "authority": signer,
             }
         ],
-        "deposit": "1basetcro",
+        "deposit": "1basetmer",
     }
     proposal.write_text(json.dumps(proposal_src))
     return cli.submit_gov_proposal(proposal, from_="community")
@@ -402,13 +402,13 @@ def test_gov_token_mapping(gravity, tmp_path, is_legacy):
     """
     Test adding a token mapping through gov module
     - deploy test erc20 contract on geth
-    - deploy corresponding contract on cronos
-    - add the token mapping on cronos using gov module
+    - deploy corresponding contract on merlin
+    - add the token mapping on merlin using gov module
     - do a gravity transfer, check the balances
     """
     geth = gravity.geth
-    cli = gravity.cronos.cosmos_cli()
-    cronos_w3 = gravity.cronos.w3
+    cli = gravity.merlin.cosmos_cli()
+    merlin_w3 = gravity.merlin.w3
 
     # deploy test erc20 contract
     erc20 = deploy_contract(
@@ -417,7 +417,7 @@ def test_gov_token_mapping(gravity, tmp_path, is_legacy):
     )
     print("erc20 contract", erc20.address)
     crc21 = deploy_contract(
-        cronos_w3,
+        merlin_w3,
         CONTRACTS["TestERC20Utility"],
     )
     print("crc21 contract", crc21.address)
@@ -430,14 +430,14 @@ def test_gov_token_mapping(gravity, tmp_path, is_legacy):
     rsp = submit_proposal(cli, tmp_path, is_legacy, denom, crc21.address)
     assert rsp["code"] == 0, rsp["raw_log"]
 
-    approve_proposal(gravity.cronos, rsp)
+    approve_proposal(gravity.merlin, rsp)
 
     print("check the contract mapping exists now")
     rsp = cli.query_contract_by_denom(denom)
     print("contract", rsp)
     assert rsp["contract"] == crc21.address
 
-    print("try to send token from ethereum to cronos")
+    print("try to send token from ethereum to merlin")
     txreceipt = send_to_cosmos(
         gravity.contract, erc20, geth, ADDRS["community"], 10, KEYS["validator"]
     )
@@ -448,20 +448,20 @@ def test_gov_token_mapping(gravity, tmp_path, is_legacy):
         print("crc20 balance", balance)
         return balance == 10
 
-    wait_for_fn("check balance on cronos", check)
+    wait_for_fn("check balance on merlin", check)
 
 
 def test_direct_token_mapping(gravity):
     """
     Test adding a token mapping directly
     - deploy test erc20 contract on geth
-    - deploy corresponding contract on cronos
-    - add the token mapping on cronos using gov module
+    - deploy corresponding contract on merlin
+    - add the token mapping on merlin using gov module
     - do a gravity transfer, check the balances
     """
     geth = gravity.geth
-    cli = gravity.cronos.cosmos_cli()
-    cronos_w3 = gravity.cronos.w3
+    cli = gravity.merlin.cosmos_cli()
+    merlin_w3 = gravity.merlin.w3
 
     # deploy test erc20 contract
     erc20 = deploy_contract(
@@ -470,7 +470,7 @@ def test_direct_token_mapping(gravity):
     )
     print("erc20 contract", erc20.address)
     crc21 = deploy_contract(
-        cronos_w3,
+        merlin_w3,
         CONTRACTS["TestERC20Utility"],
     )
     print("crc21 contract", crc21.address)
@@ -492,7 +492,7 @@ def test_direct_token_mapping(gravity):
     print("contract", rsp)
     assert rsp["contract"] == crc21.address
 
-    print("try to send token from ethereum to cronos")
+    print("try to send token from ethereum to merlin")
     txreceipt = send_to_cosmos(
         gravity.contract, erc20, geth, ADDRS["community"], 10, KEYS["validator"]
     )
@@ -503,14 +503,14 @@ def test_direct_token_mapping(gravity):
         print("crc20 balance", balance)
         return balance == 10
 
-    wait_for_fn("check balance on cronos", check)
+    wait_for_fn("check balance on merlin", check)
 
 
 def test_gravity_cancel_transfer(gravity):
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         geth = gravity.geth
-        cli = gravity.cronos.cosmos_cli()
-        cronos_w3 = gravity.cronos.w3
+        cli = gravity.merlin.cosmos_cli()
+        merlin_w3 = gravity.merlin.w3
 
         # deploy test erc20 contract
         erc20 = deploy_contract(
@@ -520,15 +520,15 @@ def test_gravity_cancel_transfer(gravity):
 
         # deploy gravity cancellation contract
         cancel_contract = deploy_contract(
-            cronos_w3,
-            CONTRACTS["CronosGravityCancellation"],
+            merlin_w3,
+            CONTRACTS["MerlinGravityCancellation"],
         )
 
         balance = erc20.caller.balanceOf(ADDRS["validator"])
         assert balance == 100000000000000000000000000
         amount = 1000
 
-        print("send to cronos crc21")
+        print("send to merlin crc21")
         community = HexBytes(ADDRS["community"])
         key = KEYS["validator"]
         send_to_cosmos(gravity.contract, erc20, geth, community, amount, key)
@@ -540,7 +540,7 @@ def test_gravity_cancel_transfer(gravity):
         def local_check_auto_deployment():
             nonlocal crc21_contract
             crc21_contract = check_auto_deployment(
-                cli, denom, cronos_w3, community, amount
+                cli, denom, merlin_w3, community, amount
             )
             return crc21_contract
 
@@ -549,7 +549,7 @@ def test_gravity_cancel_transfer(gravity):
         # batch are created every 10 blocks, wait til block number reaches
         # a multiple of 10 to lower the chance to have the transaction include
         # in the batch right away
-        current_block = cronos_w3.eth.get_block_number()
+        current_block = merlin_w3.eth.get_block_number()
         print("current_block: ", current_block)
         batch_block = 10
         diff_block = batch_block - current_block % batch_block
@@ -559,11 +559,11 @@ def test_gravity_cancel_transfer(gravity):
         tx = crc21_contract.functions.send_to_evm_chain(
             ADDRS["validator"], amount, 1, 0, b""
         ).build_transaction({"from": community})
-        txreceipt = send_transaction(cronos_w3, tx, KEYS["community"])
+        txreceipt = send_transaction(merlin_w3, tx, KEYS["community"])
         # CRC20 emit 3 logs for send_to_evm_chain:
         # burn
-        # __CronosSendToEvmChain
-        # __CronosSendToEvmChainResponse
+        # __MerlinSendToEvmChain
+        # __MerlinSendToEvmChainResponse
         assert len(txreceipt.logs) == 3
         tx_id = get_id_from_receipt(txreceipt)
         assert txreceipt.status == 1, "should success"
@@ -576,14 +576,14 @@ def test_gravity_cancel_transfer(gravity):
         canceltx = cancel_contract.functions.cancelTransaction(
             int.from_bytes(tx_id, "big")
         ).build_transaction({"from": community})
-        canceltxreceipt = send_transaction(cronos_w3, canceltx, KEYS["community"])
+        canceltxreceipt = send_transaction(merlin_w3, canceltx, KEYS["community"])
         # Should fail because it was not called from the CRC21 contract
         assert canceltxreceipt.status == 0, "should fail"
 
         canceltx = crc21_contract.functions.cancel_send_to_evm_chain(
             int.from_bytes(tx_id, "big")
         ).build_transaction({"from": community})
-        canceltxreceipt = send_transaction(cronos_w3, canceltx, KEYS["community"])
+        canceltxreceipt = send_transaction(merlin_w3, canceltx, KEYS["community"])
         assert canceltxreceipt.status == 1, "should success"
 
         def check_refund():
@@ -594,29 +594,29 @@ def test_gravity_cancel_transfer(gravity):
 
 
 def test_gravity_source_tokens(gravity):
-    if not gravity.cronos.enable_auto_deployment:
+    if not gravity.merlin.enable_auto_deployment:
         # deploy crc21 contract
-        w3 = gravity.cronos.w3
+        w3 = gravity.merlin.w3
         contract = deploy_contract(w3, CONTRACTS["TestERC21Source"])
 
         # setup the contract mapping
-        cronos_cli = gravity.cronos.cosmos_cli()
+        merlin_cli = gravity.merlin.cosmos_cli()
 
         print("crc21 contract", contract.address)
-        denom = f"cronos{contract.address}"
+        denom = f"merlin{contract.address}"
 
         print("check the contract mapping not exists yet")
         with pytest.raises(AssertionError):
-            cronos_cli.query_contract_by_denom(denom)
+            merlin_cli.query_contract_by_denom(denom)
 
-        rsp = cronos_cli.update_token_mapping(
+        rsp = merlin_cli.update_token_mapping(
             denom, contract.address, "DOG", 6, from_="validator"
         )
         assert rsp["code"] == 0, rsp["raw_log"]
-        wait_for_new_blocks(cronos_cli, 1)
+        wait_for_new_blocks(merlin_cli, 1)
 
         print("check the contract mapping exists now")
-        rsp = cronos_cli.query_denom_by_contract(contract.address)
+        rsp = merlin_cli.query_denom_by_contract(contract.address)
         assert rsp["denom"] == denom
 
         # Create cosmos erc20 contract
@@ -627,10 +627,10 @@ def test_gravity_source_tokens(gravity):
         assert tx_receipt.status == 1, "should success"
 
         # Wait enough for orchestrator to relay the event
-        wait_for_new_blocks(cronos_cli, 30)
+        wait_for_new_blocks(merlin_cli, 30)
 
         # Check mapping is done on gravity side
-        cosmos_erc20 = cronos_cli.query_gravity_contract_by_denom(denom)
+        cosmos_erc20 = merlin_cli.query_gravity_contract_by_denom(denom)
         print("cosmos_erc20:", cosmos_erc20)
         assert cosmos_erc20 != ""
         cosmos_erc20_contract = get_contract(
@@ -665,15 +665,15 @@ def test_gravity_source_tokens(gravity):
             balance_after_send_to_ethereum == balance_before_send_to_ethereum + amount
         )
 
-        # Send back token to cronos
-        cronos_receiver = "0x0000000000000000000000000000000000000001"
-        balance_before_send_to_cosmos = contract.caller.balanceOf(cronos_receiver)
+        # Send back token to merlin
+        merlin_receiver = "0x0000000000000000000000000000000000000001"
+        balance_before_send_to_cosmos = contract.caller.balanceOf(merlin_receiver)
         amount = 15
         txreceipt = send_to_cosmos(
             gravity.contract,
             cosmos_erc20_contract,
             gravity.geth,
-            HexBytes(cronos_receiver),
+            HexBytes(merlin_receiver),
             amount,
             KEYS["validator"],
         )
@@ -681,20 +681,20 @@ def test_gravity_source_tokens(gravity):
 
         balance_after_send_to_cosmos = balance_before_send_to_cosmos
 
-        def check_cronos_balance_change():
+        def check_merlin_balance_change():
             nonlocal balance_after_send_to_cosmos
-            balance_after_send_to_cosmos = contract.caller.balanceOf(cronos_receiver)
+            balance_after_send_to_cosmos = contract.caller.balanceOf(merlin_receiver)
             return balance_before_send_to_cosmos != balance_after_send_to_cosmos
 
-        wait_for_fn("check cronos balance change", check_cronos_balance_change)
+        wait_for_fn("check merlin balance change", check_merlin_balance_change)
         assert balance_after_send_to_cosmos == balance_before_send_to_cosmos + amount
 
 
 def test_gravity_blacklisted_contract(gravity):
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         geth = gravity.geth
-        cli = gravity.cronos.cosmos_cli()
-        cronos_w3 = gravity.cronos.w3
+        cli = gravity.merlin.cosmos_cli()
+        merlin_w3 = gravity.merlin.w3
 
         # deploy test blacklisted contract with signer1 as blacklisted
         erc20 = deploy_contract(
@@ -707,7 +707,7 @@ def test_gravity_blacklisted_contract(gravity):
         assert balance == 100000000000000000000000000
         amount = 1000
 
-        print("send to cronos crc20")
+        print("send to merlin crc20")
         recipient = HexBytes(ADDRS["community"])
         txreceipt = send_to_cosmos(
             gravity.contract, erc20, geth, recipient, amount, KEYS["validator"]
@@ -721,7 +721,7 @@ def test_gravity_blacklisted_contract(gravity):
         def local_check_auto_deployment():
             nonlocal crc21_contract
             crc21_contract = check_auto_deployment(
-                cli, denom, cronos_w3, recipient, amount
+                cli, denom, merlin_w3, recipient, amount
             )
             return crc21_contract
 
@@ -735,7 +735,7 @@ def test_gravity_blacklisted_contract(gravity):
         tx = crc21_contract.functions.send_to_evm_chain(
             ADDRS["signer1"], amount, 1, 0, b""
         ).build_transaction({"from": ADDRS["community"]})
-        txreceipt = send_transaction(cronos_w3, tx, KEYS["community"])
+        txreceipt = send_transaction(merlin_w3, tx, KEYS["community"])
         assert txreceipt.status == 1, "should success"
 
         def check():
@@ -785,8 +785,8 @@ def test_gravity_blacklisted_contract(gravity):
 
 def test_gravity_turn_bridge(gravity):
     geth = gravity.geth
-    cli = gravity.cronos.cosmos_cli()
-    cronos_w3 = gravity.cronos.w3
+    cli = gravity.merlin.cosmos_cli()
+    merlin_w3 = gravity.merlin.w3
 
     # deploy test erc20 contract
     erc20 = deploy_contract(
@@ -798,7 +798,7 @@ def test_gravity_turn_bridge(gravity):
     assert balance == 100000000000000000000000000
     amount = 1000
 
-    print("send to cronos crc20")
+    print("send to merlin crc20")
     recipient = HexBytes(ADDRS["community"])
     txreceipt = send_to_cosmos(
         gravity.contract, erc20, geth, recipient, amount, KEYS["validator"]
@@ -812,13 +812,13 @@ def test_gravity_turn_bridge(gravity):
         "check the balance of gravity native token"
         return cli.balance(eth_to_bech32(recipient), denom=denom) == amount
 
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         crc21_contract = None
 
         def local_check_auto_deployment():
             nonlocal crc21_contract
             crc21_contract = check_auto_deployment(
-                cli, denom, cronos_w3, recipient, amount
+                cli, denom, merlin_w3, recipient, amount
             )
             return crc21_contract
 
@@ -834,12 +834,12 @@ def test_gravity_turn_bridge(gravity):
     assert rsp["code"] == 0, rsp["raw_log"]
     wait_for_new_blocks(cli, 1)
 
-    if gravity.cronos.enable_auto_deployment:
+    if gravity.merlin.enable_auto_deployment:
         # send it back to erc20, should fail
         tx = crc21_contract.functions.send_to_evm_chain(
             ADDRS["validator"], amount, 1, 0, b""
         ).build_transaction({"from": ADDRS["community"]})
-        txreceipt = send_transaction(cronos_w3, tx, KEYS["community"])
+        txreceipt = send_transaction(merlin_w3, tx, KEYS["community"])
         assert txreceipt.status == 0, "should fail"
     else:
         # send back the gravity native tokens, should fail

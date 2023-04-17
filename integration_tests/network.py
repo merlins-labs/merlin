@@ -13,19 +13,19 @@ from .cosmoscli import CosmosCLI
 from .utils import supervisorctl, wait_for_port
 
 
-class Cronos:
-    def __init__(self, base_dir, chain_binary="cronosd"):
+class Merlin:
+    def __init__(self, base_dir, chain_binary="merlind"):
         self._w3 = None
         self.base_dir = base_dir
         self.config = json.loads((base_dir / "config.json").read_text())
         self.enable_auto_deployment = json.loads(
             (base_dir / "genesis.json").read_text()
-        )["app_state"]["cronos"]["params"]["enable_auto_deployment"]
+        )["app_state"]["merlin"]["params"]["enable_auto_deployment"]
         self._use_websockets = False
         self.chain_binary = chain_binary
 
     def copy(self):
-        return Cronos(self.base_dir)
+        return Merlin(self.base_dir)
 
     def w3_http_endpoint(self, i=0):
         port = ports.evmrpc_port(self.base_port(i))
@@ -94,13 +94,13 @@ class Geth:
         self.w3 = w3
 
 
-def setup_cronos(path, base_port, enable_auto_deployment=True):
+def setup_merlin(path, base_port, enable_auto_deployment=True):
     cfg = Path(__file__).parent / (
         "configs/default.jsonnet"
         if enable_auto_deployment
         else "configs/disable_auto_deployment.jsonnet"
     )
-    yield from setup_custom_cronos(path, base_port, cfg)
+    yield from setup_custom_merlin(path, base_port, cfg)
 
 
 def setup_geth(path, base_port):
@@ -134,18 +134,18 @@ def setup_geth(path, base_port):
 
 
 class GravityBridge:
-    cronos: Cronos
+    merlin: Merlin
     geth: Geth
     # gravity contract deployed on geth
     contract: web3.contract.Contract
 
-    def __init__(self, cronos, geth, contract):
-        self.cronos = cronos
+    def __init__(self, merlin, geth, contract):
+        self.merlin = merlin
         self.geth = geth
         self.contract = contract
 
 
-def setup_custom_cronos(
+def setup_custom_merlin(
     path, base_port, config, post_init=None, chain_binary=None, wait_port=True
 ):
     cmd = [
@@ -173,7 +173,7 @@ def setup_custom_cronos(
         if wait_port:
             wait_for_port(ports.evmrpc_port(base_port))
             wait_for_port(ports.evmrpc_ws_port(base_port))
-        yield Cronos(path / "cronos_777-1", chain_binary=chain_binary or "cronosd")
+        yield Merlin(path / "merlin_777-1", chain_binary=chain_binary or "merlind")
     finally:
         os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
         # proc.terminate()

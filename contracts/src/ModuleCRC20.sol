@@ -3,12 +3,12 @@ pragma solidity ^0.6.8;
 import "ds-token/token.sol";
 
 contract ModuleCRC20 is DSToken  {
-    // sha256('cronos-evm')[:20]
+    // sha256('merlin-evm')[:20]
     address constant module_address = 0x89A7EF2F08B1c018D5Cc88836249b84Dd5392905;
     string denom;
 
-    event __CronosSendToEthereum(address recipient, uint256 amount, uint256 bridge_fee);
-    event __CronosSendToIbc(address sender, string recipient, uint256 amount);
+    event __MerlinSendToEthereum(address recipient, uint256 amount, uint256 bridge_fee);
+    event __MerlinSendToIbc(address sender, string recipient, uint256 amount);
 
     constructor(string memory denom_, uint8 decimals_) DSToken(denom_) public {
         decimals = decimals_;
@@ -28,12 +28,12 @@ contract ModuleCRC20 is DSToken  {
         return denom;
     }
 
-    function mint_by_cronos_module(address addr, uint amount) public {
+    function mint_by_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         mint(addr, amount);
     }
 
-    function burn_by_cronos_module(address addr, uint amount) public {
+    function burn_by_merlin_module(address addr, uint amount) public {
         require(msg.sender == module_address);
         unsafe_burn(addr, amount);
     }
@@ -41,12 +41,12 @@ contract ModuleCRC20 is DSToken  {
     // send to ethereum through gravity bridge
     function send_to_ethereum(address recipient, uint amount, uint bridge_fee) external {
         unsafe_burn(msg.sender, add(amount, bridge_fee));
-        emit __CronosSendToEthereum(recipient, amount, bridge_fee);
+        emit __MerlinSendToEthereum(recipient, amount, bridge_fee);
     }
 
     // send an "amount" of the contract token to recipient through IBC
     function send_to_ibc(string memory recipient, uint amount) public {
         unsafe_burn(msg.sender, amount);
-        emit __CronosSendToIbc(msg.sender, recipient, amount);
+        emit __MerlinSendToIbc(msg.sender, recipient, amount);
     }
 }

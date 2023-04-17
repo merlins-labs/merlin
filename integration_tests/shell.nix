@@ -4,7 +4,7 @@ pkgs.mkShell {
     pkgs.jq
     pkgs.go
     pkgs.gomod2nix
-    (pkgs.callPackage ../. { coverage = true; }) # cronosd
+    (pkgs.callPackage ../. { coverage = true; }) # merlind
     pkgs.start-scripts
     pkgs.go-ethereum
     pkgs.gorc

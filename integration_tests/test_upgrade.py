@@ -8,7 +8,7 @@ import pytest
 from pystarport import ports
 from pystarport.cluster import SUPERVISOR_CONFIG_FILE
 
-from .network import Cronos, setup_custom_cronos
+from .network import Merlin, setup_custom_merlin
 from .utils import (
     ADDRS,
     CONTRACTS,
@@ -34,7 +34,7 @@ def post_init(path, base_port, config):
     """
     prepare cosmovisor for each node
     """
-    chain_id = "cronos_777-1"
+    chain_id = "merlin_777-1"
     cfg = json.loads((path / chain_id / "config.json").read_text())
     for i, _ in enumerate(cfg["validators"]):
         home = path / chain_id / f"node{i}"
@@ -52,7 +52,7 @@ def post_init(path, base_port, config):
             ini[section].update(
                 {
                     "command": f"cosmovisor start --home %(here)s/node{i}",
-                    "environment": f"DAEMON_NAME=cronosd,DAEMON_HOME=%(here)s/node{i}",
+                    "environment": f"DAEMON_NAME=merlind,DAEMON_HOME=%(here)s/node{i}",
                 }
             )
     with ini_path.open("w") as fp:
@@ -60,7 +60,7 @@ def post_init(path, base_port, config):
 
 
 @pytest.fixture(scope="module")
-def custom_cronos(tmp_path_factory):
+def custom_merlin(tmp_path_factory):
     path = tmp_path_factory.mktemp("upgrade")
     cmd = [
         "nix-build",
@@ -71,27 +71,27 @@ def custom_cronos(tmp_path_factory):
     print(*cmd)
     subprocess.run(cmd, check=True)
     # init with genesis binary
-    yield from setup_custom_cronos(
+    yield from setup_custom_merlin(
         path,
         26100,
         Path(__file__).parent / "configs/cosmovisor.jsonnet",
         post_init=post_init,
-        chain_binary=str(path / "upgrades/genesis/bin/cronosd"),
+        chain_binary=str(path / "upgrades/genesis/bin/merlind"),
     )
 
 
-def test_cosmovisor_upgrade(custom_cronos: Cronos):
+def test_cosmovisor_upgrade(custom_merlin: Merlin):
     """
     - propose an upgrade and pass it
     - wait for it to happen
     - it should work transparently
     """
-    cli = custom_cronos.cosmos_cli()
+    cli = custom_merlin.cosmos_cli()
     height = cli.block_height()
     target_height = height + 15
     print("upgrade height", target_height)
 
-    w3 = custom_cronos.w3
+    w3 = custom_merlin.w3
     contract = deploy_contract(w3, CONTRACTS["TestERC20A"])
     old_height = w3.eth.block_number
     old_balance = w3.eth.get_balance(ADDRS["validator"], block_identifier=old_height)
@@ -110,30 +110,30 @@ def test_cosmovisor_upgrade(custom_cronos: Cronos):
             "title": "upgrade test",
             "description": "ditto",
             "upgrade-height": target_height,
-            "deposit": "10000basetcro",
+            "deposit": "10000basetmer",
         },
     )
     assert rsp["code"] == 0, rsp["raw_log"]
-    approve_proposal(custom_cronos, rsp)
+    approve_proposal(custom_merlin, rsp)
 
     # update cli chain binary
-    custom_cronos.chain_binary = (
-        Path(custom_cronos.chain_binary).parent.parent.parent
-        / f"{plan_name}/bin/cronosd"
+    custom_merlin.chain_binary = (
+        Path(custom_merlin.chain_binary).parent.parent.parent
+        / f"{plan_name}/bin/merlind"
     )
-    cli = custom_cronos.cosmos_cli()
+    cli = custom_merlin.cosmos_cli()
 
     # block should pass the target height
     wait_for_block(cli, target_height + 2, timeout=480)
-    wait_for_port(ports.rpc_port(custom_cronos.base_port(0)))
+    wait_for_port(ports.rpc_port(custom_merlin.base_port(0)))
 
     # test migrate keystore
     cli.migrate_keystore()
 
     # check basic tx works
-    wait_for_port(ports.evmrpc_port(custom_cronos.base_port(0)))
+    wait_for_port(ports.evmrpc_port(custom_merlin.base_port(0)))
     receipt = send_transaction(
-        custom_cronos.w3,
+        custom_merlin.w3,
         {
             "to": ADDRS["community"],
             "value": 1000,
@@ -157,7 +157,7 @@ def test_cosmovisor_upgrade(custom_cronos: Cronos):
     # check gravity params
     assert cli.query_gravity_params() == {
         "params": {
-            "gravity_id": "cronos_gravity_testnet",
+            "gravity_id": "merlin_gravity_testnet",
             "contract_source_hash": "",
             "bridge_ethereum_address": "0x0000000000000000000000000000000000000000",
             "bridge_chain_id": "0",

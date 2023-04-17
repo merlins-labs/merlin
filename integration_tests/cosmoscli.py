@@ -11,7 +11,7 @@ from dateutil.parser import isoparse
 from pystarport.utils import build_cli_args_safe, format_doc_string, interact
 
 # the default initial base fee used by integration tests
-DEFAULT_GAS_PRICE = "100000000000basetcro"
+DEFAULT_GAS_PRICE = "100000000000basetmer"
 DEFAULT_GAS = "250000"
 
 
@@ -35,7 +35,7 @@ def module_address(name):
     :param name: name of module account, values: {options}
     """
     data = hashlib.sha256(ModuleAccount(name).value.encode()).digest()[:20]
-    return bech32.bech32_encode("cro", bech32.convertbits(data, 8, 5))
+    return bech32.bech32_encode("mer", bech32.convertbits(data, 8, 5))
 
 
 class ChainCommand:
@@ -165,7 +165,7 @@ class CosmosCLI:
             )
         )["balances"]
 
-    def balance(self, addr, denom="basetcro", height=0):
+    def balance(self, addr, denom="basetmer", height=0):
         denoms = {
             coin["denom"]: int(coin["amount"])
             for coin in self.balances(addr, height=height)
@@ -1008,8 +1008,8 @@ class CosmosCLI:
 
     def set_delegate_keys(self, val_addr, acc_addr, eth_addr, signature, **kwargs):
         """
-        val_addr: cronos validator address
-        acc_addr: orchestrator's cronos address
+        val_addr: merlin validator address
+        acc_addr: orchestrator's merlin address
         eth_addr: orchestrator's ethereum address
         """
         kwargs.setdefault("gas_prices", DEFAULT_GAS_PRICE)
@@ -1072,7 +1072,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "query",
-                "cronos",
+                "merlin",
                 "contract-by-denom",
                 denom,
                 home=self.data_dir,
@@ -1084,7 +1084,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "query",
-                "cronos",
+                "merlin",
                 "denom-by-contract",
                 contract,
                 home=self.data_dir,
@@ -1166,7 +1166,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "tx",
-                "cronos",
+                "merlin",
                 "update-token-mapping",
                 denom,
                 contract,
@@ -1202,7 +1202,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "tx",
-                "cronos",
+                "merlin",
                 "transfer-tokens",
                 from_,
                 to,
@@ -1466,7 +1466,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "tx",
-                "cronos",
+                "merlin",
                 "turn-bridge",
                 enable,
                 "-y",
@@ -1476,11 +1476,11 @@ class CosmosCLI:
         )
 
     def query_params(self):
-        "query cronos params"
+        "query merlin params"
         return json.loads(
             self.raw(
                 "query",
-                "cronos",
+                "merlin",
                 "params",
                 home=self.data_dir,
             )
@@ -1505,7 +1505,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "query",
-                "cronos",
+                "merlin",
                 "permissions",
                 address,
                 home=self.data_dir,
@@ -1518,7 +1518,7 @@ class CosmosCLI:
         return json.loads(
             self.raw(
                 "tx",
-                "cronos",
+                "merlin",
                 "update-permissions",
                 address,
                 permissions,

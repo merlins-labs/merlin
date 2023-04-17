@@ -1,10 +1,10 @@
 local config = import 'default.jsonnet';
 
 config {
-  'cronos_777-1'+: {
+  'merlin_777-1'+: {
     'app-config'+: {
       'app-db-backend': 'rocksdb',
-      'minimum-gas-prices': '100000000000basetcro',
+      'minimum-gas-prices': '100000000000basetmer',
       store:: super.store,
       streamers:: super.streamers,
       'iavl-lazy-loading':: super['iavl-lazy-loading'],

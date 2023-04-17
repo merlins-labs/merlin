@@ -4,7 +4,7 @@ info:
   description: A REST interface for state queries
   version: 1.0.0
 paths:
-  /cronos/v1/contract_by_denom/{denom}:
+  /merlin/v1/contract_by_denom/{denom}:
     get:
       summary: ContractByDenom queries contract addresses by native denom
       operationId: ContractByDenom
@@ -217,7 +217,7 @@ paths:
           type: string
       tags:
         - Query
-  /cronos/v1/denom_by_contract/{contract}:
+  /merlin/v1/denom_by_contract/{contract}:
     get:
       summary: DenomByContract queries native denom by contract address
       operationId: DenomByContract
@@ -428,7 +428,7 @@ paths:
           type: string
       tags:
         - Query
-  /cronos/v1/params:
+  /merlin/v1/params:
     get:
       summary: Params queries all parameters.
       operationId: EvmParams
@@ -442,12 +442,12 @@ paths:
                 description: params defines the parameters of the module.
                 type: object
                 properties:
-                  ibc_cro_denom:
+                  ibc_mer_denom:
                     type: string
                   ibc_timeout:
                     type: string
                     format: uint64
-                  cronos_admin:
+                  merlin_admin:
                     type: string
                     title: the admin address who can update token mapping
                   enable_auto_deployment:
@@ -646,7 +646,7 @@ paths:
                         }
       tags:
         - Query
-  /cronos/v1/permissions:
+  /merlin/v1/permissions:
     get:
       summary: Params queries permissions for a specific address..
       operationId: Permissions
@@ -40729,7 +40729,7 @@ paths:
       tags:
         - Query
 definitions:
-  cronos.ContractByDenomResponse:
+  merlin.ContractByDenomResponse:
     type: object
     properties:
       contract:
@@ -40737,45 +40737,45 @@ definitions:
       auto_contract:
         type: string
     title: ContractByDenomRequest is the response type of ContractByDenom call
-  cronos.DenomByContractResponse:
+  merlin.DenomByContractResponse:
     type: object
     properties:
       denom:
         type: string
     title: DenomByContractResponse is the response type of DenomByContract call
-  cronos.Params:
+  merlin.Params:
     type: object
     properties:
-      ibc_cro_denom:
+      ibc_mer_denom:
         type: string
       ibc_timeout:
         type: string
         format: uint64
-      cronos_admin:
+      merlin_admin:
         type: string
         title: the admin address who can update token mapping
       enable_auto_deployment:
         type: boolean
-    description: Params defines the parameters for the cronos module.
-  cronos.QueryParamsResponse:
+    description: Params defines the parameters for the merlin module.
+  merlin.QueryParamsResponse:
     type: object
     properties:
       params:
         description: params defines the parameters of the module.
         type: object
         properties:
-          ibc_cro_denom:
+          ibc_mer_denom:
             type: string
           ibc_timeout:
             type: string
             format: uint64
-          cronos_admin:
+          merlin_admin:
             type: string
             title: the admin address who can update token mapping
           enable_auto_deployment:
             type: boolean
     description: QueryParamsResponse is the response type for the Query/Params RPC method.
-  cronos.QueryPermissionsResponse:
+  merlin.QueryPermissionsResponse:
     type: object
     properties:
       can_change_token_mapping:
@@ -40785,7 +40785,7 @@ definitions:
     description: >-
       QueryPermissionsResponse is the response type for the Query/Permissions
       RPC method.
-  cronos.ReplayBlockResponse:
+  merlin.ReplayBlockResponse:
     type: object
     properties:
       responses:

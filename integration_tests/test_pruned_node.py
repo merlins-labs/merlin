@@ -6,7 +6,7 @@ from eth_utils import abi, big_endian_to_int
 from hexbytes import HexBytes
 from web3.datastructures import AttributeDict
 
-from .network import setup_custom_cronos
+from .network import setup_custom_merlin
 from .utils import (
     ADDRS,
     CONTRACTS,
@@ -18,22 +18,22 @@ from .utils import (
 
 
 @pytest.fixture(scope="module")
-def cronos(request, tmp_path_factory):
-    """start-cronos
+def merlin(request, tmp_path_factory):
+    """start-merlin
     params: enable_auto_deployment
     """
-    yield from setup_custom_cronos(
+    yield from setup_custom_merlin(
         tmp_path_factory.mktemp("pruned"),
         26900,
         Path(__file__).parent / "configs/pruned-node.jsonnet",
     )
 
 
-def test_pruned_node(cronos):
+def test_pruned_node(merlin):
     """
     test basic json-rpc apis works in pruned node
     """
-    w3 = cronos.w3
+    w3 = merlin.w3
     erc20 = deploy_contract(
         w3,
         CONTRACTS["TestERC20A"],
@@ -47,7 +47,7 @@ def test_pruned_node(cronos):
     exp_gas_used = 51520
 
     print("wait for prunning happens")
-    wait_for_new_blocks(cronos.cosmos_cli(0), 10)
+    wait_for_new_blocks(merlin.cosmos_cli(0), 10)
 
     print("wait for transaction receipt", txhash.hex())
     txreceipt = w3.eth.wait_for_transaction_receipt(txhash)

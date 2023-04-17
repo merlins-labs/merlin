@@ -40,7 +40,7 @@ jobs:
       - uses: cachix/cachix-action@v12
         if: steps.changed-files.outputs.only_changed == 'false'
         with:
-          name: cronos
+          name: merlin
           extraPullNames: dapp
           # github don't pass secrets for pull request from fork repos,
           # in that case the push is disabled naturally.
@@ -98,7 +98,7 @@ jobs:
       - uses: cachix/cachix-action@v12
         if: steps.changed-files.outputs.only_changed == 'false'
         with:
-          name: cronos
+          name: merlin
           extraPullNames: dapp
           # github don't pass secrets for pull request from fork repos,
           # in that case the push is disabled naturally.

@@ -35,7 +35,7 @@ ACCOUNTS = {
 }
 KEYS = {name: account.key for name, account in ACCOUNTS.items()}
 ADDRS = {name: account.address for name, account in ACCOUNTS.items()}
-CRONOS_ADDRESS_PREFIX = "crc"
+MERLIN_ADDRESS_PREFIX = "crc"
 TEST_CONTRACTS = {
     "Gravity": "Gravity.sol",
     "Greeter": "Greeter.sol",
@@ -46,7 +46,7 @@ TEST_CONTRACTS = {
     "TestMessageCall": "TestMessageCall.sol",
     "TestBlackListERC20": "TestBlackListERC20.sol",
     "CroBridge": "CroBridge.sol",
-    "CronosGravityCancellation": "CronosGravityCancellation.sol",
+    "MerlinGravityCancellation": "MerlinGravityCancellation.sol",
     "TestCRC20": "TestCRC20.sol",
     "TestCRC20Proxy": "TestCRC20Proxy.sol",
     "TestMaliciousSupply": "TestMaliciousSupply.sol",
@@ -64,11 +64,11 @@ def contract_path(name, filename):
 
 CONTRACTS = {
     "ModuleCRC20": Path(__file__).parent.parent
-    / "x/cronos/types/contracts/ModuleCRC20.json",
+    / "x/merlin/types/contracts/ModuleCRC20.json",
     "ModuleCRC21": Path(__file__).parent.parent
-    / "x/cronos/types/contracts/ModuleCRC21.json",
+    / "x/merlin/types/contracts/ModuleCRC21.json",
     "ModuleCRC20Proxy": Path(__file__).parent.parent
-    / "x/cronos/types/contracts/ModuleCRC20Proxy.json",
+    / "x/merlin/types/contracts/ModuleCRC20Proxy.json",
     **{
         name: contract_path(name, filename) for name, filename in TEST_CONTRACTS.items()
     },
@@ -277,7 +277,7 @@ def bech32_to_eth(addr):
     return decode_bech32(addr).hex()
 
 
-def eth_to_bech32(addr, prefix=CRONOS_ADDRESS_PREFIX):
+def eth_to_bech32(addr, prefix=MERLIN_ADDRESS_PREFIX):
     bz = bech32.convertbits(HexBytes(addr), 8, 5)
     return bech32.bech32_encode(prefix, bz)
 
@@ -340,15 +340,15 @@ def send_transaction(w3, tx, key=KEYS["validator"]):
     return w3.eth.wait_for_transaction_receipt(txhash)
 
 
-def cronos_address_from_mnemonics(mnemonics, prefix=CRONOS_ADDRESS_PREFIX):
-    "return cronos address from mnemonics"
+def merlin_address_from_mnemonics(mnemonics, prefix=MERLIN_ADDRESS_PREFIX):
+    "return merlin address from mnemonics"
     acct = Account.from_mnemonic(mnemonics)
     return eth_to_bech32(acct.address, prefix)
 
 
 def send_to_cosmos(gravity_contract, token_contract, w3, recipient, amount, key=None):
     """
-    do approve and sendToCronos on ethereum side
+    do approve and sendToMerlin on ethereum side
     """
     acct = Account.from_key(key)
     txreceipt = send_transaction(
@@ -362,7 +362,7 @@ def send_to_cosmos(gravity_contract, token_contract, w3, recipient, amount, key=
 
     return send_transaction(
         w3,
-        gravity_contract.functions.sendToCronos(
+        gravity_contract.functions.sendToMerlin(
             token_contract.address, HexBytes(recipient), amount
         ).build_transaction({"from": acct.address}),
         key,
@@ -459,7 +459,7 @@ def modify_command_in_supervisor_config(ini: Path, fn, **kwargs):
     "replace the first node with the instrumented binary"
     ini.write_text(
         re.sub(
-            r"^command = (cronosd .*$)",
+            r"^command = (merlind .*$)",
             lambda m: f"command = {fn(m.group(1))}",
             ini.read_text(),
             flags=re.M,
@@ -493,7 +493,7 @@ def build_batch_tx(w3, cli, txs, key=KEYS["validator"]):
         "auth_info": {
             "signer_infos": [],
             "fee": {
-                "amount": [{"denom": "basetcro", "amount": str(fee)}],
+                "amount": [{"denom": "basetmer", "amount": str(fee)}],
                 "gas_limit": str(gas_limit),
                 "payer": "",
                 "granter": "",
@@ -506,7 +506,7 @@ def build_batch_tx(w3, cli, txs, key=KEYS["validator"]):
 def get_receipts_by_block(w3, blk):
     if isinstance(blk, int):
         blk = hex(blk)
-    rsp = w3.provider.make_request("cronos_getTransactionReceiptsByBlock", [blk])
+    rsp = w3.provider.make_request("merlin_getTransactionReceiptsByBlock", [blk])
     if "error" not in rsp:
         rsp["result"] = [
             AttributeDict(receipt_formatter(item)) for item in rsp["result"]
@@ -557,7 +557,7 @@ def multiple_send_to_cosmos(gcontract, tcontract, w3, recipient, amount, keys):
         assert txreceipt.status == 1, "approve failed"
 
         # generate the tx
-        tx = gcontract.functions.sendToCronos(
+        tx = gcontract.functions.sendToMerlin(
             tcontract.address, HexBytes(recipient), amount
         ).build_transaction({"from": acct_address})
         signed = sign_transaction(w3, tx, key_from)

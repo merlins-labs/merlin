@@ -1,14 +1,14 @@
 import time
 
 
-def test_create_account(cronos):
+def test_create_account(merlin):
     """
     test create vesting account tx works:
     """
-    cli = cronos.cosmos_cli()
+    cli = merlin.cosmos_cli()
     src = "vesting"
     addr = cli.create_account(src)["address"]
-    denom = "basetcro"
+    denom = "basetmer"
     balance = cli.balance(addr, denom)
     assert balance == 0
     amount = 10000

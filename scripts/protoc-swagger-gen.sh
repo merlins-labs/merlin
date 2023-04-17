@@ -5,7 +5,7 @@ set -eo pipefail
 mkdir -p ./tmp-swagger-gen
 
 cd proto
-echo "Generate cronos swagger files"
+echo "Generate merlin swagger files"
 proto_dirs=$(find ./ -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 for dir in $proto_dirs; do
   # generate swagger files (filter query files)
@@ -47,4 +47,4 @@ install_statik() {
 install_statik
 
 # generate binary for static server
-statik -src=./client/docs/swagger-ui -dest=./client/docs -f -ns cronos
+statik -src=./client/docs/swagger-ui -dest=./client/docs -f -ns merlin

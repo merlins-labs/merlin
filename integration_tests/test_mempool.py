@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from web3 import Web3
 
-from .network import setup_custom_cronos
+from .network import setup_custom_merlin
 from .utils import (
     ADDRS,
     CONTRACTS,
@@ -16,20 +16,20 @@ from .utils import (
 
 
 @pytest.fixture(scope="module")
-def cronos_mempool(tmp_path_factory):
-    path = tmp_path_factory.mktemp("cronos-mempool")
-    yield from setup_custom_cronos(
+def merlin_mempool(tmp_path_factory):
+    path = tmp_path_factory.mktemp("merlin-mempool")
+    yield from setup_custom_merlin(
         path, 26300, Path(__file__).parent / "configs/long_timeout_commit.jsonnet"
     )
 
 
 @pytest.mark.flaky
-def test_mempool(cronos_mempool):
-    w3: Web3 = cronos_mempool.w3
+def test_mempool(merlin_mempool):
+    w3: Web3 = merlin_mempool.w3
     filter = w3.eth.filter("pending")
     assert filter.get_new_entries() == []
 
-    cli = cronos_mempool.cosmos_cli(0)
+    cli = merlin_mempool.cosmos_cli(0)
     # test contract
     wait_for_new_blocks(cli, 1, sleep=0.1)
     block_num_2 = w3.eth.get_block_number()

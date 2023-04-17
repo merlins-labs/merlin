@@ -1,11 +1,11 @@
 { pkgs
 , config
-, cronos ? (import ../. { inherit pkgs; })
+, merlin ? (import ../. { inherit pkgs; })
 }: rec {
-  start-cronos = pkgs.writeShellScriptBin "start-cronos" ''
-    # rely on environment to provide cronosd
+  start-merlin = pkgs.writeShellScriptBin "start-merlin" ''
+    # rely on environment to provide merlind
     export PATH=${pkgs.test-env}/bin:$PATH
-    ${../scripts/start-cronos} ${config.cronos-config} ${config.dotenv} $@
+    ${../scripts/start-merlin} ${config.merlin-config} ${config.dotenv} $@
   '';
   start-geth = pkgs.writeShellScriptBin "start-geth" ''
     export PATH=${pkgs.test-env}/bin:${pkgs.go-ethereum}/bin:$PATH
@@ -14,6 +14,6 @@
   '';
   start-scripts = pkgs.symlinkJoin {
     name = "start-scripts";
-    paths = [ start-cronos start-geth ];
+    paths = [ start-merlin start-geth ];
   };
 }
