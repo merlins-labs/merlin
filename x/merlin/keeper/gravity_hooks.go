@@ -57,7 +57,7 @@ func (k Keeper) doAfterSendToCosmosEvent(ctx sdk.Context, event gravitytypes.Sen
 
 	_, denom := k.gravityKeeper.ERC20ToDenomLookup(ctx, common.HexToAddress(event.TokenContract))
 	coin := sdk.NewCoin(denom, event.Amount)
-	// TODO: Remove after event is emitted at Gravity module https://github.com/merlins-labs/gravity-bridge/pull/12
+	// TODO: Remove after event is emitted at Gravity module https://github.com/crypto-org-chain/gravity-bridge/pull/12
 	coins := sdk.Coins{sdk.NewCoin(denom, event.Amount)}
 	ctx.EventManager().EmitEvent(sdk.NewEvent(
 		merlintypes.EventTypeEthereumSendToCosmosHandled,

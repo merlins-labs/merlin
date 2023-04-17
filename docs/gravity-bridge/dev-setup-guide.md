@@ -6,7 +6,7 @@
 
 - `geth`, the go-ethereum binary.
 - `merlind`, the merlin node binary.
-- `gorc`, the gravity bridge orchestrator cli, built from the [crypto-org fork](https://github.com/merlins-labs/gravity-bridge/tree/v2.0.0-merlin/orchestrator/gorc).
+- `gorc`, the gravity bridge orchestrator cli, built from the [crypto-org fork](https://github.com/crypto-org-chain/gravity-bridge/tree/v2.0.0-merlin/orchestrator/gorc).
 - `pystarport`, a tool to run local cosmos devnet.
 - `start-geth`/`start-merlin`, convenient scripts to start the local devnets.
 

@@ -21,7 +21,7 @@ You can use a nodes as a service provider as discussed [here](https://ethereum.o
 
 -  `merlind` version: `0.8.0` , the merlin node binary found at https://github.com/merlins-labs/merlin/releases/tag/v0.8.0-gravity-alpha0. You will need to use one of the testnet binaries according to your OS/ Arch.
 
-- `gorc`, the gravity bridge orchestrator cli, build instructions can be found [here](gorc-build.md). Alternatively, you can download Linux x86_64 binary from [here](https://github.com/merlins-labs/gravity-bridge/releases/tag/v2.0.0-merlin-alpha0)
+- `gorc`, the gravity bridge orchestrator cli, build instructions can be found [here](gorc-build.md). Alternatively, you can download Linux x86_64 binary from [here](https://github.com/crypto-org-chain/gravity-bridge/releases/tag/v2.0.0-merlin-alpha0)
 
 - Above binaries setup in `PATH`.
 
@@ -176,10 +176,10 @@ Here are the deployed token mappings:
 ### Code
 
 1. MerlinGravity :
-   - https://github.com/merlins-labs/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/MerlinGravity.sol
+   - https://github.com/crypto-org-chain/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/MerlinGravity.sol
 
 2. Eth Gravity Wrapper :
-   -  https://github.com/merlins-labs/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/EthGravityWrapper.sol
+   -  https://github.com/crypto-org-chain/gravity-bridge/blob/v2.0.0-merlin-alpha0/solidity/contracts/EthGravityWrapper.sol
 
 3. CroBridge :
    - https://github.com/merlins-labs/merlin/blob/v0.8.0-gravity-alpha0/integration_tests/contracts/contracts/CroBridge.sol

@@ -39,7 +39,7 @@ def test_ibc(ibc):
 
 def test_merlin_transfer_timeout(ibc):
     """
-    test sending basetmer from merlin to merlins-labs using cli transfer_tokens.
+    test sending basetmer from merlin to crypto-org-chain using cli transfer_tokens.
     depends on `test_ibc` to send the original coins.
     """
     assert_ready(ibc)

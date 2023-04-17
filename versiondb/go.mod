@@ -162,13 +162,13 @@ require (
 )
 
 replace (
-	github.com/cometbft/cometbft-db => github.com/merlins-labs/cometbft-db v0.0.0-20230412133340-ac70df4b45f6
+	github.com/cometbft/cometbft-db => github.com/crypto-org-chain/cometbft-db v0.0.0-20230412133340-ac70df4b45f6
 	github.com/cosmos/iavl => github.com/yihuang/iavl v0.16.1-0.20230408123915-ab52f3c136e8
 	github.com/merlins-labs/merlin/memiavl => ../memiavl
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
 	// use cometbft
 	github.com/tendermint/tendermint => github.com/cometbft/cometbft v0.34.27
-	// https://github.com/merlins-labs/tm-db/tree/release/v0.6.x
-	github.com/tendermint/tm-db => github.com/merlins-labs/tm-db v0.6.8-0.20230412133356-5e16d347f5b9
+	// https://github.com/crypto-org-chain/tm-db/tree/release/v0.6.x
+	github.com/tendermint/tm-db => github.com/crypto-org-chain/tm-db v0.6.8-0.20230412133356-5e16d347f5b9
 )

@@ -123,7 +123,7 @@ def test_ibc_incentivized_transfer(ibc):
 
 def test_merlin_transfer_tokens(ibc):
     """
-    test sending basetmer from merlin to merlins-labs using cli transfer_tokens.
+    test sending basetmer from merlin to crypto-org-chain using cli transfer_tokens.
     depends on `test_ibc` to send the original coins.
     """
     assert_ready(ibc)
@@ -160,7 +160,7 @@ def test_merlin_transfer_tokens(ibc):
 
 def test_merlin_transfer_tokens_acknowledgement_error(ibc):
     """
-    test sending basetmer from merlin to merlins-labs using cli transfer_tokens
+    test sending basetmer from merlin to crypto-org-chain using cli transfer_tokens
     with invalid receiver for acknowledgement error.
     depends on `test_ibc` to send the original coins.
     """
@@ -193,7 +193,7 @@ def test_merlin_transfer_tokens_acknowledgement_error(ibc):
 
 def test_mer_bridge_contract(ibc):
     """
-    test sending basetmer from merlin to merlins-labs using CroBridge contract.
+    test sending basetmer from merlin to crypto-org-chain using CroBridge contract.
     depends on `test_ibc` to send the original coins.
     """
     dst_addr = ibc.chainmain.cosmos_cli().address("signer2")
@@ -224,7 +224,7 @@ def test_mer_bridge_contract(ibc):
 
 def test_merlin_transfer_source_tokens(ibc):
     """
-    test sending crc20 tokens originated from merlin to merlins-labs
+    test sending crc20 tokens originated from merlin to crypto-org-chain
     """
     assert_ready(ibc)
     # deploy crc21 contract

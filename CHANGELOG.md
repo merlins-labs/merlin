@@ -251,7 +251,7 @@
 ## v0.6.4
 
 ### Bug Fixes
-- [merlins-labs/ethermint#19](https://github.com/merlins-labs/ethermint/pull/19) revert tharsis#786 because it contains consensus breaking changes
+- [crypto-org-chain/ethermint#19](https://github.com/crypto-org-chain/ethermint/pull/19) revert tharsis#786 because it contains consensus breaking changes
 
 *November 29, 2021*
 
@@ -260,8 +260,8 @@
 ### Bug Fixes
 
 - [tharsis#781](https://github.com/tharsis/ethermint/pull/781) fix empty transactions in getBlock
-- [merlins-labs/ethermint#15](https://github.com/merlins-labs/ethermint/pull/15) web3 rpc api returns wrong block gas limit
-- [merlins-labs/ethermint#16](https://github.com/merlins-labs/ethermint/pull/16) fix unwrap context panic in BlockMaxGasFromConsensusParams
+- [crypto-org-chain/ethermint#15](https://github.com/crypto-org-chain/ethermint/pull/15) web3 rpc api returns wrong block gas limit
+- [crypto-org-chain/ethermint#16](https://github.com/crypto-org-chain/ethermint/pull/16) fix unwrap context panic in BlockMaxGasFromConsensusParams
 
 ### Improvements
 
@@ -278,7 +278,7 @@
 - [tharsis#743](https://github.com/tharsis/ethermint/pull/743) missing debug_tranceBlockByHash RPC method and fix debug_traceBlock*
 - [tharsis#746](https://github.com/tharsis/ethermint/pull/746) set debug based on tracer
 - [tharsis#741](https://github.com/tharsis/ethermint/pull/741) filter non eth txs in block rpc response
-- [merlins-labs/ethermint#12](https://github.com/merlins-labs/ethermint/pull/12) reject tx with too large gas limit
+- [crypto-org-chain/ethermint#12](https://github.com/crypto-org-chain/ethermint/pull/12) reject tx with too large gas limit
 
 *October 26, 2021*
 
@@ -307,8 +307,8 @@ This version removes gravity-bridge from merlin, also includes multiple bug fixe
 
 ### Bug Fixes
 - [merlin#144](https://github.com/merlins-labs/merlin/pull/144) fix events in autodeploy crc20 module contract
-- [gravity-bridge#17](https://github.com/merlins-labs/gravity-bridge/pull/17) processEthereumEvent does not persist hooks emitted event
-- [gravity-bridge#20](https://github.com/merlins-labs/gravity-bridge/pull/20) fix undeterministic in consensus
+- [gravity-bridge#17](https://github.com/crypto-org-chain/gravity-bridge/pull/17) processEthereumEvent does not persist hooks emitted event
+- [gravity-bridge#20](https://github.com/crypto-org-chain/gravity-bridge/pull/20) fix undeterministic in consensus
 - [merlin#167](https://github.com/merlins-labs/merlin/pull/167) upgrade cosmos-sdk to 0.44.2
 
 ### Improvements

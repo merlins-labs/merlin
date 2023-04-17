@@ -39,7 +39,7 @@ jobs:
           team: 'merlin-dev'
           GITHUB_TOKEN: ${{ secrets.ORG_READ_BOT_PAT }}
       - name: Comment PR for authentication failure
-        uses: merlins-labs/actions-pull-request-add-comment@master
+        uses: crypto-org-chain/actions-pull-request-add-comment@master
         if: (steps.checkMember.outputs.isTeamMember == 'false') && (github.event_name == 'issue_comment')
         with:
           message: |
@@ -67,7 +67,7 @@ jobs:
       ref: ${{ steps.pr_data.outputs.ref }}
     steps:
       - name: Comment PR for Sim test started
-        uses: merlins-labs/actions-pull-request-add-comment@master
+        uses: crypto-org-chain/actions-pull-request-add-comment@master
         if: github.event_name == 'issue_comment'
         with:
           message: |
@@ -419,7 +419,7 @@ jobs:
           echo "status_job05=$(<pass_status_sim3/status_sim3.txt)" >> $GITHUB_OUTPUT
           echo "status_job06=$(<pass_status_sim4/status_sim4.txt)" >> $GITHUB_OUTPUT
       - name: The sim jobs has succeed
-        uses: merlins-labs/actions-pull-request-add-comment@master
+        uses: crypto-org-chain/actions-pull-request-add-comment@master
         if: >-
           steps.set_outputs.outputs.status_job01 == 'success' && steps.set_outputs.outputs.status_job02 == 'success' 
           && steps.set_outputs.outputs.status_job03 == 'success' && steps.set_outputs.outputs.status_job04 == 'success' 
@@ -430,7 +430,7 @@ jobs:
             Please further check [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: The sim jobs has failed
-        uses: merlins-labs/actions-pull-request-add-comment@master
+        uses: crypto-org-chain/actions-pull-request-add-comment@master
         if: >-
           steps.set_outputs.outputs.status_job01 != 'success' || steps.set_outputs.outputs.status_job02 != 'success' 
           || steps.set_outputs.outputs.status_job03 != 'success' || steps.set_outputs.outputs.status_job04 != 'success' 
