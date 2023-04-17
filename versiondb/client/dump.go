@@ -23,7 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
 
-	"github.com/merlins-labs/merlin/versiondb/tsrocksdb"
+	"github.com/crypto-org-chain/cronos/versiondb/tsrocksdb"
 )
 
 const DefaultChunkSize = 1000000

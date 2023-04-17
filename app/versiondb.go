@@ -10,8 +10,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/merlins-labs/merlin/versiondb"
-	"github.com/merlins-labs/merlin/versiondb/tsrocksdb"
+	"github.com/crypto-org-chain/cronos/versiondb"
+	"github.com/crypto-org-chain/cronos/versiondb/tsrocksdb"
 )
 
 func setupVersionDB(

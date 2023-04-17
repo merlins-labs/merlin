@@ -1,4 +1,4 @@
-module github.com/merlins-labs/merlin/memiavl
+module github.com/crypto-org-chain/cronos/memiavl
 
 go 1.20
 

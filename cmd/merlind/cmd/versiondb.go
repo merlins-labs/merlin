@@ -8,7 +8,7 @@ import (
 
 	"github.com/merlins-labs/merlin/v2/app"
 	"github.com/merlins-labs/merlin/v2/cmd/merlind/opendb"
-	versiondbclient "github.com/merlins-labs/merlin/versiondb/client"
+	versiondbclient "github.com/crypto-org-chain/cronos/versiondb/client"
 	"github.com/linxGnu/grocksdb"
 	"github.com/spf13/cobra"
 )

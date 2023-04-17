@@ -1,4 +1,4 @@
-module github.com/merlins-labs/merlin/versiondb
+module github.com/crypto-org-chain/cronos/versiondb
 
 go 1.20
 
@@ -7,7 +7,7 @@ require (
 	github.com/alitto/pond v1.8.2
 	github.com/cosmos/cosmos-sdk v0.46.11
 	github.com/cosmos/iavl v0.19.6-0.20230410112350-e1e212a3a3aa
-	github.com/merlins-labs/merlin/memiavl v0.0.1
+	github.com/crypto-org-chain/cronos/memiavl v0.0.1
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/snappy v0.0.4
 	github.com/hashicorp/go-multierror v1.1.1
@@ -164,7 +164,7 @@ require (
 replace (
 	github.com/cometbft/cometbft-db => github.com/crypto-org-chain/cometbft-db v0.0.0-20230412133340-ac70df4b45f6
 	github.com/cosmos/iavl => github.com/yihuang/iavl v0.16.1-0.20230408123915-ab52f3c136e8
-	github.com/merlins-labs/merlin/memiavl => ../memiavl
+	github.com/crypto-org-chain/cronos/memiavl => ../memiavl
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
 	// use cometbft

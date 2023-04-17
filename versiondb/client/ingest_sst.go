@@ -6,7 +6,7 @@ import (
 	"github.com/linxGnu/grocksdb"
 	"github.com/spf13/cobra"
 
-	"github.com/merlins-labs/merlin/versiondb/tsrocksdb"
+	"github.com/crypto-org-chain/cronos/versiondb/tsrocksdb"
 )
 
 func IngestVersionDBSSTCmd() *cobra.Command {
